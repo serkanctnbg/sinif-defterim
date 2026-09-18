@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sinif-defteri-v1';
+const CACHE_NAME = 'sinif-defteri-v2';
 const ASSETS = [
   './',
   './index.html',

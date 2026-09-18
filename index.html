@@ -293,6 +293,7 @@
     .week-indicator {
       text-align: center;
       flex: 1;
+      min-width: 0;
       cursor: pointer;
       padding: 6px 8px;
       border-radius: 12px;
@@ -328,6 +329,7 @@
 
     .select-styled {
       flex: 1;
+      min-width: 0;
       background: var(--surface-elevated);
       border: 1px solid var(--border);
       color: var(--text);
@@ -338,6 +340,9 @@
       outline: none;
       -webkit-appearance: none;
       cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .btn-today {
