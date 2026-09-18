@@ -200,6 +200,12 @@
       gap: 8px;
     }
 
+    .course-select {
+      width: 100%;
+      font-size: 15px;
+      padding: 13px 14px;
+    }
+
     .course-btn {
       background: var(--surface-elevated);
       border: 1.5px solid transparent;
@@ -429,12 +435,12 @@
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 18px;
-      font-size: 16.5px;
-      line-height: 1.75;
-      font-weight: 600;
+      padding: 15px;
+      font-size: 14.5px;
+      line-height: 1.6;
+      font-weight: 500;
       color: var(--text);
-      min-height: 170px;
+      min-height: 120px;
       margin-bottom: 14px;
       white-space: pre-wrap;
       user-select: text;
@@ -657,9 +663,9 @@
         <span>Dersinizi Seçin</span>
         <span id="selectedCourseHoursBadge" style="color:var(--primary); font-weight:700;">6 Saat / Hafta</span>
       </div>
-      <div class="courses-grid" id="coursesContainer">
+      <select class="select-styled course-select" id="courseSelectDropdown">
         <!-- Courses will be injected dynamically -->
-      </div>
+      </select>
     </section>
 
     <!-- Week & Date Navigation Section -->
@@ -774,7 +780,7 @@
     let includeSpecialDay = false;
 
     // Elements
-    const coursesContainer = document.getElementById('coursesContainer');
+    const courseSelectDropdown = document.getElementById('courseSelectDropdown');
     const selectedCourseHoursBadge = document.getElementById('selectedCourseHoursBadge');
     const weekTitleDisplay = document.getElementById('weekTitleDisplay');
     const weekDatesDisplay = document.getElementById('weekDatesDisplay');
@@ -800,31 +806,24 @@
     const modalCourseTitle = document.getElementById('modalCourseTitle');
     const modalPlanTableBody = document.getElementById('modalPlanTableBody');
 
-    // Initialize Courses Buttons
+    // Initialize Course Dropdown
     function initCourses() {
-      coursesContainer.innerHTML = '';
+      courseSelectDropdown.innerHTML = '';
       COURSES_DATA.forEach((course, idx) => {
-        const btn = document.createElement('div');
-        btn.className = 'course-btn' + (idx === currentCourseIndex ? ' active' : '');
-        btn.innerHTML = `
-          <div class="course-emoji">${course.ikon}</div>
-          <div class="course-info">
-            <div class="course-name">${course.kisa_ad}</div>
-            <div class="course-badge">${course.sinif} • ${course.saat} Saat</div>
-          </div>
-        `;
-        btn.addEventListener('click', () => {
-          selectCourse(idx);
-        });
-        coursesContainer.appendChild(btn);
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${course.ikon} ${course.sinif} • ${course.kisa_ad} (${course.saat} Saat)`;
+        courseSelectDropdown.appendChild(opt);
+      });
+      courseSelectDropdown.value = currentCourseIndex;
+      courseSelectDropdown.addEventListener('change', (e) => {
+        selectCourse(parseInt(e.target.value));
       });
     }
 
     function selectCourse(idx) {
       currentCourseIndex = idx;
-      document.querySelectorAll('.course-btn').forEach((b, i) => {
-        b.classList.toggle('active', i === idx);
-      });
+      courseSelectDropdown.value = idx;
       const c = COURSES_DATA[currentCourseIndex];
       selectedCourseHoursBadge.textContent = `${c.sinif} • ${c.saat} Saat / Hafta`;
       selectedCourseHoursBadge.style.color = c.renk;
