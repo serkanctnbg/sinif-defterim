@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Sınıf Defterim</title>
+  
+  <!-- iOS PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Defterim">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --surface: #151d30;
+      --surface-elevated: #1e2942;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(59, 130, 246, 0.5);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-light: rgba(59, 130, 246, 0.15);
+      --success: #10b981;
+      --success-light: rgba(16, 185, 129, 0.15);
+      --warning: #f59e0b;
+      --warning-light: rgba(245, 158, 11, 0.15);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root[data-theme="auto"], :root[data-theme="light"] {
+        --bg: #f1f5f9;
+        --surface: #ffffff;
+        --surface-elevated: #f8fafc;
+        --border: rgba(0, 0, 0, 0.08);
+        --border-active: rgba(37, 99, 235, 0.5);
+        --text: #0f172a;
+        --text-muted: #64748b;
+        --primary: #2563eb;
+        --primary-hover: #1d4ed8;
+        --primary-light: rgba(37, 99, 235, 0.1);
+        --success: #059669;
+        --success-light: rgba(5, 150, 105, 0.1);
+        --warning: #d97706;
+        --warning-light: rgba(217, 119, 6, 0.1);
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0b0f19;
+      --surface: #151d30;
+      --surface-elevated: #1e2942;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(59, 130, 246, 0.5);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-light: rgba(59, 130, 246, 0.15);
+      --success: #10b981;
+      --success-light: rgba(16, 185, 129, 0.15);
+      --warning: #f59e0b;
+      --warning-light: rgba(245, 158, 11, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      padding-top: calc(var(--safe-top) + 12px);
+      padding-bottom: calc(var(--safe-bottom) + 36px);
+      padding-left: 16px;
+      padding-right: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 580px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 4px 4px 4px;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-icon-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+    }
+
+    .header-titles h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+
+    .header-titles p {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.92);
+      background: var(--surface-elevated);
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    /* Course Selector Pills */
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .course-btn {
+      background: var(--surface-elevated);
+      border: 1.5px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      color: var(--text);
+    }
+
+    .course-btn:active {
+      transform: scale(0.97);
+    }
+
+    .course-btn.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2);
+    }
+
+    .course-emoji {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .course-info {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .course-name {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .course-badge {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .course-btn.active .course-name {
+      color: var(--primary);
+    }
+
+    /* Week Navigator */
+    .week-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .nav-arrow-btn {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .nav-arrow-btn:active {
+      transform: scale(0.92);
+      background: var(--primary-light);
+    }
+
+    .week-indicator {
+      text-align: center;
+      flex: 1;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+
+    .week-indicator:active {
+      background: var(--surface-elevated);
+    }
+
+    .week-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .week-dates {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .quick-jump-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .select-styled {
+      flex: 1;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    .btn-today {
+      background: var(--primary-light);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .btn-today:active {
+      transform: scale(0.95);
+    }
+
+    /* Holiday Alert Banner */
+    .holiday-banner {
+      display: none;
+      background: var(--warning-light);
+      border: 1px solid var(--warning);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      color: var(--warning);
+      font-weight: 600;
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 12px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* Main Defter Box */
+    .defter-card {
+      border: 1.5px solid var(--border-active);
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-elevated) 100%);
+    }
+
+    .defter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .defter-label {
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+    }
+
+    .format-segmented {
+      display: flex;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 2px;
+      border: 1px solid var(--border);
+    }
+
+    .format-tab {
+      padding: 4px 9px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .format-tab.active {
+      background: var(--surface-elevated);
+      color: var(--text);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .defter-text-area {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-size: 14.5px;
+      line-height: 1.55;
+      font-weight: 500;
+      color: var(--text);
+      min-height: 100px;
+      margin-bottom: 14px;
+      white-space: pre-wrap;
+      user-select: text;
+      font-family: inherit;
+    }
+
+    .defter-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-copy-main {
+      flex: 1;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+      transition: all 0.2s;
+    }
+
+    .btn-copy-main:active {
+      transform: scale(0.97);
+      background: var(--primary-hover);
+    }
+
+    .btn-copy-main.copied {
+      background: var(--success);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Special Day / Ataturkculuk Card */
+    .special-day-box {
+      display: none;
+      background: rgba(220, 38, 38, 0.08);
+      border: 1px solid rgba(220, 38, 38, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      margin-top: 14px;
+      font-size: 13px;
+    }
+
+    .special-day-title {
+      font-weight: 700;
+      color: #ef4444;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .special-day-content {
+      color: var(--text);
+      line-height: 1.4;
+      font-size: 12.5px;
+      white-space: pre-wrap;
+    }
+
+    .special-day-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .special-day-toggle input {
+      cursor: pointer;
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Modal / Bottom Drawer */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 99;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--surface);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 20px 18px calc(var(--safe-bottom) + 20px) 18px;
+      box-shadow: 0 -8px 30px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      background: var(--surface-elevated);
+      border: none;
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* Plan Table in Modal */
+    .plan-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+
+    .plan-table th, .plan-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .plan-table th {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .plan-row {
+      cursor: pointer;
+    }
+
+    .plan-row:active {
+      background: var(--primary-light);
+    }
+
+    .plan-row.current {
+      background: var(--primary-light);
+      font-weight: 600;
+    }
+
+    /* Footer Notes */
+    .app-footer {
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="app-icon-badge">📓</div>
+        <div class="header-titles">
+          <h1>Sınıf Defterim</h1>
+          <p>2026-2027 Yıllık Plan Asistanı</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="btnThemeToggle" title="Tema Değiştir">🌓</button>
+        <button class="icon-btn" id="btnOpenModal" title="Tüm Planı Gör">📋</button>
+      </div>
+    </header>
+
+    <!-- Course Selection Section -->
+    <section class="card">
+      <div class="section-title">
+        <span>Dersinizi Seçin</span>
+        <span id="selectedCourseHoursBadge" style="color:var(--primary); font-weight:700;">6 Saat / Hafta</span>
+      </div>
+      <div class="courses-grid" id="coursesContainer">
+        <!-- Courses will be injected dynamically -->
+      </div>
+    </section>
+
+    <!-- Week & Date Navigation Section -->
+    <section class="card">
+      <div class="week-nav-bar">
+        <button class="nav-arrow-btn" id="btnPrevWeek">◀</button>
+        <div class="week-indicator" id="weekIndicatorBtn" title="Hafta seçmek için tıklayın">
+          <div class="week-title" id="weekTitleDisplay">1. Hafta</div>
+          <div class="week-dates" id="weekDatesDisplay">14-18 Eylül 2026</div>
+        </div>
+        <button class="nav-arrow-btn" id="btnNextWeek">▶</button>
+      </div>
+
+      <div class="quick-jump-row">
+        <select class="select-styled" id="weekSelectDropdown">
+          <!-- Weeks options injected dynamically -->
+        </select>
+        <button class="btn-today" id="btnToday">Bugün 📍</button>
+      </div>
+    </section>
+
+    <!-- Holiday Banner (Visible only on holiday weeks) -->
+    <div class="holiday-banner" id="holidayBanner">
+      <span>🏖️</span>
+      <span id="holidayText">1. DÖNEM ARA TATİLİ</span>
+    </div>
+
+    <!-- Sınıf Defterine Yazılacak Metin (Main Feature) -->
+    <section class="card defter-card" id="defterSection">
+      <div class="defter-header">
+        <div class="defter-label">
+          <span>✍️</span> Sınıf Defterine Yazılacak Konu
+        </div>
+        <div class="format-segmented">
+          <div class="format-tab active" data-fmt="tek_satir" title="Sınıf defteri tek satır formatı">Tek Satır</div>
+          <div class="format-tab" data-fmt="maddeler" title="Alt alta maddeler">Maddeler</div>
+          <div class="format-tab" data-fmt="numarasiz" title="Sayı başlığı olmadan">Sade</div>
+        </div>
+      </div>
+
+      <!-- Defter Text Box -->
+      <div class="defter-text-area" id="defterDisplayArea" contenteditable="false">
+        Yükleniyor...
+      </div>
+
+      <!-- Copy Action Button -->
+      <div class="defter-actions">
+        <button class="btn-copy-main" id="btnCopyText">
+          <span id="copyIcon">📋</span>
+          <span id="copyBtnLabel">Defter Metnini Kopyala</span>
+        </button>
+      </div>
+
+      <!-- Belirli Gün ve Haftalar / Atatürkçülük Box -->
+      <div class="special-day-box" id="specialDayBox">
+        <div class="special-day-title">
+          <span>🇹🇷</span> Belirli Gün ve Hafta / Atatürkçülük
+        </div>
+        <div class="special-day-content" id="specialDayText"></div>
+        <label class="special-day-toggle">
+          <input type="checkbox" id="chkIncludeSpecialDay">
+          <span>Bu özel günü de kopyalama metnine parantez içinde ekle</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>MEB Çerçeve Öğretim Programı & Ders Kitapları İçindekiler Tablosuna %100 Uygundur.</p>
+      <p style="margin-top:4px;">
+        <button class="btn-link" id="btnShowPlanLink">Tüm Yıllık Plan Tablosunu Görüntüle</button>
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Full Plan Modal -->
+  <div class="modal-backdrop" id="planModalBackdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modalCourseTitle">Yıllık Plan Tablosu</div>
+          <p style="font-size:12px; color:var(--text-muted);" id="modalCourseSubtitle">37 Fiilî Hafta + 3 Tatil</p>
+        </div>
+        <button class="close-btn" id="btnCloseModal">✕</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="plan-table" id="modalPlanTable">
+          <thead>
+            <tr>
+              <th style="width:30px;">Hf</th>
+              <th>Tarih</th>
+              <th>Konu (Sınıf Defterine Yazılacak)</th>
+            </tr>
+          </thead>
+          <tbody id="modalPlanTableBody">
+            <!-- Injected dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Embedded Plan Data & Logic -->
+  <script>
+    const COURSES_DATA = [{"id": "temel_muhasebe_9", "sinif": "9. Sınıf", "ad": "Temel Muhasebe", "kisa_ad": "Temel Muhasebe", "saat": 6, "renk": "#2563eb", "ikon": "📚", "weeks": [{"hafta_no": 1, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "14-18 Eylül 2026", "start_date": "2026-09-14", "end_date": "2026-09-18", "saat": 6, "konu_tam": "1. ÖĞRENME BİRİMİ: TİCARİ DEFTER VE BELGELER\n1.1. TİCARİ DEFTER VE BELGELERİN TEMİNİ\n1.1.1. Muhasebe Kavramı\n1.1.2. Muhasebenin İşlevleri\n1.1.3. Tacir Kavramı ve Hukuki Statüsü", "konu_maddeler": ["1. ÖĞRENME BİRİMİ: TİCARİ DEFTER VE BELGELER", "1.1. TİCARİ DEFTER VE BELGELERİN TEMİNİ", "1.1.1. Muhasebe Kavramı", "1.1.2. Muhasebenin İşlevleri", "1.1.3. Tacir Kavramı ve Hukuki Statüsü"], "konu_defter": "1.1. TİCARİ DEFTER VE BELGELERİN TEMİNİ, 1.1.1. Muhasebe Kavramı, 1.1.2. Muhasebenin İşlevleri, 1.1.3. Tacir Kavramı ve Hukuki Statüsü", "konu_defter_numarasiz": "TİCARİ DEFTER VE BELGELERİN TEMİNİ, Muhasebe Kavramı, Muhasebenin İşlevleri, Tacir Kavramı ve Hukuki Statüsü", "belirli_gun": ""}, {"hafta_no": 2, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "21-25 Eylül 2026", "start_date": "2026-09-21", "end_date": "2026-09-25", "saat": 6, "konu_tam": "1.1.4. Ticari Defter Tutmanın Amaçları ve Önemi\n1.1.5. Defter Tutma Zorunluluğu", "konu_maddeler": ["1.1.4. Ticari Defter Tutmanın Amaçları ve Önemi", "1.1.5. Defter Tutma Zorunluluğu"], "konu_defter": "1.1.4. Ticari Defter Tutmanın Amaçları ve Önemi, 1.1.5. Defter Tutma Zorunluluğu", "konu_defter_numarasiz": "Ticari Defter Tutmanın Amaçları ve Önemi, Defter Tutma Zorunluluğu", "belirli_gun": "**Ahilik Kültürü Haftası**"}, {"hafta_no": 3, "is_tatil": false, "ay": "EYLÜL / EKİM", "tarih_metni": "28 Eylül - 02 Ekim 2026", "start_date": "2026-09-28", "end_date": "2026-10-02", "saat": 6, "konu_tam": "1.1.6. Elektronik Defter\n1.1.7. Defter-Beyan Sistemi\n1.1.8. Ticari Defter ve Belgelerin Temini", "konu_maddeler": ["1.1.6. Elektronik Defter", "1.1.7. Defter-Beyan Sistemi", "1.1.8. Ticari Defter ve Belgelerin Temini"], "konu_defter": "1.1.6. Elektronik Defter, 1.1.7. Defter-Beyan Sistemi, 1.1.8. Ticari Defter ve Belgelerin Temini", "konu_defter_numarasiz": "Elektronik Defter, Defter-Beyan Sistemi, Ticari Defter ve Belgelerin Temini", "belirli_gun": ""}, {"hafta_no": 4, "is_tatil": false, "ay": "EKİM", "tarih_metni": "05-09 Ekim 2026", "start_date": "2026-10-05", "end_date": "2026-10-09", "saat": 6, "konu_tam": "1.2. TİCARİ DEFTER VE BELGELERİN TASDİK, SAKLAMA, İBRAZ İŞLEMLERİ\n1.2.1. Tasdik Edilecek Defterler ve Tasdik Zamanları", "konu_maddeler": ["1.2. TİCARİ DEFTER VE BELGELERİN TASDİK, SAKLAMA, İBRAZ İŞLEMLERİ", "1.2.1. Tasdik Edilecek Defterler ve Tasdik Zamanları"], "konu_defter": "1.2. TİCARİ DEFTER VE BELGELERİN TASDİK, SAKLAMA, İBRAZ İŞLEMLERİ, 1.2.1. Tasdik Edilecek Defterler ve Tasdik Zamanları", "konu_defter_numarasiz": "TİCARİ DEFTER VE BELGELERİN TASDİK, SAKLAMA, İBRAZ İŞLEMLERİ, Tasdik Edilecek Defterler ve Tasdik Zamanları", "belirli_gun": ""}, {"hafta_no": 5, "is_tatil": false, "ay": "EKİM", "tarih_metni": "12-16 Ekim 2026", "start_date": "2026-10-12", "end_date": "2026-10-16", "saat": 6, "konu_tam": "1.2.2. E-Defter Beratı\n1.2.3. Defterlerin Kayıt Düzeni ve Zamanı", "konu_maddeler": ["1.2.2. E-Defter Beratı", "1.2.3. Defterlerin Kayıt Düzeni ve Zamanı"], "konu_defter": "1.2.2. E-Defter Beratı, 1.2.3. Defterlerin Kayıt Düzeni ve Zamanı", "konu_defter_numarasiz": "E-Defter Beratı, Defterlerin Kayıt Düzeni ve Zamanı", "belirli_gun": ""}, {"hafta_no": 6, "is_tatil": false, "ay": "EKİM", "tarih_metni": "19-23 Ekim 2026", "start_date": "2026-10-19", "end_date": "2026-10-23", "saat": 6, "konu_tam": "1.2.4. Kanunlara Göre Defterlerin Saklanması ve İbrazı", "konu_maddeler": ["1.2.4. Kanunlara Göre Defterlerin Saklanması ve İbrazı"], "konu_defter": "1.2.4. Kanunlara Göre Defterlerin Saklanması ve İbrazı", "konu_defter_numarasiz": "Kanunlara Göre Defterlerin Saklanması ve İbrazı", "belirli_gun": ""}, {"hafta_no": 7, "is_tatil": false, "ay": "EKİM", "tarih_metni": "26-30 Ekim 2026", "start_date": "2026-10-26", "end_date": "2026-10-30", "saat": 6, "konu_tam": "2. ÖĞRENME BİRİMİ: VERGİ DAİRESİ VE BELEDİYE İŞLEMLERİ\n2.1. VERGİ DAİRESİ İŞLEMLERİ\n2.1.1. Vergi Dairesi\n2.1.2. Dijital Vergi Dairesi", "konu_maddeler": ["2. ÖĞRENME BİRİMİ: VERGİ DAİRESİ VE BELEDİYE İŞLEMLERİ", "2.1. VERGİ DAİRESİ İŞLEMLERİ", "2.1.1. Vergi Dairesi", "2.1.2. Dijital Vergi Dairesi"], "konu_defter": "2.1. VERGİ DAİRESİ İŞLEMLERİ, 2.1.1. Vergi Dairesi, 2.1.2. Dijital Vergi Dairesi", "konu_defter_numarasiz": "VERGİ DAİRESİ İŞLEMLERİ, Vergi Dairesi, Dijital Vergi Dairesi", "belirli_gun": "**29 Ekim Cumhuriyet Bayramı**\n**Cumhuriyetçilik İlkesi ve Cumhuriyetin Önemi**"}, {"hafta_no": 8, "is_tatil": false, "ay": "KASIM", "tarih_metni": "02-06 Kasım 2026", "start_date": "2026-11-02", "end_date": "2026-11-06", "saat": 6, "konu_tam": "2.1.3. Mükellefin Vergi Dairesine Karşı Bildirim Yükümlülükleri\n2.1.4. Vergi Levhası", "konu_maddeler": ["2.1.3. Mükellefin Vergi Dairesine Karşı Bildirim Yükümlülükleri", "2.1.4. Vergi Levhası"], "konu_defter": "2.1.3. Mükellefin Vergi Dairesine Karşı Bildirim Yükümlülükleri, 2.1.4. Vergi Levhası", "konu_defter_numarasiz": "Mükellefin Vergi Dairesine Karşı Bildirim Yükümlülükleri, Vergi Levhası", "belirli_gun": ""}, {"hafta_no": 9, "is_tatil": false, "ay": "KASIM", "tarih_metni": "09-13 Kasım 2026", "start_date": "2026-11-09", "end_date": "2026-11-13", "saat": 6, "konu_tam": "2.1.5. Yeni Nesil Ödeme Kaydedici Cihaz\n2.2. BELEDİYE İŞLEMLERİ\n2.2.1. Belediye Kavramı", "konu_maddeler": ["2.1.5. Yeni Nesil Ödeme Kaydedici Cihaz", "2.2. BELEDİYE İŞLEMLERİ", "2.2.1. Belediye Kavramı"], "konu_defter": "2.1.5. Yeni Nesil Ödeme Kaydedici Cihaz, 2.2. BELEDİYE İŞLEMLERİ, 2.2.1. Belediye Kavramı", "konu_defter_numarasiz": "Yeni Nesil Ödeme Kaydedici Cihaz, BELEDİYE İŞLEMLERİ, Belediye Kavramı", "belirli_gun": "**10 Kasım Atatürk'ü Anma Günü ve Atatürk Haftası**\n**Atatürk'ün Hayatı, Eserleri ve Atatürkçü Düşünce Sistemi**"}, {"hafta_no": null, "is_tatil": true, "ay": "KASIM", "tarih_metni": "16 - 20 Kasım 2026", "start_date": "2026-11-16", "end_date": "2026-11-20", "tatil_adi": "1. DÖNEM ARA TATİLİ", "konu_tam": "1. DÖNEM ARA TATİLİ", "konu_maddeler": ["1. DÖNEM ARA TATİLİ"], "konu_defter": "1. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "1. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 10, "is_tatil": false, "ay": "KASIM", "tarih_metni": "23-27 Kasım 2026", "start_date": "2026-11-23", "end_date": "2026-11-27", "saat": 6, "konu_tam": "2.2.2. Tacirin Belediyeye Karşı Sorumlulukları", "konu_maddeler": ["2.2.2. Tacirin Belediyeye Karşı Sorumlulukları"], "konu_defter": "2.2.2. Tacirin Belediyeye Karşı Sorumlulukları", "konu_defter_numarasiz": "Tacirin Belediyeye Karşı Sorumlulukları", "belirli_gun": "**24 Kasım Öğretmenler Günü**"}, {"hafta_no": 11, "is_tatil": false, "ay": "KASIM / ARALIK", "tarih_metni": "30 Kasım - 04 Aralık 2026", "start_date": "2026-11-30", "end_date": "2026-12-04", "saat": 6, "konu_tam": "3. ÖĞRENME BİRİMİ: SOSYAL GÜVENLİK İŞLEMLERİ\n3.1. SOSYAL GÜVENLİK KURUMU İLE İLGİLİ GENEL BİLGİLER\n3.1.1. Sosyal Güvenlik Sistemi\n3.1.2. Ülkemizde Sosyal Güvenlik Sisteminin Tarihsel Gelişimi\n3.1.3. Sosyal Güvenlik Sisteminde Sigortalılık Statüleri\n3.1.4. Sosyal Güvenlik Terimleri", "konu_maddeler": ["3. ÖĞRENME BİRİMİ: SOSYAL GÜVENLİK İŞLEMLERİ", "3.1. SOSYAL GÜVENLİK KURUMU İLE İLGİLİ GENEL BİLGİLER", "3.1.1. Sosyal Güvenlik Sistemi", "3.1.2. Ülkemizde Sosyal Güvenlik Sisteminin Tarihsel Gelişimi", "3.1.3. Sosyal Güvenlik Sisteminde Sigortalılık Statüleri", "3.1.4. Sosyal Güvenlik Terimleri"], "konu_defter": "3.1. SOSYAL GÜVENLİK KURUMU İLE İLGİLİ GENEL BİLGİLER, 3.1.1. Sosyal Güvenlik Sistemi, 3.1.2. Ülkemizde Sosyal Güvenlik Sisteminin Tarihsel Gelişimi, 3.1.3. Sosyal Güvenlik Sisteminde Sigortalılık Statüleri, 3.1.4. Sosyal Güvenlik Terimleri", "konu_defter_numarasiz": "SOSYAL GÜVENLİK KURUMU İLE İLGİLİ GENEL BİLGİLER, Sosyal Güvenlik Sistemi, Ülkemizde Sosyal Güvenlik Sisteminin Tarihsel Gelişimi, Sosyal Güvenlik Sisteminde Sigortalılık Statüleri, Sosyal Güvenlik Terimleri", "belirli_gun": ""}, {"hafta_no": 12, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "07-11 Aralık 2026", "start_date": "2026-12-07", "end_date": "2026-12-11", "saat": 6, "konu_tam": "3.1.5. İşverenin SGK’ye Karşı Yükümlülükleri\n3.1.6. Sosyal Güvenlik Sisteminde Sigorta Kolları\n3.1.7. Genel Sağlık Sigortası\n3.1.8. E-SGK Kavramı", "konu_maddeler": ["3.1.5. İşverenin SGK’ye Karşı Yükümlülükleri", "3.1.6. Sosyal Güvenlik Sisteminde Sigorta Kolları", "3.1.7. Genel Sağlık Sigortası", "3.1.8. E-SGK Kavramı"], "konu_defter": "3.1.5. İşverenin SGK’ye Karşı Yükümlülükleri, 3.1.6. Sosyal Güvenlik Sisteminde Sigorta Kolları, 3.1.7. Genel Sağlık Sigortası, 3.1.8. E-SGK Kavramı", "konu_defter_numarasiz": "İşverenin SGK’ye Karşı Yükümlülükleri, Sosyal Güvenlik Sisteminde Sigorta Kolları, Genel Sağlık Sigortası, E-SGK Kavramı", "belirli_gun": ""}, {"hafta_no": 13, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "14-18 Aralık 2026", "start_date": "2026-12-14", "end_date": "2026-12-18", "saat": 6, "konu_tam": "3.2. İŞÇİ STATÜSÜNDE ÇALIŞANLARIN İŞLEMLERİ\n3.2.1. Bildirim İşlemleri", "konu_maddeler": ["3.2. İŞÇİ STATÜSÜNDE ÇALIŞANLARIN İŞLEMLERİ", "3.2.1. Bildirim İşlemleri"], "konu_defter": "3.2. İŞÇİ STATÜSÜNDE ÇALIŞANLARIN İŞLEMLERİ, 3.2.1. Bildirim İşlemleri", "konu_defter_numarasiz": "İŞÇİ STATÜSÜNDE ÇALIŞANLARIN İŞLEMLERİ, Bildirim İşlemleri", "belirli_gun": "**Tutum, Yatırım ve Türk Malları Haftası (12-18 Aralık)**"}, {"hafta_no": 14, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "21-25 Aralık 2026", "start_date": "2026-12-21", "end_date": "2026-12-25", "saat": 6, "konu_tam": "3.2.2. Ücret Bordrosu ve Ücret Hesaplamaları\n3.2.3. Fazla Mesai Ücreti Hesaplama", "konu_maddeler": ["3.2.2. Ücret Bordrosu ve Ücret Hesaplamaları", "3.2.3. Fazla Mesai Ücreti Hesaplama"], "konu_defter": "3.2.2. Ücret Bordrosu ve Ücret Hesaplamaları, 3.2.3. Fazla Mesai Ücreti Hesaplama", "konu_defter_numarasiz": "Ücret Bordrosu ve Ücret Hesaplamaları, Fazla Mesai Ücreti Hesaplama", "belirli_gun": ""}, {"hafta_no": 15, "is_tatil": false, "ay": "ARALIK / OCAK", "tarih_metni": "28 Aralık 2026 - 01 Ocak 2027", "start_date": "2026-12-28", "end_date": "2027-01-01", "saat": 6, "konu_tam": "3.2.4. Net Ücret ve İşveren Maliyet Hesaplama\n3.2.5. Muhtasar ve Prim Hizmet Beyannamesi Bildirimi", "konu_maddeler": ["3.2.4. Net Ücret ve İşveren Maliyet Hesaplama", "3.2.5. Muhtasar ve Prim Hizmet Beyannamesi Bildirimi"], "konu_defter": "3.2.4. Net Ücret ve İşveren Maliyet Hesaplama, 3.2.5. Muhtasar ve Prim Hizmet Beyannamesi Bildirimi", "konu_defter_numarasiz": "Net Ücret ve İşveren Maliyet Hesaplama, Muhtasar ve Prim Hizmet Beyannamesi Bildirimi", "belirli_gun": "**Yılbaşı Tatili (1 Ocak 2027)**"}, {"hafta_no": 16, "is_tatil": false, "ay": "OCAK", "tarih_metni": "04-08 Ocak 2027", "start_date": "2027-01-04", "end_date": "2027-01-08", "saat": 6, "konu_tam": "3.3. BAĞIMSIZ ÇALIŞANLARIN İŞLEMLERİ\n3.3.1. Prim Ödemesi\n3.3.2. Sağlık Hizmetinden Yararlanma ve Emeklilik\n3.3.3. İş Yeri Kapanışı ve Sigortalılığın Sona Ermesi", "konu_maddeler": ["3.3. BAĞIMSIZ ÇALIŞANLARIN İŞLEMLERİ", "3.3.1. Prim Ödemesi", "3.3.2. Sağlık Hizmetinden Yararlanma ve Emeklilik", "3.3.3. İş Yeri Kapanışı ve Sigortalılığın Sona Ermesi"], "konu_defter": "3.3. BAĞIMSIZ ÇALIŞANLARIN İŞLEMLERİ, 3.3.1. Prim Ödemesi, 3.3.2. Sağlık Hizmetinden Yararlanma ve Emeklilik, 3.3.3. İş Yeri Kapanışı ve Sigortalılığın Sona Ermesi", "konu_defter_numarasiz": "BAĞIMSIZ ÇALIŞANLARIN İŞLEMLERİ, Prim Ödemesi, Sağlık Hizmetinden Yararlanma ve Emeklilik, İş Yeri Kapanışı ve Sigortalılığın Sona Ermesi", "belirli_gun": "**Enerji Tasarrufu Haftası (Ocak 2. haftası)**"}, {"hafta_no": 17, "is_tatil": false, "ay": "OCAK", "tarih_metni": "11-15 Ocak 2027", "start_date": "2027-01-11", "end_date": "2027-01-15", "saat": 6, "konu_tam": "3.4. DEVLET MEMURU STATÜSÜNDE ÇALIŞANLARIN İŞLEMLERİ\n3.4.1. Sigortalılık Başlangıcı\n3.4.2. Devlet Memurlarının Mali ve Sosyal Hakları\n3.4.3. Ücret Kesintileri ve Bordro Yapısı\n3.4.4. İstifa ve Görevden Ayrılma\n3.4.5. Emekli İkramiyesi", "konu_maddeler": ["3.4. DEVLET MEMURU STATÜSÜNDE ÇALIŞANLARIN İŞLEMLERİ", "3.4.1. Sigortalılık Başlangıcı", "3.4.2. Devlet Memurlarının Mali ve Sosyal Hakları", "3.4.3. Ücret Kesintileri ve Bordro Yapısı", "3.4.4. İstifa ve Görevden Ayrılma", "3.4.5. Emekli İkramiyesi"], "konu_defter": "3.4. DEVLET MEMURU STATÜSÜNDE ÇALIŞANLARIN İŞLEMLERİ, 3.4.1. Sigortalılık Başlangıcı, 3.4.2. Devlet Memurlarının Mali ve Sosyal Hakları, 3.4.3. Ücret Kesintileri ve Bordro Yapısı, 3.4.4. İstifa ve Görevden Ayrılma, 3.4.5. Emekli İkramiyesi", "konu_defter_numarasiz": "DEVLET MEMURU STATÜSÜNDE ÇALIŞANLARIN İŞLEMLERİ, Sigortalılık Başlangıcı, Devlet Memurlarının Mali ve Sosyal Hakları, Ücret Kesintileri ve Bordro Yapısı, İstifa ve Görevden Ayrılma, Emekli İkramiyesi", "belirli_gun": ""}, {"hafta_no": 18, "is_tatil": false, "ay": "OCAK", "tarih_metni": "18-22 Ocak 2027", "start_date": "2027-01-18", "end_date": "2027-01-22", "saat": 6, "konu_tam": "1. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_maddeler": ["1. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ"], "konu_defter": "1. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_defter_numarasiz": "DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "belirli_gun": "**1. Dönem Sonu (22 Ocak 2027 Cuma)**"}, {"hafta_no": null, "is_tatil": true, "ay": "OCAK / ŞUBAT", "tarih_metni": "25 Ocak - 05 Şubat 2027", "start_date": "2027-01-25", "end_date": "2027-02-05", "tatil_adi": "YARIYIL TATİLİ (15 TATİL)", "konu_tam": "YARIYIL TATİLİ (15 TATİL)", "konu_maddeler": ["YARIYIL TATİLİ (15 TATİL)"], "konu_defter": "YARIYIL TATİLİ (15 TATİL)", "konu_defter_numarasiz": "YARIYIL TATİLİ (15 TATİL)", "belirli_gun": ""}, {"hafta_no": 19, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "08-12 Şubat 2027", "start_date": "2027-02-08", "end_date": "2027-02-12", "saat": 6, "konu_tam": "4. ÖĞRENME BİRİMİ: FATURA VE FATURA YERİNE GEÇEN BELGELER\n4.1. PERAKENDE SATIŞ BELGELERİ\n4.1.1. Perakende ve Toptan Ticaret\n4.1.2. Yazar Kasa Fişi ve Pos Makinesi Belgesi", "konu_maddeler": ["4. ÖĞRENME BİRİMİ: FATURA VE FATURA YERİNE GEÇEN BELGELER", "4.1. PERAKENDE SATIŞ BELGELERİ", "4.1.1. Perakende ve Toptan Ticaret", "4.1.2. Yazar Kasa Fişi ve Pos Makinesi Belgesi"], "konu_defter": "4.1. PERAKENDE SATIŞ BELGELERİ, 4.1.1. Perakende ve Toptan Ticaret, 4.1.2. Yazar Kasa Fişi ve Pos Makinesi Belgesi", "konu_defter_numarasiz": "PERAKENDE SATIŞ BELGELERİ, Perakende ve Toptan Ticaret, Yazar Kasa Fişi ve Pos Makinesi Belgesi", "belirli_gun": "**2. Dönem Başlangıcı (8 Şubat 2027)**"}, {"hafta_no": 20, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "15-19 Şubat 2027", "start_date": "2027-02-15", "end_date": "2027-02-19", "saat": 6, "konu_tam": "4.1.3. Perakende Satış Fişi\n4.1.4. Adisyon ve e-Adisyon", "konu_maddeler": ["4.1.3. Perakende Satış Fişi", "4.1.4. Adisyon ve e-Adisyon"], "konu_defter": "4.1.3. Perakende Satış Fişi, 4.1.4. Adisyon ve e-Adisyon", "konu_defter_numarasiz": "Perakende Satış Fişi, Adisyon ve e-Adisyon", "belirli_gun": ""}, {"hafta_no": 21, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "22-26 Şubat 2027", "start_date": "2027-02-22", "end_date": "2027-02-26", "saat": 6, "konu_tam": "4.2. FATURA VE İRSALİYE\n4.2.1. Fatura", "konu_maddeler": ["4.2. FATURA VE İRSALİYE", "4.2.1. Fatura"], "konu_defter": "4.2. FATURA VE İRSALİYE, 4.2.1. Fatura", "konu_defter_numarasiz": "FATURA VE İRSALİYE, Fatura", "belirli_gun": "**Vergi Haftası (Şubatın son haftası)**"}, {"hafta_no": 22, "is_tatil": false, "ay": "MART", "tarih_metni": "01-05 Mart 2027", "start_date": "2027-03-01", "end_date": "2027-03-05", "saat": 6, "konu_tam": "4.2.2. E-Fatura\n4.2.3. Sevk İrsaliyesi", "konu_maddeler": ["4.2.2. E-Fatura", "4.2.3. Sevk İrsaliyesi"], "konu_defter": "4.2.2. E-Fatura, 4.2.3. Sevk İrsaliyesi", "konu_defter_numarasiz": "E-Fatura, Sevk İrsaliyesi", "belirli_gun": "**Yeşilay Haftası (1-7 Mart) / Girişimcilik Haftası**"}, {"hafta_no": null, "is_tatil": true, "ay": "MART", "tarih_metni": "08 - 12 Mart 2027", "start_date": "2027-03-08", "end_date": "2027-03-12", "tatil_adi": "2. DÖNEM ARA TATİLİ", "konu_tam": "2. DÖNEM ARA TATİLİ", "konu_maddeler": ["2. DÖNEM ARA TATİLİ"], "konu_defter": "2. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "2. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 23, "is_tatil": false, "ay": "MART", "tarih_metni": "15-19 Mart 2027", "start_date": "2027-03-15", "end_date": "2027-03-19", "saat": 6, "konu_tam": "4.2.4. İrsaliyeli Fatura\n4.2.5. Taşıma İrsaliyesi", "konu_maddeler": ["4.2.4. İrsaliyeli Fatura", "4.2.5. Taşıma İrsaliyesi"], "konu_defter": "4.2.4. İrsaliyeli Fatura, 4.2.5. Taşıma İrsaliyesi", "konu_defter_numarasiz": "İrsaliyeli Fatura, Taşıma İrsaliyesi", "belirli_gun": "**12 Mart İstiklâl Marşı'nın Kabulü / 18 Mart Çanakkale Zaferi**\n**Atatürk'ün Askerî Dehası, Vatan ve Millet Sevgisi**"}, {"hafta_no": 24, "is_tatil": false, "ay": "MART", "tarih_metni": "22-26 Mart 2027", "start_date": "2027-03-22", "end_date": "2027-03-26", "saat": 6, "konu_tam": "4.3. FATURA YERİNE GEÇEN BELGELER\n4.3.1. Gider Pusulası\n4.3.2. Müstahsil Makbuzu", "konu_maddeler": ["4.3. FATURA YERİNE GEÇEN BELGELER", "4.3.1. Gider Pusulası", "4.3.2. Müstahsil Makbuzu"], "konu_defter": "4.3. FATURA YERİNE GEÇEN BELGELER, 4.3.1. Gider Pusulası, 4.3.2. Müstahsil Makbuzu", "konu_defter_numarasiz": "FATURA YERİNE GEÇEN BELGELER, Gider Pusulası, Müstahsil Makbuzu", "belirli_gun": "**Orman Haftası (21-26 Mart)**"}, {"hafta_no": 25, "is_tatil": false, "ay": "MART / NİSAN", "tarih_metni": "29 Mart - 02 Nisan 2027", "start_date": "2027-03-29", "end_date": "2027-04-02", "saat": 6, "konu_tam": "4.3.3. Serbest Meslek Makbuzu\n4.3.4. Günlük Müşteri Listesi", "konu_maddeler": ["4.3.3. Serbest Meslek Makbuzu", "4.3.4. Günlük Müşteri Listesi"], "konu_defter": "4.3.3. Serbest Meslek Makbuzu, 4.3.4. Günlük Müşteri Listesi", "konu_defter_numarasiz": "Serbest Meslek Makbuzu, Günlük Müşteri Listesi", "belirli_gun": "**Kütüphaneler Haftası (Mart son haftası)**"}, {"hafta_no": 26, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "05-09 Nisan 2027", "start_date": "2027-04-05", "end_date": "2027-04-09", "saat": 6, "konu_tam": "4.3.5. Kıymetli Maden Alım Satım Belgesi\n4.3.6. Yolcu Listesi\n4.3.7. Diğer Belgeler", "konu_maddeler": ["4.3.5. Kıymetli Maden Alım Satım Belgesi", "4.3.6. Yolcu Listesi", "4.3.7. Diğer Belgeler"], "konu_defter": "4.3.5. Kıymetli Maden Alım Satım Belgesi, 4.3.6. Yolcu Listesi, 4.3.7. Diğer Belgeler", "konu_defter_numarasiz": "Kıymetli Maden Alım Satım Belgesi, Yolcu Listesi, Diğer Belgeler", "belirli_gun": ""}, {"hafta_no": 27, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "12-16 Nisan 2027", "start_date": "2027-04-12", "end_date": "2027-04-16", "saat": 6, "konu_tam": "5. ÖĞRENME BİRİMİ: KIYMETLİ EVRAK VE MENKUL KIYMETLER\n5.1. TÜRK TİCARET KANUNU’NDA YER ALAN BELGELER\n5.1.1. Bono\n5.1.2. Çek", "konu_maddeler": ["5. ÖĞRENME BİRİMİ: KIYMETLİ EVRAK VE MENKUL KIYMETLER", "5.1. TÜRK TİCARET KANUNU’NDA YER ALAN BELGELER", "5.1.1. Bono", "5.1.2. Çek"], "konu_defter": "5.1. TÜRK TİCARET KANUNU’NDA YER ALAN BELGELER, 5.1.1. Bono, 5.1.2. Çek", "konu_defter_numarasiz": "TÜRK TİCARET KANUNU’NDA YER ALAN BELGELER, Bono, Çek", "belirli_gun": "**Turizm Haftası (15-22 Nisan)**"}, {"hafta_no": 28, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "19-23 Nisan 2027", "start_date": "2027-04-19", "end_date": "2027-04-23", "saat": 6, "konu_tam": "5.1.3. Poliçe\n5.1.4. Ciro", "konu_maddeler": ["5.1.3. Poliçe", "5.1.4. Ciro"], "konu_defter": "5.1.3. Poliçe, 5.1.4. Ciro", "konu_defter_numarasiz": "Poliçe, Ciro", "belirli_gun": "**23 Nisan Ulusal Egemenlik ve Çocuk Bayramı**\n**TBMM'nin Açılışı, Millî Egemenlik ve Halkçılık İlkesi**"}, {"hafta_no": 29, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "26-30 Nisan 2027", "start_date": "2027-04-26", "end_date": "2027-04-30", "saat": 6, "konu_tam": "5.2. MENKUL KIYMETLER\n5.2.1. Yatırım Kavramı\n5.2.2. Piyasa Kavramı", "konu_maddeler": ["5.2. MENKUL KIYMETLER", "5.2.1. Yatırım Kavramı", "5.2.2. Piyasa Kavramı"], "konu_defter": "5.2. MENKUL KIYMETLER, 5.2.1. Yatırım Kavramı, 5.2.2. Piyasa Kavramı", "konu_defter_numarasiz": "MENKUL KIYMETLER, Yatırım Kavramı, Piyasa Kavramı", "belirli_gun": ""}, {"hafta_no": 30, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "03-07 Mayıs 2027", "start_date": "2027-05-03", "end_date": "2027-05-07", "saat": 6, "konu_tam": "5.2.3. Hisse Senedi", "konu_maddeler": ["5.2.3. Hisse Senedi"], "konu_defter": "5.2.3. Hisse Senedi", "konu_defter_numarasiz": "Hisse Senedi", "belirli_gun": "**Bilişim Haftası (Mayıs 1. haftası) / Trafik ve İlkyardım Haftası**"}, {"hafta_no": 31, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "10-14 Mayıs 2027", "start_date": "2027-05-10", "end_date": "2027-05-14", "saat": 6, "konu_tam": "5.2.4. Tahvil\n5.2.5. Diğer Menkul Kıymetler", "konu_maddeler": ["5.2.4. Tahvil", "5.2.5. Diğer Menkul Kıymetler"], "konu_defter": "5.2.4. Tahvil, 5.2.5. Diğer Menkul Kıymetler", "konu_defter_numarasiz": "Tahvil, Diğer Menkul Kıymetler", "belirli_gun": "**Engelliler Haftası (10-16 Mayıs)**"}, {"hafta_no": 32, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "17-21 Mayıs 2027", "start_date": "2027-05-17", "end_date": "2027-05-21", "saat": 6, "konu_tam": "6. ÖĞRENME BİRİMİ: İŞLETME DEFTERİ\n6.1. GİDER VE GELİR KAVRAMLARI\n6.1.1. Gider Kavramı\n6.1.2. Gelir Kavramı\n6.2. İŞLETME DEFTERİ GİDER KAYITLARI\n6.2.1. İşletme Defteri", "konu_maddeler": ["6. ÖĞRENME BİRİMİ: İŞLETME DEFTERİ", "6.1. GİDER VE GELİR KAVRAMLARI", "6.1.1. Gider Kavramı", "6.1.2. Gelir Kavramı", "6.2. İŞLETME DEFTERİ GİDER KAYITLARI", "6.2.1. İşletme Defteri"], "konu_defter": "6.1. GİDER VE GELİR KAVRAMLARI, 6.1.1. Gider Kavramı, 6.1.2. Gelir Kavramı, 6.2. İŞLETME DEFTERİ GİDER KAYITLARI, 6.2.1. İşletme Defteri", "konu_defter_numarasiz": "GİDER VE GELİR KAVRAMLARI, Gider Kavramı, Gelir Kavramı, İŞLETME DEFTERİ GİDER KAYITLARI, İşletme Defteri", "belirli_gun": "**19 Mayıs Atatürk'ü Anma, Gençlik ve Spor Bayramı**\n**Millî Mücadele ve Atatürk'ün Gençliğe Verdiği Önem**"}, {"hafta_no": 33, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "24-28 Mayıs 2027", "start_date": "2027-05-24", "end_date": "2027-05-28", "saat": 6, "konu_tam": "6.2.2. Defter-Beyan Sistemi\n6.2.3. Ticari Kazancın Tespitinde İndirilecek ve İndirilmeyecek Giderler\n6.2.4. Katma Değer Vergisi", "konu_maddeler": ["6.2.2. Defter-Beyan Sistemi", "6.2.3. Ticari Kazancın Tespitinde İndirilecek ve İndirilmeyecek Giderler", "6.2.4. Katma Değer Vergisi"], "konu_defter": "6.2.2. Defter-Beyan Sistemi, 6.2.3. Ticari Kazancın Tespitinde İndirilecek ve İndirilmeyecek Giderler, 6.2.4. Katma Değer Vergisi", "konu_defter_numarasiz": "Defter-Beyan Sistemi, Ticari Kazancın Tespitinde İndirilecek ve İndirilmeyecek Giderler, Katma Değer Vergisi", "belirli_gun": ""}, {"hafta_no": 34, "is_tatil": false, "ay": "MAYIS / HAZİRAN", "tarih_metni": "31 Mayıs - 04 Haziran 2027", "start_date": "2027-05-31", "end_date": "2027-06-04", "saat": 6, "konu_tam": "6.2.5. İşletme Defteri Gider Sayfası Kayıtları\n6.3. İŞLETME DEFTERİ GELİR KAYITLARI", "konu_maddeler": ["6.2.5. İşletme Defteri Gider Sayfası Kayıtları", "6.3. İŞLETME DEFTERİ GELİR KAYITLARI"], "konu_defter": "6.2.5. İşletme Defteri Gider Sayfası Kayıtları, 6.3. İŞLETME DEFTERİ GELİR KAYITLARI", "konu_defter_numarasiz": "İşletme Defteri Gider Sayfası Kayıtları, İŞLETME DEFTERİ GELİR KAYITLARI", "belirli_gun": ""}, {"hafta_no": 35, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "07-11 Haziran 2027", "start_date": "2027-06-07", "end_date": "2027-06-11", "saat": 6, "konu_tam": "6.4. İŞLETME HESAP ÖZETİ\n6.4.1. İşletme Hesabı Esasında Envanter İşlemleri\n6.4.2. Amortisman", "konu_maddeler": ["6.4. İŞLETME HESAP ÖZETİ", "6.4.1. İşletme Hesabı Esasında Envanter İşlemleri", "6.4.2. Amortisman"], "konu_defter": "6.4. İŞLETME HESAP ÖZETİ, 6.4.1. İşletme Hesabı Esasında Envanter İşlemleri, 6.4.2. Amortisman", "konu_defter_numarasiz": "İŞLETME HESAP ÖZETİ, İşletme Hesabı Esasında Envanter İşlemleri, Amortisman", "belirli_gun": "**Çevre Koruma Haftası (Haziran 2. haftası)**"}, {"hafta_no": 36, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "14-18 Haziran 2027", "start_date": "2027-06-14", "end_date": "2027-06-18", "saat": 6, "konu_tam": "6.4.3. İşletme Defteri ve İşletme Hesap Özeti Uygulamaları", "konu_maddeler": ["6.4.3. İşletme Defteri ve İşletme Hesap Özeti Uygulamaları"], "konu_defter": "6.4.3. İşletme Defteri ve İşletme Hesap Özeti Uygulamaları", "konu_defter_numarasiz": "İşletme Defteri ve İşletme Hesap Özeti Uygulamaları", "belirli_gun": ""}, {"hafta_no": 37, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "21-25 Haziran 2027", "start_date": "2027-06-21", "end_date": "2027-06-25", "saat": 6, "konu_tam": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_maddeler": ["2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ"], "konu_defter": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_defter_numarasiz": "DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "belirli_gun": "**Ders Yılının Sona Ermesi (25 Haziran 2027)**"}]}, {"id": "ekonomi_9", "sinif": "9. Sınıf", "ad": "Ekonomi", "kisa_ad": "Ekonomi", "saat": 2, "renk": "#059669", "ikon": "📈", "weeks": [{"hafta_no": 1, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "14-18 Eylül 2026", "start_date": "2026-09-14", "end_date": "2026-09-18", "saat": 2, "konu_tam": "1. ÖĞRENME BİRİMİ: EKONOMİ BİLİMİNE GİRİŞ\n1.1. EKONOMİ KAVRAMI\n1.1.1. Kıtlık\n1.1.2. Ekonomi Biliminin Konusu ve Amacı", "konu_maddeler": ["1. ÖĞRENME BİRİMİ: EKONOMİ BİLİMİNE GİRİŞ", "1.1. EKONOMİ KAVRAMI", "1.1.1. Kıtlık", "1.1.2. Ekonomi Biliminin Konusu ve Amacı"], "konu_defter": "1.1. EKONOMİ KAVRAMI, 1.1.1. Kıtlık, 1.1.2. Ekonomi Biliminin Konusu ve Amacı", "konu_defter_numarasiz": "EKONOMİ KAVRAMI, Kıtlık, Ekonomi Biliminin Konusu ve Amacı", "belirli_gun": ""}, {"hafta_no": 2, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "21-25 Eylül 2026", "start_date": "2026-09-21", "end_date": "2026-09-25", "saat": 2, "konu_tam": "1.1.3. Ekonomik Sistemler", "konu_maddeler": ["1.1.3. Ekonomik Sistemler"], "konu_defter": "1.1.3. Ekonomik Sistemler", "konu_defter_numarasiz": "Ekonomik Sistemler", "belirli_gun": "**Ahilik Kültürü Haftası**"}, {"hafta_no": 3, "is_tatil": false, "ay": "EYLÜL / EKİM", "tarih_metni": "28 Eylül - 02 Ekim 2026", "start_date": "2026-09-28", "end_date": "2026-10-02", "saat": 2, "konu_tam": "1.2. TEMEL EKONOMİ KAVRAMLARI\n1.2.1. İhtiyaç Kavramı ve Özellikleri\n1.2.2. Maslow’un İhtiyaçlar Hiyerarşisi", "konu_maddeler": ["1.2. TEMEL EKONOMİ KAVRAMLARI", "1.2.1. İhtiyaç Kavramı ve Özellikleri", "1.2.2. Maslow’un İhtiyaçlar Hiyerarşisi"], "konu_defter": "1.2. TEMEL EKONOMİ KAVRAMLARI, 1.2.1. İhtiyaç Kavramı ve Özellikleri, 1.2.2. Maslow’un İhtiyaçlar Hiyerarşisi", "konu_defter_numarasiz": "TEMEL EKONOMİ KAVRAMLARI, İhtiyaç Kavramı ve Özellikleri, Maslow’un İhtiyaçlar Hiyerarşisi", "belirli_gun": ""}, {"hafta_no": 4, "is_tatil": false, "ay": "EKİM", "tarih_metni": "05-09 Ekim 2026", "start_date": "2026-10-05", "end_date": "2026-10-09", "saat": 2, "konu_tam": "1.2.3. Mal ve Hizmet\n1.2.4. Mal ve Hizmetin Özellikleri ile Farkları", "konu_maddeler": ["1.2.3. Mal ve Hizmet", "1.2.4. Mal ve Hizmetin Özellikleri ile Farkları"], "konu_defter": "1.2.3. Mal ve Hizmet, 1.2.4. Mal ve Hizmetin Özellikleri ile Farkları", "konu_defter_numarasiz": "Mal ve Hizmet, Mal ve Hizmetin Özellikleri ile Farkları", "belirli_gun": ""}, {"hafta_no": 5, "is_tatil": false, "ay": "EKİM", "tarih_metni": "12-16 Ekim 2026", "start_date": "2026-10-12", "end_date": "2026-10-16", "saat": 2, "konu_tam": "1.2.5. Fayda ve Özellikleri\n1.2.6. Gelir ve Özellikleri\n1.2.7. Tüketim\n1.2.8. Üretim\n1.2.9. Üretim Faktörleri", "konu_maddeler": ["1.2.5. Fayda ve Özellikleri", "1.2.6. Gelir ve Özellikleri", "1.2.7. Tüketim", "1.2.8. Üretim", "1.2.9. Üretim Faktörleri"], "konu_defter": "1.2.5. Fayda ve Özellikleri, 1.2.6. Gelir ve Özellikleri, 1.2.7. Tüketim, 1.2.8. Üretim, 1.2.9. Üretim Faktörleri", "konu_defter_numarasiz": "Fayda ve Özellikleri, Gelir ve Özellikleri, Tüketim, Üretim, Üretim Faktörleri", "belirli_gun": ""}, {"hafta_no": 6, "is_tatil": false, "ay": "EKİM", "tarih_metni": "19-23 Ekim 2026", "start_date": "2026-10-19", "end_date": "2026-10-23", "saat": 2, "konu_tam": "1.2.10. Türkiye’nin Ana Sektörleri\n1.2.11. Türkiye’nin Ekonomik Kaynakları", "konu_maddeler": ["1.2.10. Türkiye’nin Ana Sektörleri", "1.2.11. Türkiye’nin Ekonomik Kaynakları"], "konu_defter": "1.2.10. Türkiye’nin Ana Sektörleri, 1.2.11. Türkiye’nin Ekonomik Kaynakları", "konu_defter_numarasiz": "Türkiye’nin Ana Sektörleri, Türkiye’nin Ekonomik Kaynakları", "belirli_gun": ""}, {"hafta_no": 7, "is_tatil": false, "ay": "EKİM", "tarih_metni": "26-30 Ekim 2026", "start_date": "2026-10-26", "end_date": "2026-10-30", "saat": 2, "konu_tam": "2. ÖĞRENME BİRİMİ: TALEP VE ARZ, FİYAT OLUŞUMU, PİYASA MEKANİZMASI\n2.1. TALEP VE ARZ KAVRAMLARI\n2.1.1. Talep", "konu_maddeler": ["2. ÖĞRENME BİRİMİ: TALEP VE ARZ, FİYAT OLUŞUMU, PİYASA MEKANİZMASI", "2.1. TALEP VE ARZ KAVRAMLARI", "2.1.1. Talep"], "konu_defter": "2.1. TALEP VE ARZ KAVRAMLARI, 2.1.1. Talep", "konu_defter_numarasiz": "TALEP VE ARZ KAVRAMLARI, Talep", "belirli_gun": "**29 Ekim Cumhuriyet Bayramı**\n**Cumhuriyetçilik İlkesi ve Cumhuriyetin Önemi**"}, {"hafta_no": 8, "is_tatil": false, "ay": "KASIM", "tarih_metni": "02-06 Kasım 2026", "start_date": "2026-11-02", "end_date": "2026-11-06", "saat": 2, "konu_tam": "2.1.2. Arz", "konu_maddeler": ["2.1.2. Arz"], "konu_defter": "2.1.2. Arz", "konu_defter_numarasiz": "Arz", "belirli_gun": ""}, {"hafta_no": 9, "is_tatil": false, "ay": "KASIM", "tarih_metni": "09-13 Kasım 2026", "start_date": "2026-11-09", "end_date": "2026-11-13", "saat": 2, "konu_tam": "2.1.3. Fiyat Kavramı\n2.1.4. Piyasa Denge Fiyatı", "konu_maddeler": ["2.1.3. Fiyat Kavramı", "2.1.4. Piyasa Denge Fiyatı"], "konu_defter": "2.1.3. Fiyat Kavramı, 2.1.4. Piyasa Denge Fiyatı", "konu_defter_numarasiz": "Fiyat Kavramı, Piyasa Denge Fiyatı", "belirli_gun": "**10 Kasım Atatürk'ü Anma Günü ve Atatürk Haftası**\n**Atatürk'ün Hayatı, Eserleri ve Atatürkçü Düşünce Sistemi**"}, {"hafta_no": null, "is_tatil": true, "ay": "KASIM", "tarih_metni": "16 - 20 Kasım 2026", "start_date": "2026-11-16", "end_date": "2026-11-20", "tatil_adi": "1. DÖNEM ARA TATİLİ", "konu_tam": "1. DÖNEM ARA TATİLİ", "konu_maddeler": ["1. DÖNEM ARA TATİLİ"], "konu_defter": "1. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "1. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 10, "is_tatil": false, "ay": "KASIM", "tarih_metni": "23-27 Kasım 2026", "start_date": "2026-11-23", "end_date": "2026-11-27", "saat": 2, "konu_tam": "2.1.5. Arz ve Talepte Meydana Gelen Değişimlerin Fiyat Üzerindeki Etkileri", "konu_maddeler": ["2.1.5. Arz ve Talepte Meydana Gelen Değişimlerin Fiyat Üzerindeki Etkileri"], "konu_defter": "2.1.5. Arz ve Talepte Meydana Gelen Değişimlerin Fiyat Üzerindeki Etkileri", "konu_defter_numarasiz": "Arz ve Talepte Meydana Gelen Değişimlerin Fiyat Üzerindeki Etkileri", "belirli_gun": "**24 Kasım Öğretmenler Günü**"}, {"hafta_no": 11, "is_tatil": false, "ay": "KASIM / ARALIK", "tarih_metni": "30 Kasım - 04 Aralık 2026", "start_date": "2026-11-30", "end_date": "2026-12-04", "saat": 2, "konu_tam": "2.2. REKABET İLE FİYAT İLİŞKİSİ\n2.2.1. Rekabet Kavramı\n2.2.2. Rekabetin Faydaları\n2.2.3. Rekabetin Fiyat Üzerindeki Etkisi", "konu_maddeler": ["2.2. REKABET İLE FİYAT İLİŞKİSİ", "2.2.1. Rekabet Kavramı", "2.2.2. Rekabetin Faydaları", "2.2.3. Rekabetin Fiyat Üzerindeki Etkisi"], "konu_defter": "2.2. REKABET İLE FİYAT İLİŞKİSİ, 2.2.1. Rekabet Kavramı, 2.2.2. Rekabetin Faydaları, 2.2.3. Rekabetin Fiyat Üzerindeki Etkisi", "konu_defter_numarasiz": "REKABET İLE FİYAT İLİŞKİSİ, Rekabet Kavramı, Rekabetin Faydaları, Rekabetin Fiyat Üzerindeki Etkisi", "belirli_gun": ""}, {"hafta_no": 12, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "07-11 Aralık 2026", "start_date": "2026-12-07", "end_date": "2026-12-11", "saat": 2, "konu_tam": "2.3. PİYASA YAPISI\n2.3.1. Piyasa Kavramı\n2.3.2. Piyasayı Oluşturan Unsurlar", "konu_maddeler": ["2.3. PİYASA YAPISI", "2.3.1. Piyasa Kavramı", "2.3.2. Piyasayı Oluşturan Unsurlar"], "konu_defter": "2.3. PİYASA YAPISI, 2.3.1. Piyasa Kavramı, 2.3.2. Piyasayı Oluşturan Unsurlar", "konu_defter_numarasiz": "PİYASA YAPISI, Piyasa Kavramı, Piyasayı Oluşturan Unsurlar", "belirli_gun": ""}, {"hafta_no": 13, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "14-18 Aralık 2026", "start_date": "2026-12-14", "end_date": "2026-12-18", "saat": 2, "konu_tam": "2.3.3. Piyasa Türleri", "konu_maddeler": ["2.3.3. Piyasa Türleri"], "konu_defter": "2.3.3. Piyasa Türleri", "konu_defter_numarasiz": "Piyasa Türleri", "belirli_gun": "**Tutum, Yatırım ve Türk Malları Haftası (12-18 Aralık)**"}, {"hafta_no": 14, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "21-25 Aralık 2026", "start_date": "2026-12-21", "end_date": "2026-12-25", "saat": 2, "konu_tam": "3. ÖĞRENME BİRİMİ: MİLLÎ GELİR, EKONOMİK BÜYÜME İSTİHDAM VE İŞSİZLİK\n3.1. MİLLÎ GELİRLE İLGİLİ TEMEL KAVRAMLAR\n3.1.1. Millî Gelirin Hesaplanmasından Kullanılan Kavramlar", "konu_maddeler": ["3. ÖĞRENME BİRİMİ: MİLLÎ GELİR, EKONOMİK BÜYÜME İSTİHDAM VE İŞSİZLİK", "3.1. MİLLÎ GELİRLE İLGİLİ TEMEL KAVRAMLAR", "3.1.1. Millî Gelirin Hesaplanmasından Kullanılan Kavramlar"], "konu_defter": "3.1. MİLLÎ GELİRLE İLGİLİ TEMEL KAVRAMLAR, 3.1.1. Millî Gelirin Hesaplanmasından Kullanılan Kavramlar", "konu_defter_numarasiz": "MİLLÎ GELİRLE İLGİLİ TEMEL KAVRAMLAR, Millî Gelirin Hesaplanmasından Kullanılan Kavramlar", "belirli_gun": ""}, {"hafta_no": 15, "is_tatil": false, "ay": "ARALIK / OCAK", "tarih_metni": "28 Aralık 2026 - 01 Ocak 2027", "start_date": "2026-12-28", "end_date": "2027-01-01", "saat": 2, "konu_tam": "3.1.2. Millî Gelirin Dağılımı ve Türleri", "konu_maddeler": ["3.1.2. Millî Gelirin Dağılımı ve Türleri"], "konu_defter": "3.1.2. Millî Gelirin Dağılımı ve Türleri", "konu_defter_numarasiz": "Millî Gelirin Dağılımı ve Türleri", "belirli_gun": "**Yılbaşı Tatili (1 Ocak 2027)**"}, {"hafta_no": 16, "is_tatil": false, "ay": "OCAK", "tarih_metni": "04-08 Ocak 2027", "start_date": "2027-01-04", "end_date": "2027-01-08", "saat": 2, "konu_tam": "3.1.3. Türkiye’de Millî Gelir Seviyesi ve Dağılımı\n3.1.4. Türkiye’nin Millî Geliri ile Diğer Ülkelerin Millî Gelirlerinin Karşılaştırılması", "konu_maddeler": ["3.1.3. Türkiye’de Millî Gelir Seviyesi ve Dağılımı", "3.1.4. Türkiye’nin Millî Geliri ile Diğer Ülkelerin Millî Gelirlerinin Karşılaştırılması"], "konu_defter": "3.1.3. Türkiye’de Millî Gelir Seviyesi ve Dağılımı, 3.1.4. Türkiye’nin Millî Geliri ile Diğer Ülkelerin Millî Gelirlerinin Karşılaştırılması", "konu_defter_numarasiz": "Türkiye’de Millî Gelir Seviyesi ve Dağılımı, Türkiye’nin Millî Geliri ile Diğer Ülkelerin Millî Gelirlerinin Karşılaştırılması", "belirli_gun": "**Enerji Tasarrufu Haftası (Ocak 2. haftası)**"}, {"hafta_no": 17, "is_tatil": false, "ay": "OCAK", "tarih_metni": "11-15 Ocak 2027", "start_date": "2027-01-11", "end_date": "2027-01-15", "saat": 2, "konu_tam": "3.2. EKONOMİK BÜYÜME KAVRAMI\n3.2.1. Ekonomik Büyüme\n3.2.2. Ekonomik Büyümeye Etki Eden Faktörler", "konu_maddeler": ["3.2. EKONOMİK BÜYÜME KAVRAMI", "3.2.1. Ekonomik Büyüme", "3.2.2. Ekonomik Büyümeye Etki Eden Faktörler"], "konu_defter": "3.2. EKONOMİK BÜYÜME KAVRAMI, 3.2.1. Ekonomik Büyüme, 3.2.2. Ekonomik Büyümeye Etki Eden Faktörler", "konu_defter_numarasiz": "EKONOMİK BÜYÜME KAVRAMI, Ekonomik Büyüme, Ekonomik Büyümeye Etki Eden Faktörler", "belirli_gun": ""}, {"hafta_no": 18, "is_tatil": false, "ay": "OCAK", "tarih_metni": "18-22 Ocak 2027", "start_date": "2027-01-18", "end_date": "2027-01-22", "saat": 2, "konu_tam": "1. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_maddeler": ["1. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ"], "konu_defter": "1. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_defter_numarasiz": "DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "belirli_gun": "**1. Dönem Sonu (22 Ocak 2027 Cuma)**"}, {"hafta_no": null, "is_tatil": true, "ay": "OCAK / ŞUBAT", "tarih_metni": "25 Ocak - 05 Şubat 2027", "start_date": "2027-01-25", "end_date": "2027-02-05", "tatil_adi": "YARIYIL TATİLİ (15 TATİL)", "konu_tam": "YARIYIL TATİLİ (15 TATİL)", "konu_maddeler": ["YARIYIL TATİLİ (15 TATİL)"], "konu_defter": "YARIYIL TATİLİ (15 TATİL)", "konu_defter_numarasiz": "YARIYIL TATİLİ (15 TATİL)", "belirli_gun": ""}, {"hafta_no": 19, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "08-12 Şubat 2027", "start_date": "2027-02-08", "end_date": "2027-02-12", "saat": 2, "konu_tam": "3.3. İSTİHDAM VE İŞSİZLİK KAVRAMLARI\n3.3.1. İstihdam Kavramı ve Çeşitleri\n3.3.2. İstihdamın Ekonomideki Yeri ve Önemi", "konu_maddeler": ["3.3. İSTİHDAM VE İŞSİZLİK KAVRAMLARI", "3.3.1. İstihdam Kavramı ve Çeşitleri", "3.3.2. İstihdamın Ekonomideki Yeri ve Önemi"], "konu_defter": "3.3. İSTİHDAM VE İŞSİZLİK KAVRAMLARI, 3.3.1. İstihdam Kavramı ve Çeşitleri, 3.3.2. İstihdamın Ekonomideki Yeri ve Önemi", "konu_defter_numarasiz": "İSTİHDAM VE İŞSİZLİK KAVRAMLARI, İstihdam Kavramı ve Çeşitleri, İstihdamın Ekonomideki Yeri ve Önemi", "belirli_gun": "**2. Dönem Başlangıcı (8 Şubat 2027)**"}, {"hafta_no": 20, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "15-19 Şubat 2027", "start_date": "2027-02-15", "end_date": "2027-02-19", "saat": 2, "konu_tam": "3.3.3. İstihdamı Artırmanın Yolları", "konu_maddeler": ["3.3.3. İstihdamı Artırmanın Yolları"], "konu_defter": "3.3.3. İstihdamı Artırmanın Yolları", "konu_defter_numarasiz": "İstihdamı Artırmanın Yolları", "belirli_gun": ""}, {"hafta_no": 21, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "22-26 Şubat 2027", "start_date": "2027-02-22", "end_date": "2027-02-26", "saat": 2, "konu_tam": "3.3.4. İşsizlik ve Çeşitleri\n3.3.5. İşsizliğin Ekonomideki Yeri ve Önemi", "konu_maddeler": ["3.3.4. İşsizlik ve Çeşitleri", "3.3.5. İşsizliğin Ekonomideki Yeri ve Önemi"], "konu_defter": "3.3.4. İşsizlik ve Çeşitleri, 3.3.5. İşsizliğin Ekonomideki Yeri ve Önemi", "konu_defter_numarasiz": "İşsizlik ve Çeşitleri, İşsizliğin Ekonomideki Yeri ve Önemi", "belirli_gun": "**Vergi Haftası (Şubatın son haftası)**"}, {"hafta_no": 22, "is_tatil": false, "ay": "MART", "tarih_metni": "01-05 Mart 2027", "start_date": "2027-03-01", "end_date": "2027-03-05", "saat": 2, "konu_tam": "4. ÖĞRENME BİRİMİ: PARA, BANKACILIK VE ENFLASYON\n4.1. PARA KAVRAMI\n4.1.1. Paranın Tarihsel Gelişimi\n4.1.2. Paranın Ekonomideki Yeri ve İşlevleri", "konu_maddeler": ["4. ÖĞRENME BİRİMİ: PARA, BANKACILIK VE ENFLASYON", "4.1. PARA KAVRAMI", "4.1.1. Paranın Tarihsel Gelişimi", "4.1.2. Paranın Ekonomideki Yeri ve İşlevleri"], "konu_defter": "4.1. PARA KAVRAMI, 4.1.1. Paranın Tarihsel Gelişimi, 4.1.2. Paranın Ekonomideki Yeri ve İşlevleri", "konu_defter_numarasiz": "PARA KAVRAMI, Paranın Tarihsel Gelişimi, Paranın Ekonomideki Yeri ve İşlevleri", "belirli_gun": "**Yeşilay Haftası (1-7 Mart) / Girişimcilik Haftası**"}, {"hafta_no": null, "is_tatil": true, "ay": "MART", "tarih_metni": "08 - 12 Mart 2027", "start_date": "2027-03-08", "end_date": "2027-03-12", "tatil_adi": "2. DÖNEM ARA TATİLİ", "konu_tam": "2. DÖNEM ARA TATİLİ", "konu_maddeler": ["2. DÖNEM ARA TATİLİ"], "konu_defter": "2. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "2. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 23, "is_tatil": false, "ay": "MART", "tarih_metni": "15-19 Mart 2027", "start_date": "2027-03-15", "end_date": "2027-03-19", "saat": 2, "konu_tam": "4.1.3. Parayla İlgili Kurum ve Kuruluşlar", "konu_maddeler": ["4.1.3. Parayla İlgili Kurum ve Kuruluşlar"], "konu_defter": "4.1.3. Parayla İlgili Kurum ve Kuruluşlar", "konu_defter_numarasiz": "Parayla İlgili Kurum ve Kuruluşlar", "belirli_gun": "**12 Mart İstiklâl Marşı'nın Kabulü / 18 Mart Çanakkale Zaferi**\n**Atatürk'ün Askerî Dehası, Vatan ve Millet Sevgisi**"}, {"hafta_no": 24, "is_tatil": false, "ay": "MART", "tarih_metni": "22-26 Mart 2027", "start_date": "2027-03-22", "end_date": "2027-03-26", "saat": 2, "konu_tam": "4.2. BANKALARIN EKONOMİDEKİ YERİ\n4.2.1. Banka\n4.2.2. Bankaların Önemi ve Görevleri", "konu_maddeler": ["4.2. BANKALARIN EKONOMİDEKİ YERİ", "4.2.1. Banka", "4.2.2. Bankaların Önemi ve Görevleri"], "konu_defter": "4.2. BANKALARIN EKONOMİDEKİ YERİ, 4.2.1. Banka, 4.2.2. Bankaların Önemi ve Görevleri", "konu_defter_numarasiz": "BANKALARIN EKONOMİDEKİ YERİ, Banka, Bankaların Önemi ve Görevleri", "belirli_gun": "**Orman Haftası (21-26 Mart)**"}, {"hafta_no": 25, "is_tatil": false, "ay": "MART / NİSAN", "tarih_metni": "29 Mart - 02 Nisan 2027", "start_date": "2027-03-29", "end_date": "2027-04-02", "saat": 2, "konu_tam": "4.2.3. Merkez Bankasının Ekonomideki Yeri ve Önemi", "konu_maddeler": ["4.2.3. Merkez Bankasının Ekonomideki Yeri ve Önemi"], "konu_defter": "4.2.3. Merkez Bankasının Ekonomideki Yeri ve Önemi", "konu_defter_numarasiz": "Merkez Bankasının Ekonomideki Yeri ve Önemi", "belirli_gun": "**Kütüphaneler Haftası (Mart son haftası)**"}, {"hafta_no": 26, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "05-09 Nisan 2027", "start_date": "2027-04-05", "end_date": "2027-04-09", "saat": 2, "konu_tam": "4.3. ENFLASYON KAVRAMI\n4.3.1. Enflasyonun Nedenleri\n4.3.2. Enflasyon Türleri", "konu_maddeler": ["4.3. ENFLASYON KAVRAMI", "4.3.1. Enflasyonun Nedenleri", "4.3.2. Enflasyon Türleri"], "konu_defter": "4.3. ENFLASYON KAVRAMI, 4.3.1. Enflasyonun Nedenleri, 4.3.2. Enflasyon Türleri", "konu_defter_numarasiz": "ENFLASYON KAVRAMI, Enflasyonun Nedenleri, Enflasyon Türleri", "belirli_gun": ""}, {"hafta_no": 27, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "12-16 Nisan 2027", "start_date": "2027-04-12", "end_date": "2027-04-16", "saat": 2, "konu_tam": "4.3.3. Enflasyon Endekslerinin (TÜFE ve ÜFE) Farkları", "konu_maddeler": ["4.3.3. Enflasyon Endekslerinin (TÜFE ve ÜFE) Farkları"], "konu_defter": "4.3.3. Enflasyon Endekslerinin (TÜFE ve ÜFE) Farkları", "konu_defter_numarasiz": "Enflasyon Endekslerinin (TÜFE ve ÜFE) Farkları", "belirli_gun": "**Turizm Haftası (15-22 Nisan)**"}, {"hafta_no": 28, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "19-23 Nisan 2027", "start_date": "2027-04-19", "end_date": "2027-04-23", "saat": 2, "konu_tam": "4.3.4. Enflasyonun Ekonomideki Etkileri\n4.3.5. Enflasyondan Korunmak İçin Alınması Gereken Önlemler", "konu_maddeler": ["4.3.4. Enflasyonun Ekonomideki Etkileri", "4.3.5. Enflasyondan Korunmak İçin Alınması Gereken Önlemler"], "konu_defter": "4.3.4. Enflasyonun Ekonomideki Etkileri, 4.3.5. Enflasyondan Korunmak İçin Alınması Gereken Önlemler", "konu_defter_numarasiz": "Enflasyonun Ekonomideki Etkileri, Enflasyondan Korunmak İçin Alınması Gereken Önlemler", "belirli_gun": "**23 Nisan Ulusal Egemenlik ve Çocuk Bayramı**\n**TBMM'nin Açılışı, Millî Egemenlik ve Halkçılık İlkesi**"}, {"hafta_no": 29, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "26-30 Nisan 2027", "start_date": "2027-04-26", "end_date": "2027-04-30", "saat": 2, "konu_tam": "5. ÖĞRENME BİRİMİ: DIŞA AÇIK EKONOMİDE TİCARET, KUR VE ENTEGRASYON\n5.1. DIŞ TİCARET\n5.1.1. Dış Ticaret Kavramı ve Çeşitleri\n5.1.2. Dış Ticaretin Önemi", "konu_maddeler": ["5. ÖĞRENME BİRİMİ: DIŞA AÇIK EKONOMİDE TİCARET, KUR VE ENTEGRASYON", "5.1. DIŞ TİCARET", "5.1.1. Dış Ticaret Kavramı ve Çeşitleri", "5.1.2. Dış Ticaretin Önemi"], "konu_defter": "5.1. DIŞ TİCARET, 5.1.1. Dış Ticaret Kavramı ve Çeşitleri, 5.1.2. Dış Ticaretin Önemi", "konu_defter_numarasiz": "DIŞ TİCARET, Dış Ticaret Kavramı ve Çeşitleri, Dış Ticaretin Önemi", "belirli_gun": ""}, {"hafta_no": 30, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "03-07 Mayıs 2027", "start_date": "2027-05-03", "end_date": "2027-05-07", "saat": 2, "konu_tam": "5.1.3. Dış Ticaret Açığı\n5.1.4. Dış Ticaret Açığının Nedenleri", "konu_maddeler": ["5.1.3. Dış Ticaret Açığı", "5.1.4. Dış Ticaret Açığının Nedenleri"], "konu_defter": "5.1.3. Dış Ticaret Açığı, 5.1.4. Dış Ticaret Açığının Nedenleri", "konu_defter_numarasiz": "Dış Ticaret Açığı, Dış Ticaret Açığının Nedenleri", "belirli_gun": "**Bilişim Haftası (Mayıs 1. haftası) / Trafik ve İlkyardım Haftası**"}, {"hafta_no": 31, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "10-14 Mayıs 2027", "start_date": "2027-05-10", "end_date": "2027-05-14", "saat": 2, "konu_tam": "5.1.5. Dış Ticaret Fazlası\n5.1.6. Dış Ticaret Fazlasının Nedenleri\n5.1.7. Dış Ticaretin Ekonomiye Etkileri", "konu_maddeler": ["5.1.5. Dış Ticaret Fazlası", "5.1.6. Dış Ticaret Fazlasının Nedenleri", "5.1.7. Dış Ticaretin Ekonomiye Etkileri"], "konu_defter": "5.1.5. Dış Ticaret Fazlası, 5.1.6. Dış Ticaret Fazlasının Nedenleri, 5.1.7. Dış Ticaretin Ekonomiye Etkileri", "konu_defter_numarasiz": "Dış Ticaret Fazlası, Dış Ticaret Fazlasının Nedenleri, Dış Ticaretin Ekonomiye Etkileri", "belirli_gun": "**Engelliler Haftası (10-16 Mayıs)**"}, {"hafta_no": 32, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "17-21 Mayıs 2027", "start_date": "2027-05-17", "end_date": "2027-05-21", "saat": 2, "konu_tam": "5.2. DÖVİZ VE DÖVİZ KURU KAVRAMLARI\n5.2.1. Döviz\n5.2.2. Döviz Kuru\n5.2.3. Döviz Kurunu Etkileyen Faktörler", "konu_maddeler": ["5.2. DÖVİZ VE DÖVİZ KURU KAVRAMLARI", "5.2.1. Döviz", "5.2.2. Döviz Kuru", "5.2.3. Döviz Kurunu Etkileyen Faktörler"], "konu_defter": "5.2. DÖVİZ VE DÖVİZ KURU KAVRAMLARI, 5.2.1. Döviz, 5.2.2. Döviz Kuru, 5.2.3. Döviz Kurunu Etkileyen Faktörler", "konu_defter_numarasiz": "DÖVİZ VE DÖVİZ KURU KAVRAMLARI, Döviz, Döviz Kuru, Döviz Kurunu Etkileyen Faktörler", "belirli_gun": "**19 Mayıs Atatürk'ü Anma, Gençlik ve Spor Bayramı**\n**Millî Mücadele ve Atatürk'ün Gençliğe Verdiği Önem**"}, {"hafta_no": 33, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "24-28 Mayıs 2027", "start_date": "2027-05-24", "end_date": "2027-05-28", "saat": 2, "konu_tam": "5.2.4. Döviz Kuru Türleri\n5.2.5. Döviz Piyasası\n5.2.6. Döviz Kurunun Belirlenmesi (Döviz Kurunun Oluşması)", "konu_maddeler": ["5.2.4. Döviz Kuru Türleri", "5.2.5. Döviz Piyasası", "5.2.6. Döviz Kurunun Belirlenmesi (Döviz Kurunun Oluşması)"], "konu_defter": "5.2.4. Döviz Kuru Türleri, 5.2.5. Döviz Piyasası, 5.2.6. Döviz Kurunun Belirlenmesi (Döviz Kurunun Oluşması)", "konu_defter_numarasiz": "Döviz Kuru Türleri, Döviz Piyasası, Döviz Kurunun Belirlenmesi (Döviz Kurunun Oluşması)", "belirli_gun": ""}, {"hafta_no": 34, "is_tatil": false, "ay": "MAYIS / HAZİRAN", "tarih_metni": "31 Mayıs - 04 Haziran 2027", "start_date": "2027-05-31", "end_date": "2027-06-04", "saat": 2, "konu_tam": "5.3. DEVALÜASYON\n5.3.1. Devalüasyon\n5.3.2. Devalüasyonun Nedenleri\n5.3.3. Devalüasyon Yöntemleri\n5.3.4. Devalüasyonun Ekonomiye Etkileri ve Sonuçları", "konu_maddeler": ["5.3. DEVALÜASYON", "5.3.1. Devalüasyon", "5.3.2. Devalüasyonun Nedenleri", "5.3.3. Devalüasyon Yöntemleri", "5.3.4. Devalüasyonun Ekonomiye Etkileri ve Sonuçları"], "konu_defter": "5.3. DEVALÜASYON, 5.3.1. Devalüasyon, 5.3.2. Devalüasyonun Nedenleri, 5.3.3. Devalüasyon Yöntemleri, 5.3.4. Devalüasyonun Ekonomiye Etkileri ve Sonuçları", "konu_defter_numarasiz": "DEVALÜASYON, Devalüasyon, Devalüasyonun Nedenleri, Devalüasyon Yöntemleri, Devalüasyonun Ekonomiye Etkileri ve Sonuçları", "belirli_gun": ""}, {"hafta_no": 35, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "07-11 Haziran 2027", "start_date": "2027-06-07", "end_date": "2027-06-11", "saat": 2, "konu_tam": "5.4. ULUSLARARASI EKONOMİK KURULUŞLAR\n5.4.1. Türkiye’de Ekonomiyle İlgili Ulusal Kuruluşlar", "konu_maddeler": ["5.4. ULUSLARARASI EKONOMİK KURULUŞLAR", "5.4.1. Türkiye’de Ekonomiyle İlgili Ulusal Kuruluşlar"], "konu_defter": "5.4. ULUSLARARASI EKONOMİK KURULUŞLAR, 5.4.1. Türkiye’de Ekonomiyle İlgili Ulusal Kuruluşlar", "konu_defter_numarasiz": "ULUSLARARASI EKONOMİK KURULUŞLAR, Türkiye’de Ekonomiyle İlgili Ulusal Kuruluşlar", "belirli_gun": "**Çevre Koruma Haftası (Haziran 2. haftası)**"}, {"hafta_no": 36, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "14-18 Haziran 2027", "start_date": "2027-06-14", "end_date": "2027-06-18", "saat": 2, "konu_tam": "5.4.2. Uluslararası Ekonomik Kuruluşlar\n5.5. TÜRKİYE’NİN AVRUPA BİRLİĞİ İLE İLİŞKİLERİ\n5.5.1. Türkiye’nin Avrupa Birliği ile İlişkilerinin Tarihsel Gelişimi", "konu_maddeler": ["5.4.2. Uluslararası Ekonomik Kuruluşlar", "5.5. TÜRKİYE’NİN AVRUPA BİRLİĞİ İLE İLİŞKİLERİ", "5.5.1. Türkiye’nin Avrupa Birliği ile İlişkilerinin Tarihsel Gelişimi"], "konu_defter": "5.4.2. Uluslararası Ekonomik Kuruluşlar, 5.5. TÜRKİYE’NİN AVRUPA BİRLİĞİ İLE İLİŞKİLERİ, 5.5.1. Türkiye’nin Avrupa Birliği ile İlişkilerinin Tarihsel Gelişimi", "konu_defter_numarasiz": "Uluslararası Ekonomik Kuruluşlar, TÜRKİYE’NİN AVRUPA BİRLİĞİ İLE İLİŞKİLERİ, Türkiye’nin Avrupa Birliği ile İlişkilerinin Tarihsel Gelişimi", "belirli_gun": ""}, {"hafta_no": 37, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "21-25 Haziran 2027", "start_date": "2027-06-21", "end_date": "2027-06-25", "saat": 2, "konu_tam": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_maddeler": ["2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ"], "konu_defter": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_defter_numarasiz": "DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "belirli_gun": "**Ders Yılının Sona Ermesi (25 Haziran 2027)**"}]}, {"id": "genel_muhasebe_10", "sinif": "10. Sınıf", "ad": "Genel Muhasebe", "kisa_ad": "Genel Muhasebe", "saat": 7, "renk": "#7c3aed", "ikon": "🧮", "weeks": [{"hafta_no": 1, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "14-18 Eylül 2026", "start_date": "2026-09-14", "end_date": "2026-09-18", "saat": 7, "konu_tam": "1. ÖĞRENME BİRİMİ: MUHASEBE HAKKINDA GENEL BİLGİLER\n1.1. MUHASEBE VE HESAP KAVRAMLARI\n1.1.1. Muhasebe Kavramı\n1.1.2. Muhasebenin Fonksiyonları\n1.1.3. Muhasebenin Diğer Bilim Dallarıyla İlişkisi\n1.1.4. Muhasebe Türleri\n1.1.5. Muhasebenin Tarihçesi\n1.1.6. Muhasebe Mesleği", "konu_maddeler": ["1. ÖĞRENME BİRİMİ: MUHASEBE HAKKINDA GENEL BİLGİLER", "1.1. MUHASEBE VE HESAP KAVRAMLARI", "1.1.1. Muhasebe Kavramı", "1.1.2. Muhasebenin Fonksiyonları", "1.1.3. Muhasebenin Diğer Bilim Dallarıyla İlişkisi", "1.1.4. Muhasebe Türleri", "1.1.5. Muhasebenin Tarihçesi", "1.1.6. Muhasebe Mesleği"], "konu_defter": "1.1. MUHASEBE VE HESAP KAVRAMLARI, 1.1.1. Muhasebe Kavramı, 1.1.2. Muhasebenin Fonksiyonları, 1.1.3. Muhasebenin Diğer Bilim Dallarıyla İlişkisi, 1.1.4. Muhasebe Türleri, 1.1.5. Muhasebenin Tarihçesi, 1.1.6. Muhasebe Mesleği", "konu_defter_numarasiz": "MUHASEBE VE HESAP KAVRAMLARI, Muhasebe Kavramı, Muhasebenin Fonksiyonları, Muhasebenin Diğer Bilim Dallarıyla İlişkisi, Muhasebe Türleri, Muhasebenin Tarihçesi, Muhasebe Mesleği", "belirli_gun": ""}, {"hafta_no": 2, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "21-25 Eylül 2026", "start_date": "2026-09-21", "end_date": "2026-09-25", "saat": 7, "konu_tam": "1.2. TEMEL MALİ TABLOLAR\n1.2.1. Bilanço\n1.2.2. Gelir Tablosu", "konu_maddeler": ["1.2. TEMEL MALİ TABLOLAR", "1.2.1. Bilanço", "1.2.2. Gelir Tablosu"], "konu_defter": "1.2. TEMEL MALİ TABLOLAR, 1.2.1. Bilanço, 1.2.2. Gelir Tablosu", "konu_defter_numarasiz": "TEMEL MALİ TABLOLAR, Bilanço, Gelir Tablosu", "belirli_gun": "**Ahilik Kültürü Haftası**"}, {"hafta_no": 3, "is_tatil": false, "ay": "EYLÜL / EKİM", "tarih_metni": "28 Eylül - 02 Ekim 2026", "start_date": "2026-09-28", "end_date": "2026-10-02", "saat": 7, "konu_tam": "1.2.3. Hesap Kavramı\n1.2.4. Hesapların İşleyiş Kuralları\n1.2.5. Gelir Tablosu ve Bilanço İlişkisi\n1.2.6. Ticari İşlemlerin Hesaplarda İzlenmesi", "konu_maddeler": ["1.2.3. Hesap Kavramı", "1.2.4. Hesapların İşleyiş Kuralları", "1.2.5. Gelir Tablosu ve Bilanço İlişkisi", "1.2.6. Ticari İşlemlerin Hesaplarda İzlenmesi"], "konu_defter": "1.2.3. Hesap Kavramı, 1.2.4. Hesapların İşleyiş Kuralları, 1.2.5. Gelir Tablosu ve Bilanço İlişkisi, 1.2.6. Ticari İşlemlerin Hesaplarda İzlenmesi", "konu_defter_numarasiz": "Hesap Kavramı, Hesapların İşleyiş Kuralları, Gelir Tablosu ve Bilanço İlişkisi, Ticari İşlemlerin Hesaplarda İzlenmesi", "belirli_gun": ""}, {"hafta_no": 4, "is_tatil": false, "ay": "EKİM", "tarih_metni": "05-09 Ekim 2026", "start_date": "2026-10-05", "end_date": "2026-10-09", "saat": 7, "konu_tam": "2. ÖĞRENME BİRİMİ: TÜRKİYE'DE TEK DÜZEN MUHASEBE SİSTEMİ\n2.1. TEK DÜZEN MUHASEBE SİSTEMİNİN AMAÇ VE KAPSAMI\n2.1.1. Tek Düzen Muhasebe Sisteminin Amacı\n2.1.2. Tek Düzen Muhasebe Sisteminin Kapsamı\n2.2. TEK DÜZEN MUHASEBE SİSTEMİNDE USUL VE ESASLAR\n2.2.1. Muhasebenin Temel Kavramları\n2.2.2. Mali Tabloların İlkeleri\n2.2.3. Mali Tabloların Düzenlenmesi ve Sunulması\n2.2.4. Tek Düzen Hesap Çerçevesi ve Hesap Planı", "konu_maddeler": ["2. ÖĞRENME BİRİMİ: TÜRKİYE'DE TEK DÜZEN MUHASEBE SİSTEMİ", "2.1. TEK DÜZEN MUHASEBE SİSTEMİNİN AMAÇ VE KAPSAMI", "2.1.1. Tek Düzen Muhasebe Sisteminin Amacı", "2.1.2. Tek Düzen Muhasebe Sisteminin Kapsamı", "2.2. TEK DÜZEN MUHASEBE SİSTEMİNDE USUL VE ESASLAR", "2.2.1. Muhasebenin Temel Kavramları", "2.2.2. Mali Tabloların İlkeleri", "2.2.3. Mali Tabloların Düzenlenmesi ve Sunulması", "2.2.4. Tek Düzen Hesap Çerçevesi ve Hesap Planı"], "konu_defter": "2.1. TEK DÜZEN MUHASEBE SİSTEMİNİN AMAÇ VE KAPSAMI, 2.1.1. Tek Düzen Muhasebe Sisteminin Amacı, 2.1.2. Tek Düzen Muhasebe Sisteminin Kapsamı, 2.2. TEK DÜZEN MUHASEBE SİSTEMİNDE USUL VE ESASLAR, 2.2.1. Muhasebenin Temel Kavramları, 2.2.2. Mali Tabloların İlkeleri, 2.2.3. Mali Tabloların Düzenlenmesi ve Sunulması, 2.2.4. Tek Düzen Hesap Çerçevesi ve Hesap Planı", "konu_defter_numarasiz": "TEK DÜZEN MUHASEBE SİSTEMİNİN AMAÇ VE KAPSAMI, Tek Düzen Muhasebe Sisteminin Amacı, Tek Düzen Muhasebe Sisteminin Kapsamı, TEK DÜZEN MUHASEBE SİSTEMİNDE USUL VE ESASLAR, Muhasebenin Temel Kavramları, Mali Tabloların İlkeleri, Mali Tabloların Düzenlenmesi ve Sunulması, Tek Düzen Hesap Çerçevesi ve Hesap Planı", "belirli_gun": ""}, {"hafta_no": 5, "is_tatil": false, "ay": "EKİM", "tarih_metni": "12-16 Ekim 2026", "start_date": "2026-10-12", "end_date": "2026-10-16", "saat": 7, "konu_tam": "3. ÖĞRENME BİRİMİ: MUHASEBE SÜRECİ\n3.1. AÇILIŞ BİLANÇOSU\n3.2. MUHASEBE DEFTERLERİNE KAYIT\n3.2.1. Muhasebe Fişleri\n3.2.2. Yevmiye Defteri", "konu_maddeler": ["3. ÖĞRENME BİRİMİ: MUHASEBE SÜRECİ", "3.1. AÇILIŞ BİLANÇOSU", "3.2. MUHASEBE DEFTERLERİNE KAYIT", "3.2.1. Muhasebe Fişleri", "3.2.2. Yevmiye Defteri"], "konu_defter": "3.1. AÇILIŞ BİLANÇOSU, 3.2. MUHASEBE DEFTERLERİNE KAYIT, 3.2.1. Muhasebe Fişleri, 3.2.2. Yevmiye Defteri", "konu_defter_numarasiz": "AÇILIŞ BİLANÇOSU, MUHASEBE DEFTERLERİNE KAYIT, Muhasebe Fişleri, Yevmiye Defteri", "belirli_gun": ""}, {"hafta_no": 6, "is_tatil": false, "ay": "EKİM", "tarih_metni": "19-23 Ekim 2026", "start_date": "2026-10-19", "end_date": "2026-10-23", "saat": 7, "konu_tam": "3.2.3. Defterikebir\n3.2.4. Defterikebir ile Yardımcı Defter Bağlantısı", "konu_maddeler": ["3.2.3. Defterikebir", "3.2.4. Defterikebir ile Yardımcı Defter Bağlantısı"], "konu_defter": "3.2.3. Defterikebir, 3.2.4. Defterikebir ile Yardımcı Defter Bağlantısı", "konu_defter_numarasiz": "Defterikebir, Defterikebir ile Yardımcı Defter Bağlantısı", "belirli_gun": ""}, {"hafta_no": 7, "is_tatil": false, "ay": "EKİM", "tarih_metni": "26-30 Ekim 2026", "start_date": "2026-10-26", "end_date": "2026-10-30", "saat": 7, "konu_tam": "3.3. AYLIK MİZANLARIN DÜZENLENMESİ", "konu_maddeler": ["3.3. AYLIK MİZANLARIN DÜZENLENMESİ"], "konu_defter": "3.3. AYLIK MİZANLARIN DÜZENLENMESİ", "konu_defter_numarasiz": "AYLIK MİZANLARIN DÜZENLENMESİ", "belirli_gun": "**29 Ekim Cumhuriyet Bayramı**\n**Cumhuriyetçilik İlkesi ve Cumhuriyetin Önemi**"}, {"hafta_no": 8, "is_tatil": false, "ay": "KASIM", "tarih_metni": "02-06 Kasım 2026", "start_date": "2026-11-02", "end_date": "2026-11-06", "saat": 7, "konu_tam": "3.4. ENVANTER İŞLEMLERİ", "konu_maddeler": ["3.4. ENVANTER İŞLEMLERİ"], "konu_defter": "3.4. ENVANTER İŞLEMLERİ", "konu_defter_numarasiz": "ENVANTER İŞLEMLERİ", "belirli_gun": ""}, {"hafta_no": 9, "is_tatil": false, "ay": "KASIM", "tarih_metni": "09-13 Kasım 2026", "start_date": "2026-11-09", "end_date": "2026-11-13", "saat": 7, "konu_tam": "3.5. GELİR TABLOSUNUN DÜZENLENMESİ\n3.6. GELİR VE GİDER (SONUÇ) HESAPLARININ KAPATILMASI", "konu_maddeler": ["3.5. GELİR TABLOSUNUN DÜZENLENMESİ", "3.6. GELİR VE GİDER (SONUÇ) HESAPLARININ KAPATILMASI"], "konu_defter": "3.5. GELİR TABLOSUNUN DÜZENLENMESİ, 3.6. GELİR VE GİDER (SONUÇ) HESAPLARININ KAPATILMASI", "konu_defter_numarasiz": "GELİR TABLOSUNUN DÜZENLENMESİ, GELİR VE GİDER (SONUÇ) HESAPLARININ KAPATILMASI", "belirli_gun": "**10 Kasım Atatürk'ü Anma Günü ve Atatürk Haftası**\n**Atatürk'ün Hayatı, Eserleri ve Atatürkçü Düşünce Sistemi**"}, {"hafta_no": null, "is_tatil": true, "ay": "KASIM", "tarih_metni": "16 - 20 Kasım 2026", "start_date": "2026-11-16", "end_date": "2026-11-20", "tatil_adi": "1. DÖNEM ARA TATİLİ", "konu_tam": "1. DÖNEM ARA TATİLİ", "konu_maddeler": ["1. DÖNEM ARA TATİLİ"], "konu_defter": "1. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "1. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 10, "is_tatil": false, "ay": "KASIM", "tarih_metni": "23-27 Kasım 2026", "start_date": "2026-11-23", "end_date": "2026-11-27", "saat": 7, "konu_tam": "3.7. KESİN MİZAN DÜZENLENMESİ\n3.8. KAPANIŞ BİLANÇOSUNUN DÜZENLENMESİ\n3.9. BİLANÇO HESAPLARININ KAPATILMASI\n3.10. YENİ DÖNEME İLİŞKİN HESAPLARIN AÇILMASI\nÖRNEK OLAY (MONOGRAFİ)", "konu_maddeler": ["3.7. KESİN MİZAN DÜZENLENMESİ", "3.8. KAPANIŞ BİLANÇOSUNUN DÜZENLENMESİ", "3.9. BİLANÇO HESAPLARININ KAPATILMASI", "3.10. YENİ DÖNEME İLİŞKİN HESAPLARIN AÇILMASI", "ÖRNEK OLAY (MONOGRAFİ)"], "konu_defter": "3.7. KESİN MİZAN DÜZENLENMESİ, 3.8. KAPANIŞ BİLANÇOSUNUN DÜZENLENMESİ, 3.9. BİLANÇO HESAPLARININ KAPATILMASI, 3.10. YENİ DÖNEME İLİŞKİN HESAPLARIN AÇILMASI, ÖRNEK OLAY (MONOGRAFİ)", "konu_defter_numarasiz": "KESİN MİZAN DÜZENLENMESİ, KAPANIŞ BİLANÇOSUNUN DÜZENLENMESİ, BİLANÇO HESAPLARININ KAPATILMASI, YENİ DÖNEME İLİŞKİN HESAPLARIN AÇILMASI, ÖRNEK OLAY (MONOGRAFİ)", "belirli_gun": "**24 Kasım Öğretmenler Günü**"}, {"hafta_no": 11, "is_tatil": false, "ay": "KASIM / ARALIK", "tarih_metni": "30 Kasım - 04 Aralık 2026", "start_date": "2026-11-30", "end_date": "2026-12-04", "saat": 7, "konu_tam": "4. ÖĞRENME BİRİMİ: AKTİF KARAKTERLİ HESAPLAR\n4.1. DÖNEN VARLIKLAR VE ENVANTER İŞLEMLERİ\n4.1.1. Hazır Değerler", "konu_maddeler": ["4. ÖĞRENME BİRİMİ: AKTİF KARAKTERLİ HESAPLAR", "4.1. DÖNEN VARLIKLAR VE ENVANTER İŞLEMLERİ", "4.1.1. Hazır Değerler"], "konu_defter": "4.1. DÖNEN VARLIKLAR VE ENVANTER İŞLEMLERİ, 4.1.1. Hazır Değerler", "konu_defter_numarasiz": "DÖNEN VARLIKLAR VE ENVANTER İŞLEMLERİ, Hazır Değerler", "belirli_gun": ""}, {"hafta_no": 12, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "07-11 Aralık 2026", "start_date": "2026-12-07", "end_date": "2026-12-11", "saat": 7, "konu_tam": "4.1.2. Menkul Kıymetler", "konu_maddeler": ["4.1.2. Menkul Kıymetler"], "konu_defter": "4.1.2. Menkul Kıymetler", "konu_defter_numarasiz": "Menkul Kıymetler", "belirli_gun": ""}, {"hafta_no": 13, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "14-18 Aralık 2026", "start_date": "2026-12-14", "end_date": "2026-12-18", "saat": 7, "konu_tam": "4.1.3. Ticari Alacaklar", "konu_maddeler": ["4.1.3. Ticari Alacaklar"], "konu_defter": "4.1.3. Ticari Alacaklar", "konu_defter_numarasiz": "Ticari Alacaklar", "belirli_gun": "**Tutum, Yatırım ve Türk Malları Haftası (12-18 Aralık)**"}, {"hafta_no": 14, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "21-25 Aralık 2026", "start_date": "2026-12-21", "end_date": "2026-12-25", "saat": 7, "konu_tam": "4.1.4. Diğer Alacaklar", "konu_maddeler": ["4.1.4. Diğer Alacaklar"], "konu_defter": "4.1.4. Diğer Alacaklar", "konu_defter_numarasiz": "Diğer Alacaklar", "belirli_gun": ""}, {"hafta_no": 15, "is_tatil": false, "ay": "ARALIK / OCAK", "tarih_metni": "28 Aralık 2026 - 01 Ocak 2027", "start_date": "2026-12-28", "end_date": "2027-01-01", "saat": 7, "konu_tam": "4.1.5. Stoklar", "konu_maddeler": ["4.1.5. Stoklar"], "konu_defter": "4.1.5. Stoklar", "konu_defter_numarasiz": "Stoklar", "belirli_gun": "**Yılbaşı Tatili (1 Ocak 2027)**"}, {"hafta_no": 16, "is_tatil": false, "ay": "OCAK", "tarih_metni": "04-08 Ocak 2027", "start_date": "2027-01-04", "end_date": "2027-01-08", "saat": 7, "konu_tam": "4.1.6. Yıllara Yaygın İnşaat ve Onarım Maliyetleri\n4.1.7. Gelecek Aylara Ait Giderler ve Gelir Tahakkukları\n4.1.8. Diğer Dönen Varlıklar", "konu_maddeler": ["4.1.6. Yıllara Yaygın İnşaat ve Onarım Maliyetleri", "4.1.7. Gelecek Aylara Ait Giderler ve Gelir Tahakkukları", "4.1.8. Diğer Dönen Varlıklar"], "konu_defter": "4.1.6. Yıllara Yaygın İnşaat ve Onarım Maliyetleri, 4.1.7. Gelecek Aylara Ait Giderler ve Gelir Tahakkukları, 4.1.8. Diğer Dönen Varlıklar", "konu_defter_numarasiz": "Yıllara Yaygın İnşaat ve Onarım Maliyetleri, Gelecek Aylara Ait Giderler ve Gelir Tahakkukları, Diğer Dönen Varlıklar", "belirli_gun": "**Enerji Tasarrufu Haftası (Ocak 2. haftası)**"}, {"hafta_no": 17, "is_tatil": false, "ay": "OCAK", "tarih_metni": "11-15 Ocak 2027", "start_date": "2027-01-11", "end_date": "2027-01-15", "saat": 7, "konu_tam": "4.2. DURAN VARLIKLAR VE ENVANTER İŞLEMLERİ\n4.2.1. Ticari Alacaklar\n4.2.2. Diğer Alacaklar\n4.2.3. Mali Duran Varlıklar", "konu_maddeler": ["4.2. DURAN VARLIKLAR VE ENVANTER İŞLEMLERİ", "4.2.1. Ticari Alacaklar", "4.2.2. Diğer Alacaklar", "4.2.3. Mali Duran Varlıklar"], "konu_defter": "4.2. DURAN VARLIKLAR VE ENVANTER İŞLEMLERİ, 4.2.1. Ticari Alacaklar, 4.2.2. Diğer Alacaklar, 4.2.3. Mali Duran Varlıklar", "konu_defter_numarasiz": "DURAN VARLIKLAR VE ENVANTER İŞLEMLERİ, Ticari Alacaklar, Diğer Alacaklar, Mali Duran Varlıklar", "belirli_gun": ""}, {"hafta_no": 18, "is_tatil": false, "ay": "OCAK", "tarih_metni": "18-22 Ocak 2027", "start_date": "2027-01-18", "end_date": "2027-01-22", "saat": 7, "konu_tam": "4.2.4. Maddi Duran Varlıklar\n1. DÖNEMİN DEĞERLENDİRİLMESİ", "konu_maddeler": ["4.2.4. Maddi Duran Varlıklar", "1. DÖNEMİN DEĞERLENDİRİLMESİ"], "konu_defter": "4.2.4. Maddi Duran Varlıklar, 1. DÖNEMİN DEĞERLENDİRİLMESİ", "konu_defter_numarasiz": "Maddi Duran Varlıklar, DÖNEMİN DEĞERLENDİRİLMESİ", "belirli_gun": "**1. Dönem Sonu (22 Ocak 2027 Cuma)**"}, {"hafta_no": null, "is_tatil": true, "ay": "OCAK / ŞUBAT", "tarih_metni": "25 Ocak - 05 Şubat 2027", "start_date": "2027-01-25", "end_date": "2027-02-05", "tatil_adi": "YARIYIL TATİLİ (15 TATİL)", "konu_tam": "YARIYIL TATİLİ (15 TATİL)", "konu_maddeler": ["YARIYIL TATİLİ (15 TATİL)"], "konu_defter": "YARIYIL TATİLİ (15 TATİL)", "konu_defter_numarasiz": "YARIYIL TATİLİ (15 TATİL)", "belirli_gun": ""}, {"hafta_no": 19, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "08-12 Şubat 2027", "start_date": "2027-02-08", "end_date": "2027-02-12", "saat": 7, "konu_tam": "4.2.4. Maddi Duran Varlıklar", "konu_maddeler": ["4.2.4. Maddi Duran Varlıklar"], "konu_defter": "4.2.4. Maddi Duran Varlıklar", "konu_defter_numarasiz": "Maddi Duran Varlıklar", "belirli_gun": "**2. Dönem Başlangıcı (8 Şubat 2027)**"}, {"hafta_no": 20, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "15-19 Şubat 2027", "start_date": "2027-02-15", "end_date": "2027-02-19", "saat": 7, "konu_tam": "4.2.5. Maddi Olmayan Duran Varlıklar\n4.2.6. Özel Tükenmeye Tabi Varlıklar\n4.2.7. Gelecek Yıllara Ait Giderler ve Gelir Tahakkukları\n4.2.8. Diğer Duran Varlıklar", "konu_maddeler": ["4.2.5. Maddi Olmayan Duran Varlıklar", "4.2.6. Özel Tükenmeye Tabi Varlıklar", "4.2.7. Gelecek Yıllara Ait Giderler ve Gelir Tahakkukları", "4.2.8. Diğer Duran Varlıklar"], "konu_defter": "4.2.5. Maddi Olmayan Duran Varlıklar, 4.2.6. Özel Tükenmeye Tabi Varlıklar, 4.2.7. Gelecek Yıllara Ait Giderler ve Gelir Tahakkukları, 4.2.8. Diğer Duran Varlıklar", "konu_defter_numarasiz": "Maddi Olmayan Duran Varlıklar, Özel Tükenmeye Tabi Varlıklar, Gelecek Yıllara Ait Giderler ve Gelir Tahakkukları, Diğer Duran Varlıklar", "belirli_gun": ""}, {"hafta_no": 21, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "22-26 Şubat 2027", "start_date": "2027-02-22", "end_date": "2027-02-26", "saat": 7, "konu_tam": "5. ÖĞRENME BİRİMİ: PASİF KARAKTERLİ HESAPLAR\n5.1. KISA VADELİ YABANCI KAYNAKLAR VE ENVANTER İŞLEMLERİ\n5.1.1. Mali Borçlar", "konu_maddeler": ["5. ÖĞRENME BİRİMİ: PASİF KARAKTERLİ HESAPLAR", "5.1. KISA VADELİ YABANCI KAYNAKLAR VE ENVANTER İŞLEMLERİ", "5.1.1. Mali Borçlar"], "konu_defter": "5.1. KISA VADELİ YABANCI KAYNAKLAR VE ENVANTER İŞLEMLERİ, 5.1.1. Mali Borçlar", "konu_defter_numarasiz": "KISA VADELİ YABANCI KAYNAKLAR VE ENVANTER İŞLEMLERİ, Mali Borçlar", "belirli_gun": "**Vergi Haftası (Şubatın son haftası)**"}, {"hafta_no": 22, "is_tatil": false, "ay": "MART", "tarih_metni": "01-05 Mart 2027", "start_date": "2027-03-01", "end_date": "2027-03-05", "saat": 7, "konu_tam": "5.1.2. Ticari Borçlar", "konu_maddeler": ["5.1.2. Ticari Borçlar"], "konu_defter": "5.1.2. Ticari Borçlar", "konu_defter_numarasiz": "Ticari Borçlar", "belirli_gun": "**Yeşilay Haftası (1-7 Mart) / Girişimcilik Haftası**"}, {"hafta_no": null, "is_tatil": true, "ay": "MART", "tarih_metni": "08 - 12 Mart 2027", "start_date": "2027-03-08", "end_date": "2027-03-12", "tatil_adi": "2. DÖNEM ARA TATİLİ", "konu_tam": "2. DÖNEM ARA TATİLİ", "konu_maddeler": ["2. DÖNEM ARA TATİLİ"], "konu_defter": "2. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "2. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 23, "is_tatil": false, "ay": "MART", "tarih_metni": "15-19 Mart 2027", "start_date": "2027-03-15", "end_date": "2027-03-19", "saat": 7, "konu_tam": "5.1.3. Diğer Borçlar\n5.1.4. Alınan Avanslar\n5.1.5. Yıllara Yaygın İnşaat ve Onarım Hakedişleri", "konu_maddeler": ["5.1.3. Diğer Borçlar", "5.1.4. Alınan Avanslar", "5.1.5. Yıllara Yaygın İnşaat ve Onarım Hakedişleri"], "konu_defter": "5.1.3. Diğer Borçlar, 5.1.4. Alınan Avanslar, 5.1.5. Yıllara Yaygın İnşaat ve Onarım Hakedişleri", "konu_defter_numarasiz": "Diğer Borçlar, Alınan Avanslar, Yıllara Yaygın İnşaat ve Onarım Hakedişleri", "belirli_gun": "**12 Mart İstiklâl Marşı'nın Kabulü / 18 Mart Çanakkale Zaferi**\n**Atatürk'ün Askerî Dehası, Vatan ve Millet Sevgisi**"}, {"hafta_no": 24, "is_tatil": false, "ay": "MART", "tarih_metni": "22-26 Mart 2027", "start_date": "2027-03-22", "end_date": "2027-03-26", "saat": 7, "konu_tam": "5.1.6. Ödenecek Vergi ve Diğer Yükümlülükler\n5.1.7. Borç ve Gider Karşılıkları\n5.1.8. Gelecek Aylara Ait Gelirler ve Gider Tahakkukları\n5.1.9. Diğer Kısa Vadeli Yabancı Kaynaklar", "konu_maddeler": ["5.1.6. Ödenecek Vergi ve Diğer Yükümlülükler", "5.1.7. Borç ve Gider Karşılıkları", "5.1.8. Gelecek Aylara Ait Gelirler ve Gider Tahakkukları", "5.1.9. Diğer Kısa Vadeli Yabancı Kaynaklar"], "konu_defter": "5.1.6. Ödenecek Vergi ve Diğer Yükümlülükler, 5.1.7. Borç ve Gider Karşılıkları, 5.1.8. Gelecek Aylara Ait Gelirler ve Gider Tahakkukları, 5.1.9. Diğer Kısa Vadeli Yabancı Kaynaklar", "konu_defter_numarasiz": "Ödenecek Vergi ve Diğer Yükümlülükler, Borç ve Gider Karşılıkları, Gelecek Aylara Ait Gelirler ve Gider Tahakkukları, Diğer Kısa Vadeli Yabancı Kaynaklar", "belirli_gun": "**Orman Haftası (21-26 Mart)**"}, {"hafta_no": 25, "is_tatil": false, "ay": "MART / NİSAN", "tarih_metni": "29 Mart - 02 Nisan 2027", "start_date": "2027-03-29", "end_date": "2027-04-02", "saat": 7, "konu_tam": "5.2. UZUN VADELİ YABANCI KAYNAKLAR VE ENVANTER İŞLEMLERİ\n5.2.1. Mali Borçlar\n5.2.2. Ticari Borçlar", "konu_maddeler": ["5.2. UZUN VADELİ YABANCI KAYNAKLAR VE ENVANTER İŞLEMLERİ", "5.2.1. Mali Borçlar", "5.2.2. Ticari Borçlar"], "konu_defter": "5.2. UZUN VADELİ YABANCI KAYNAKLAR VE ENVANTER İŞLEMLERİ, 5.2.1. Mali Borçlar, 5.2.2. Ticari Borçlar", "konu_defter_numarasiz": "UZUN VADELİ YABANCI KAYNAKLAR VE ENVANTER İŞLEMLERİ, Mali Borçlar, Ticari Borçlar", "belirli_gun": "**Kütüphaneler Haftası (Mart son haftası)**"}, {"hafta_no": 26, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "05-09 Nisan 2027", "start_date": "2027-04-05", "end_date": "2027-04-09", "saat": 7, "konu_tam": "5.2.3. Diğer Borçlar\n5.2.4. Alınan Avanslar\n5.2.5. Borç ve Gider Karşılıkları\n5.2.6. Gelecek Yıllara Ait Gelirler ve Gider Tahakkukları\n5.2.7. Diğer Uzun Vadeli Yabancı Kaynaklar", "konu_maddeler": ["5.2.3. Diğer Borçlar", "5.2.4. Alınan Avanslar", "5.2.5. Borç ve Gider Karşılıkları", "5.2.6. Gelecek Yıllara Ait Gelirler ve Gider Tahakkukları", "5.2.7. Diğer Uzun Vadeli Yabancı Kaynaklar"], "konu_defter": "5.2.3. Diğer Borçlar, 5.2.4. Alınan Avanslar, 5.2.5. Borç ve Gider Karşılıkları, 5.2.6. Gelecek Yıllara Ait Gelirler ve Gider Tahakkukları, 5.2.7. Diğer Uzun Vadeli Yabancı Kaynaklar", "konu_defter_numarasiz": "Diğer Borçlar, Alınan Avanslar, Borç ve Gider Karşılıkları, Gelecek Yıllara Ait Gelirler ve Gider Tahakkukları, Diğer Uzun Vadeli Yabancı Kaynaklar", "belirli_gun": ""}, {"hafta_no": 27, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "12-16 Nisan 2027", "start_date": "2027-04-12", "end_date": "2027-04-16", "saat": 7, "konu_tam": "5.3. ÖZ KAYNAKLAR VE ENVANTER İŞLEMLERİ\n5.3.1. Ödenmiş Sermaye\n5.3.2. Sermaye Yedekleri", "konu_maddeler": ["5.3. ÖZ KAYNAKLAR VE ENVANTER İŞLEMLERİ", "5.3.1. Ödenmiş Sermaye", "5.3.2. Sermaye Yedekleri"], "konu_defter": "5.3. ÖZ KAYNAKLAR VE ENVANTER İŞLEMLERİ, 5.3.1. Ödenmiş Sermaye, 5.3.2. Sermaye Yedekleri", "konu_defter_numarasiz": "ÖZ KAYNAKLAR VE ENVANTER İŞLEMLERİ, Ödenmiş Sermaye, Sermaye Yedekleri", "belirli_gun": "**Turizm Haftası (15-22 Nisan)**"}, {"hafta_no": 28, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "19-23 Nisan 2027", "start_date": "2027-04-19", "end_date": "2027-04-23", "saat": 7, "konu_tam": "5.3.3. Kâr Yedekleri\n5.3.4. Geçmiş Yıllar Kârları\n5.3.5. Geçmiş Yıllar Zararları (-)\n5.3.6. Dönem Net Kârı (Zararı)", "konu_maddeler": ["5.3.3. Kâr Yedekleri", "5.3.4. Geçmiş Yıllar Kârları", "5.3.5. Geçmiş Yıllar Zararları (-)", "5.3.6. Dönem Net Kârı (Zararı)"], "konu_defter": "5.3.3. Kâr Yedekleri, 5.3.4. Geçmiş Yıllar Kârları, 5.3.5. Geçmiş Yıllar Zararları (-), 5.3.6. Dönem Net Kârı (Zararı)", "konu_defter_numarasiz": "Kâr Yedekleri, Geçmiş Yıllar Kârları, Geçmiş Yıllar Zararları (-), Dönem Net Kârı (Zararı)", "belirli_gun": "**23 Nisan Ulusal Egemenlik ve Çocuk Bayramı**\n**TBMM'nin Açılışı, Millî Egemenlik ve Halkçılık İlkesi**"}, {"hafta_no": 29, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "26-30 Nisan 2027", "start_date": "2027-04-26", "end_date": "2027-04-30", "saat": 7, "konu_tam": "6. ÖĞRENME BİRİMİ: GELİR TABLOSU HESAPLARI\n6.1. GELİR HESAPLARININ İŞLEYİŞİ\n6.1.1. Brüt Satışlar\n6.1.2. Diğer Faaliyetlerden Olağan Gelir ve Kârlar\n6.1.3. Olağandışı Gelir ve Kârlar", "konu_maddeler": ["6. ÖĞRENME BİRİMİ: GELİR TABLOSU HESAPLARI", "6.1. GELİR HESAPLARININ İŞLEYİŞİ", "6.1.1. Brüt Satışlar", "6.1.2. Diğer Faaliyetlerden Olağan Gelir ve Kârlar", "6.1.3. Olağandışı Gelir ve Kârlar"], "konu_defter": "6.1. GELİR HESAPLARININ İŞLEYİŞİ, 6.1.1. Brüt Satışlar, 6.1.2. Diğer Faaliyetlerden Olağan Gelir ve Kârlar, 6.1.3. Olağandışı Gelir ve Kârlar", "konu_defter_numarasiz": "GELİR HESAPLARININ İŞLEYİŞİ, Brüt Satışlar, Diğer Faaliyetlerden Olağan Gelir ve Kârlar, Olağandışı Gelir ve Kârlar", "belirli_gun": ""}, {"hafta_no": 30, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "03-07 Mayıs 2027", "start_date": "2027-05-03", "end_date": "2027-05-07", "saat": 7, "konu_tam": "6.2. GİDER HESAPLARININ İŞLEYİŞİ\n6.2.1. Satış İndirimleri (-)\n6.2.2. Satışların Maliyeti (-)\n6.2.3. Faaliyet Giderleri (-)", "konu_maddeler": ["6.2. GİDER HESAPLARININ İŞLEYİŞİ", "6.2.1. Satış İndirimleri (-)", "6.2.2. Satışların Maliyeti (-)", "6.2.3. Faaliyet Giderleri (-)"], "konu_defter": "6.2. GİDER HESAPLARININ İŞLEYİŞİ, 6.2.1. Satış İndirimleri (-), 6.2.2. Satışların Maliyeti (-), 6.2.3. Faaliyet Giderleri (-)", "konu_defter_numarasiz": "GİDER HESAPLARININ İŞLEYİŞİ, Satış İndirimleri (-), Satışların Maliyeti (-), Faaliyet Giderleri (-)", "belirli_gun": "**Bilişim Haftası (Mayıs 1. haftası) / Trafik ve İlkyardım Haftası**"}, {"hafta_no": 31, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "10-14 Mayıs 2027", "start_date": "2027-05-10", "end_date": "2027-05-14", "saat": 7, "konu_tam": "6.2.4. Diğer Faaliyetlerden Olağan Gider ve Zararlar (-)\n6.2.5. Finansman Giderleri (-)\n6.2.6. Olağandışı Gider ve Zararlar (-)\n6.2.7. Dönem Net Kârı veya Zararı", "konu_maddeler": ["6.2.4. Diğer Faaliyetlerden Olağan Gider ve Zararlar (-)", "6.2.5. Finansman Giderleri (-)", "6.2.6. Olağandışı Gider ve Zararlar (-)", "6.2.7. Dönem Net Kârı veya Zararı"], "konu_defter": "6.2.4. Diğer Faaliyetlerden Olağan Gider ve Zararlar (-), 6.2.5. Finansman Giderleri (-), 6.2.6. Olağandışı Gider ve Zararlar (-), 6.2.7. Dönem Net Kârı veya Zararı", "konu_defter_numarasiz": "Diğer Faaliyetlerden Olağan Gider ve Zararlar (-), Finansman Giderleri (-), Olağandışı Gider ve Zararlar (-), Dönem Net Kârı veya Zararı", "belirli_gun": "**Engelliler Haftası (10-16 Mayıs)**"}, {"hafta_no": 32, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "17-21 Mayıs 2027", "start_date": "2027-05-17", "end_date": "2027-05-21", "saat": 7, "konu_tam": "7. ÖĞRENME BİRİMİ: MALİYET HESAPLARI\n7.1. 7/A SEÇENEĞİ\n7.1.1. 7/A Seçeneği Maliyet Hesapları", "konu_maddeler": ["7. ÖĞRENME BİRİMİ: MALİYET HESAPLARI", "7.1. 7/A SEÇENEĞİ", "7.1.1. 7/A Seçeneği Maliyet Hesapları"], "konu_defter": "7.1. 7/A SEÇENEĞİ, 7.1.1. 7/A Seçeneği Maliyet Hesapları", "konu_defter_numarasiz": "7/A SEÇENEĞİ, 7/A Seçeneği Maliyet Hesapları", "belirli_gun": "**19 Mayıs Atatürk'ü Anma, Gençlik ve Spor Bayramı**\n**Millî Mücadele ve Atatürk'ün Gençliğe Verdiği Önem**"}, {"hafta_no": 33, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "24-28 Mayıs 2027", "start_date": "2027-05-24", "end_date": "2027-05-28", "saat": 7, "konu_tam": "7.2. 7/B SEÇENEĞİ\n7.2.1. 7/B Seçeneği Maliyet Hesapları\n7.3. GELİR VE GİDER HESAPLARININ MALİYET HESAPLARI İLE İLİŞKİSİ\n7.3.1. 7/A Maliyet Hesaplarının Gelir Tablosu Hesaplarına Devri\n7.3.2. 7/B Maliyet Hesaplarının Gelir Tablosu Hesaplarına Devri", "konu_maddeler": ["7.2. 7/B SEÇENEĞİ", "7.2.1. 7/B Seçeneği Maliyet Hesapları", "7.3. GELİR VE GİDER HESAPLARININ MALİYET HESAPLARI İLE İLİŞKİSİ", "7.3.1. 7/A Maliyet Hesaplarının Gelir Tablosu Hesaplarına Devri", "7.3.2. 7/B Maliyet Hesaplarının Gelir Tablosu Hesaplarına Devri"], "konu_defter": "7.2. 7/B SEÇENEĞİ, 7.2.1. 7/B Seçeneği Maliyet Hesapları, 7.3. GELİR VE GİDER HESAPLARININ MALİYET HESAPLARI İLE İLİŞKİSİ, 7.3.1. 7/A Maliyet Hesaplarının Gelir Tablosu Hesaplarına Devri, 7.3.2. 7/B Maliyet Hesaplarının Gelir Tablosu Hesaplarına Devri", "konu_defter_numarasiz": "7/B SEÇENEĞİ, 7/B Seçeneği Maliyet Hesapları, GELİR VE GİDER HESAPLARININ MALİYET HESAPLARI İLE İLİŞKİSİ, 7/A Maliyet Hesaplarının Gelir Tablosu Hesaplarına Devri, 7/B Maliyet Hesaplarının Gelir Tablosu Hesaplarına Devri", "belirli_gun": ""}, {"hafta_no": 34, "is_tatil": false, "ay": "MAYIS / HAZİRAN", "tarih_metni": "31 Mayıs - 04 Haziran 2027", "start_date": "2027-05-31", "end_date": "2027-06-04", "saat": 7, "konu_tam": "8. ÖĞRENME BİRİMİ: NAZIM HESAPLAR\n8.1. NAZIM HESAPLARLA İLGİLİ GENEL BİLGİLER\n8.2. NAZIM HESAPLARIN İŞLEYİŞİ", "konu_maddeler": ["8. ÖĞRENME BİRİMİ: NAZIM HESAPLAR", "8.1. NAZIM HESAPLARLA İLGİLİ GENEL BİLGİLER", "8.2. NAZIM HESAPLARIN İŞLEYİŞİ"], "konu_defter": "8.1. NAZIM HESAPLARLA İLGİLİ GENEL BİLGİLER, 8.2. NAZIM HESAPLARIN İŞLEYİŞİ", "konu_defter_numarasiz": "NAZIM HESAPLARLA İLGİLİ GENEL BİLGİLER, NAZIM HESAPLARIN İŞLEYİŞİ", "belirli_gun": ""}, {"hafta_no": 35, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "07-11 Haziran 2027", "start_date": "2027-06-07", "end_date": "2027-06-11", "saat": 7, "konu_tam": "9. ÖĞRENME BİRİMİ: MUHASEBE UYGULAMALARI\n9.1. BİLANÇONUN DÜZENLENMESİ\n9.2. MİZAN DÜZENLENMESİ", "konu_maddeler": ["9. ÖĞRENME BİRİMİ: MUHASEBE UYGULAMALARI", "9.1. BİLANÇONUN DÜZENLENMESİ", "9.2. MİZAN DÜZENLENMESİ"], "konu_defter": "9.1. BİLANÇONUN DÜZENLENMESİ, 9.2. MİZAN DÜZENLENMESİ", "konu_defter_numarasiz": "BİLANÇONUN DÜZENLENMESİ, MİZAN DÜZENLENMESİ", "belirli_gun": "**Çevre Koruma Haftası (Haziran 2. haftası)**"}, {"hafta_no": 36, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "14-18 Haziran 2027", "start_date": "2027-06-14", "end_date": "2027-06-18", "saat": 7, "konu_tam": "9.3. GELİR TABLOSU", "konu_maddeler": ["9.3. GELİR TABLOSU"], "konu_defter": "9.3. GELİR TABLOSU", "konu_defter_numarasiz": "GELİR TABLOSU", "belirli_gun": ""}, {"hafta_no": 37, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "21-25 Haziran 2027", "start_date": "2027-06-21", "end_date": "2027-06-25", "saat": 7, "konu_tam": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_maddeler": ["2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ"], "konu_defter": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_defter_numarasiz": "DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "belirli_gun": "**Ders Yılının Sona Ermesi (25 Haziran 2027)**"}]}, {"id": "klavye_10", "sinif": "10. Sınıf", "ad": "Klavye Teknikleri", "kisa_ad": "Klavye Teknikleri", "saat": 3, "renk": "#d97706", "ikon": "⌨️", "weeks": [{"hafta_no": 1, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "14-18 Eylül 2026", "start_date": "2026-09-14", "end_date": "2026-09-18", "saat": 2, "konu_tam": "1. ÖĞRENME BİRİMİ: STANDART TÜRK KLAVYESİNE (F KLAVYE) GİRİŞ\n1.1. KLAVYE ÇEŞİTLERİ\n1.1.1. Tuş Düzenlerine Göre Klavyeler\n1.1.2. Latin Alfabesinin Kullanılmadığı Klavyeler\n1.1.3. Bilgisayardan Klavye Düzeninin Değiştirilmesi", "konu_maddeler": ["1. ÖĞRENME BİRİMİ: STANDART TÜRK KLAVYESİNE (F KLAVYE) GİRİŞ", "1.1. KLAVYE ÇEŞİTLERİ", "1.1.1. Tuş Düzenlerine Göre Klavyeler", "1.1.2. Latin Alfabesinin Kullanılmadığı Klavyeler", "1.1.3. Bilgisayardan Klavye Düzeninin Değiştirilmesi"], "konu_defter": "1.1. KLAVYE ÇEŞİTLERİ, 1.1.1. Tuş Düzenlerine Göre Klavyeler, 1.1.2. Latin Alfabesinin Kullanılmadığı Klavyeler, 1.1.3. Bilgisayardan Klavye Düzeninin Değiştirilmesi", "konu_defter_numarasiz": "KLAVYE ÇEŞİTLERİ, Tuş Düzenlerine Göre Klavyeler, Latin Alfabesinin Kullanılmadığı Klavyeler, Bilgisayardan Klavye Düzeninin Değiştirilmesi", "belirli_gun": ""}, {"hafta_no": 2, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "21-25 Eylül 2026", "start_date": "2026-09-21", "end_date": "2026-09-25", "saat": 2, "konu_tam": "1.2. STANDART TÜRK KLAVYESİNİN ÖNEMİ\n1.2.1. F Klavyenin Hikâyesi\n1.2.2. Q Klavyenin Hikâyesi\n1.2.3. F Klavye Kullanımının Yaygınlaşamaması\n1.2.4. F Klavye ile Q Klavyenin Karşılaştırılması", "konu_maddeler": ["1.2. STANDART TÜRK KLAVYESİNİN ÖNEMİ", "1.2.1. F Klavyenin Hikâyesi", "1.2.2. Q Klavyenin Hikâyesi", "1.2.3. F Klavye Kullanımının Yaygınlaşamaması", "1.2.4. F Klavye ile Q Klavyenin Karşılaştırılması"], "konu_defter": "1.2. STANDART TÜRK KLAVYESİNİN ÖNEMİ, 1.2.1. F Klavyenin Hikâyesi, 1.2.2. Q Klavyenin Hikâyesi, 1.2.3. F Klavye Kullanımının Yaygınlaşamaması, 1.2.4. F Klavye ile Q Klavyenin Karşılaştırılması", "konu_defter_numarasiz": "STANDART TÜRK KLAVYESİNİN ÖNEMİ, F Klavyenin Hikâyesi, Q Klavyenin Hikâyesi, F Klavye Kullanımının Yaygınlaşamaması, F Klavye ile Q Klavyenin Karşılaştırılması", "belirli_gun": "**Ahilik Kültürü Haftası**"}, {"hafta_no": 3, "is_tatil": false, "ay": "EYLÜL / EKİM", "tarih_metni": "28 Eylül - 02 Ekim 2026", "start_date": "2026-09-28", "end_date": "2026-10-02", "saat": 2, "konu_tam": "1.3. STANDART TÜRK KLAVYESİNDE (F KLAVYE) TUŞLARIN YERLEŞİM DÜZENİ\n1.3.1. Yazı Tuşları Grubu\n1.3.2. Fonksiyon Tuşları\n1.3.3. İmleç Kontrol Tuşları\n1.3.4. Yön Tuşları\n1.3.5. Sayı Tuşları Grubu\n1.3.6. Sayı ve Özel Karakterler Grubu\n1.3.7. Kilitleme Tuşları\n1.3.8. Özel Görevli Tuşlar\n1.4. KLAVYE YAZIMINDA OTURUŞ VE DURUŞ TEKNİKLERİ\n1.4.1. Bedenin Duruşu\n1.4.2. Baş ve Gözlerin Duruşu\n1.4.3. El, Parmak ve Bileklerin Duruşu", "konu_maddeler": ["1.3. STANDART TÜRK KLAVYESİNDE (F KLAVYE) TUŞLARIN YERLEŞİM DÜZENİ", "1.3.1. Yazı Tuşları Grubu", "1.3.2. Fonksiyon Tuşları", "1.3.3. İmleç Kontrol Tuşları", "1.3.4. Yön Tuşları", "1.3.5. Sayı Tuşları Grubu", "1.3.6. Sayı ve Özel Karakterler Grubu", "1.3.7. Kilitleme Tuşları", "1.3.8. Özel Görevli Tuşlar", "1.4. KLAVYE YAZIMINDA OTURUŞ VE DURUŞ TEKNİKLERİ", "1.4.1. Bedenin Duruşu", "1.4.2. Baş ve Gözlerin Duruşu", "1.4.3. El, Parmak ve Bileklerin Duruşu"], "konu_defter": "1.3. STANDART TÜRK KLAVYESİNDE (F KLAVYE) TUŞLARIN YERLEŞİM DÜZENİ, 1.3.1. Yazı Tuşları Grubu, 1.3.2. Fonksiyon Tuşları, 1.3.3. İmleç Kontrol Tuşları, 1.3.4. Yön Tuşları, 1.3.5. Sayı Tuşları Grubu, 1.3.6. Sayı ve Özel Karakterler Grubu, 1.3.7. Kilitleme Tuşları, 1.3.8. Özel Görevli Tuşlar, 1.4. KLAVYE YAZIMINDA OTURUŞ VE DURUŞ TEKNİKLERİ, 1.4.1. Bedenin Duruşu, 1.4.2. Baş ve Gözlerin Duruşu, 1.4.3. El, Parmak ve Bileklerin Duruşu", "konu_defter_numarasiz": "STANDART TÜRK KLAVYESİNDE (F KLAVYE) TUŞLARIN YERLEŞİM DÜZENİ, Yazı Tuşları Grubu, Fonksiyon Tuşları, İmleç Kontrol Tuşları, Yön Tuşları, Sayı Tuşları Grubu, Sayı ve Özel Karakterler Grubu, Kilitleme Tuşları, Özel Görevli Tuşlar, KLAVYE YAZIMINDA OTURUŞ VE DURUŞ TEKNİKLERİ, Bedenin Duruşu, Baş ve Gözlerin Duruşu, El, Parmak ve Bileklerin Duruşu", "belirli_gun": ""}, {"hafta_no": 4, "is_tatil": false, "ay": "EKİM", "tarih_metni": "05-09 Ekim 2026", "start_date": "2026-10-05", "end_date": "2026-10-09", "saat": 2, "konu_tam": "2. ÖĞRENME BİRİMİ: KLAVYE TUŞLARININ GRUPLANDIRILMASI\n2.1. PARMAKLARIN YERLEŞİMİ\n2.2. TEMEL SIRA TUŞLARI\n2.2.1. “A” ve “K” Tuşlarının Yazımı", "konu_maddeler": ["2. ÖĞRENME BİRİMİ: KLAVYE TUŞLARININ GRUPLANDIRILMASI", "2.1. PARMAKLARIN YERLEŞİMİ", "2.2. TEMEL SIRA TUŞLARI", "2.2.1. “A” ve “K” Tuşlarının Yazımı"], "konu_defter": "2.1. PARMAKLARIN YERLEŞİMİ, 2.2. TEMEL SIRA TUŞLARI, 2.2.1. “A” ve “K” Tuşlarının Yazımı", "konu_defter_numarasiz": "PARMAKLARIN YERLEŞİMİ, TEMEL SIRA TUŞLARI, “A” ve “K” Tuşlarının Yazımı", "belirli_gun": ""}, {"hafta_no": 5, "is_tatil": false, "ay": "EKİM", "tarih_metni": "12-16 Ekim 2026", "start_date": "2026-10-12", "end_date": "2026-10-16", "saat": 2, "konu_tam": "2.2.2. “E” ve “M” Tuşlarının Yazımı", "konu_maddeler": ["2.2.2. “E” ve “M” Tuşlarının Yazımı"], "konu_defter": "2.2.2. “E” ve “M” Tuşlarının Yazımı", "konu_defter_numarasiz": "“E” ve “M” Tuşlarının Yazımı", "belirli_gun": ""}, {"hafta_no": 6, "is_tatil": false, "ay": "EKİM", "tarih_metni": "19-23 Ekim 2026", "start_date": "2026-10-19", "end_date": "2026-10-23", "saat": 2, "konu_tam": "2.2.3. “İ” ve “L” Tuşlarının Yazımı", "konu_maddeler": ["2.2.3. “İ” ve “L” Tuşlarının Yazımı"], "konu_defter": "2.2.3. “İ” ve “L” Tuşlarının Yazımı", "konu_defter_numarasiz": "“İ” ve “L” Tuşlarının Yazımı", "belirli_gun": ""}, {"hafta_no": 7, "is_tatil": false, "ay": "EKİM", "tarih_metni": "26-30 Ekim 2026", "start_date": "2026-10-26", "end_date": "2026-10-30", "saat": 2, "konu_tam": "2.2.4. “U” ve “Y” Tuşlarının Yazımı", "konu_maddeler": ["2.2.4. “U” ve “Y” Tuşlarının Yazımı"], "konu_defter": "2.2.4. “U” ve “Y” Tuşlarının Yazımı", "konu_defter_numarasiz": "“U” ve “Y” Tuşlarının Yazımı", "belirli_gun": "**29 Ekim Cumhuriyet Bayramı**\n**Cumhuriyetçilik İlkesi ve Cumhuriyetin Önemi**"}, {"hafta_no": 8, "is_tatil": false, "ay": "KASIM", "tarih_metni": "02-06 Kasım 2026", "start_date": "2026-11-02", "end_date": "2026-11-06", "saat": 2, "konu_tam": "2.3. TEMEL SIRA DIŞINDAKİ TUŞLAR\n2.3.1. “T” Tuşunun Yazımı\n2.3.2. “Ü” Tuşunun Yazımı\n2.3.3. “Ş” Tuşunun Yazımı", "konu_maddeler": ["2.3. TEMEL SIRA DIŞINDAKİ TUŞLAR", "2.3.1. “T” Tuşunun Yazımı", "2.3.2. “Ü” Tuşunun Yazımı", "2.3.3. “Ş” Tuşunun Yazımı"], "konu_defter": "2.3. TEMEL SIRA DIŞINDAKİ TUŞLAR, 2.3.1. “T” Tuşunun Yazımı, 2.3.2. “Ü” Tuşunun Yazımı, 2.3.3. “Ş” Tuşunun Yazımı", "konu_defter_numarasiz": "TEMEL SIRA DIŞINDAKİ TUŞLAR, “T” Tuşunun Yazımı, “Ü” Tuşunun Yazımı, “Ş” Tuşunun Yazımı", "belirli_gun": ""}, {"hafta_no": 9, "is_tatil": false, "ay": "KASIM", "tarih_metni": "09-13 Kasım 2026", "start_date": "2026-11-09", "end_date": "2026-11-13", "saat": 2, "konu_tam": "2.3.4. Nokta Tuşunun Yazımı\n2.3.5. Virgül Tuşunun Yazımı\n2.3.6. “I” Tuşunun Yazımı\n2.3.7. “R” Tuşunun Yazımı", "konu_maddeler": ["2.3.4. Nokta Tuşunun Yazımı", "2.3.5. Virgül Tuşunun Yazımı", "2.3.6. “I” Tuşunun Yazımı", "2.3.7. “R” Tuşunun Yazımı"], "konu_defter": "2.3.4. Nokta Tuşunun Yazımı, 2.3.5. Virgül Tuşunun Yazımı, 2.3.6. “I” Tuşunun Yazımı, 2.3.7. “R” Tuşunun Yazımı", "konu_defter_numarasiz": "Nokta Tuşunun Yazımı, Virgül Tuşunun Yazımı, “I” Tuşunun Yazımı, “R” Tuşunun Yazımı", "belirli_gun": "**10 Kasım Atatürk'ü Anma Günü ve Atatürk Haftası**\n**Atatürk'ün Hayatı, Eserleri ve Atatürkçü Düşünce Sistemi**"}, {"hafta_no": null, "is_tatil": true, "ay": "KASIM", "tarih_metni": "16 - 20 Kasım 2026", "start_date": "2026-11-16", "end_date": "2026-11-20", "tatil_adi": "1. DÖNEM ARA TATİLİ", "konu_tam": "1. DÖNEM ARA TATİLİ", "konu_maddeler": ["1. DÖNEM ARA TATİLİ"], "konu_defter": "1. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "1. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 10, "is_tatil": false, "ay": "KASIM", "tarih_metni": "23-27 Kasım 2026", "start_date": "2026-11-23", "end_date": "2026-11-27", "saat": 2, "konu_tam": "2.3.8. “S” Tuşunun Yazımı\n2.3.9. “C” Tuşunun Yazımı\n2.3.10. “O” Tuşunun Yazımı\n2.3.11. “D” Tuşunun Yazımı", "konu_maddeler": ["2.3.8. “S” Tuşunun Yazımı", "2.3.9. “C” Tuşunun Yazımı", "2.3.10. “O” Tuşunun Yazımı", "2.3.11. “D” Tuşunun Yazımı"], "konu_defter": "2.3.8. “S” Tuşunun Yazımı, 2.3.9. “C” Tuşunun Yazımı, 2.3.10. “O” Tuşunun Yazımı, 2.3.11. “D” Tuşunun Yazımı", "konu_defter_numarasiz": "“S” Tuşunun Yazımı, “C” Tuşunun Yazımı, “O” Tuşunun Yazımı, “D” Tuşunun Yazımı", "belirli_gun": "**24 Kasım Öğretmenler Günü**"}, {"hafta_no": 11, "is_tatil": false, "ay": "KASIM / ARALIK", "tarih_metni": "30 Kasım - 04 Aralık 2026", "start_date": "2026-11-30", "end_date": "2026-12-04", "saat": 2, "konu_tam": "2.3.12. “Z” Tuşunun Yazımı\n2.3.13. “Ç” Tuşunun Yazımı\n2.3.14. “N” Tuşunun Yazımı\n2.3.15. “Ğ” Tuşunun Yazımı", "konu_maddeler": ["2.3.12. “Z” Tuşunun Yazımı", "2.3.13. “Ç” Tuşunun Yazımı", "2.3.14. “N” Tuşunun Yazımı", "2.3.15. “Ğ” Tuşunun Yazımı"], "konu_defter": "2.3.12. “Z” Tuşunun Yazımı, 2.3.13. “Ç” Tuşunun Yazımı, 2.3.14. “N” Tuşunun Yazımı, 2.3.15. “Ğ” Tuşunun Yazımı", "konu_defter_numarasiz": "“Z” Tuşunun Yazımı, “Ç” Tuşunun Yazımı, “N” Tuşunun Yazımı, “Ğ” Tuşunun Yazımı", "belirli_gun": ""}, {"hafta_no": 12, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "07-11 Aralık 2026", "start_date": "2026-12-07", "end_date": "2026-12-11", "saat": 2, "konu_tam": "2.3.16. “V” Tuşunun Yazımı\n2.3.17. “B” Tuşunun Yazımı\n2.3.18. “G” Tuşunun Yazımı\n2.3.19 “H” Tuşunun Yazımı", "konu_maddeler": ["2.3.16. “V” Tuşunun Yazımı", "2.3.17. “B” Tuşunun Yazımı", "2.3.18. “G” Tuşunun Yazımı", "2.3.19 “H” Tuşunun Yazımı"], "konu_defter": "2.3.16. “V” Tuşunun Yazımı, 2.3.17. “B” Tuşunun Yazımı, 2.3.18. “G” Tuşunun Yazımı, 2.3.19 “H” Tuşunun Yazımı", "konu_defter_numarasiz": "“V” Tuşunun Yazımı, “B” Tuşunun Yazımı, “G” Tuşunun Yazımı, “H” Tuşunun Yazımı", "belirli_gun": ""}, {"hafta_no": 13, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "14-18 Aralık 2026", "start_date": "2026-12-14", "end_date": "2026-12-18", "saat": 2, "konu_tam": "2.3.20. “Ö” Tuşunun Yazımı\n2.3.21. “F” Tuşunun Yazımı\n2.3.22. “P” Tuşunun Yazımı\n2.3.23. “J” Tuşunun Yazımı\n2.3.24. X” Tuşunun Yazımı\n2.3.25. “Q” Tuşunun Yazımı\n2.3.26. “W” Tuşunun Yazımı", "konu_maddeler": ["2.3.20. “Ö” Tuşunun Yazımı", "2.3.21. “F” Tuşunun Yazımı", "2.3.22. “P” Tuşunun Yazımı", "2.3.23. “J” Tuşunun Yazımı", "2.3.24. X” Tuşunun Yazımı", "2.3.25. “Q” Tuşunun Yazımı", "2.3.26. “W” Tuşunun Yazımı"], "konu_defter": "2.3.20. “Ö” Tuşunun Yazımı, 2.3.21. “F” Tuşunun Yazımı, 2.3.22. “P” Tuşunun Yazımı, 2.3.23. “J” Tuşunun Yazımı, 2.3.24. X” Tuşunun Yazımı, 2.3.25. “Q” Tuşunun Yazımı, 2.3.26. “W” Tuşunun Yazımı", "konu_defter_numarasiz": "“Ö” Tuşunun Yazımı, “F” Tuşunun Yazımı, “P” Tuşunun Yazımı, “J” Tuşunun Yazımı, X” Tuşunun Yazımı, “Q” Tuşunun Yazımı, “W” Tuşunun Yazımı", "belirli_gun": "**Tutum, Yatırım ve Türk Malları Haftası (12-18 Aralık)**"}, {"hafta_no": 14, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "21-25 Aralık 2026", "start_date": "2026-12-21", "end_date": "2026-12-25", "saat": 2, "konu_tam": "2.4. NOKTALAMA İŞARETLERİ VE ÖZEL TUŞLAR\n2.4.1. İki Nokta İşareti Tuşunun Yazımı\n2.4.2. Noktalı Virgül Tuşunun Yazımı\n2.4.3. Soru İşareti Tuşunun Yazımı\n2.4.4. Ünlem İşareti Tuşunun Yazımı\n2.4.5. Parantez (Ayraç) İşareti Tuşunun Yazımı", "konu_maddeler": ["2.4. NOKTALAMA İŞARETLERİ VE ÖZEL TUŞLAR", "2.4.1. İki Nokta İşareti Tuşunun Yazımı", "2.4.2. Noktalı Virgül Tuşunun Yazımı", "2.4.3. Soru İşareti Tuşunun Yazımı", "2.4.4. Ünlem İşareti Tuşunun Yazımı", "2.4.5. Parantez (Ayraç) İşareti Tuşunun Yazımı"], "konu_defter": "2.4. NOKTALAMA İŞARETLERİ VE ÖZEL TUŞLAR, 2.4.1. İki Nokta İşareti Tuşunun Yazımı, 2.4.2. Noktalı Virgül Tuşunun Yazımı, 2.4.3. Soru İşareti Tuşunun Yazımı, 2.4.4. Ünlem İşareti Tuşunun Yazımı, 2.4.5. Parantez (Ayraç) İşareti Tuşunun Yazımı", "konu_defter_numarasiz": "NOKTALAMA İŞARETLERİ VE ÖZEL TUŞLAR, İki Nokta İşareti Tuşunun Yazımı, Noktalı Virgül Tuşunun Yazımı, Soru İşareti Tuşunun Yazımı, Ünlem İşareti Tuşunun Yazımı, Parantez (Ayraç) İşareti Tuşunun Yazımı", "belirli_gun": ""}, {"hafta_no": 15, "is_tatil": false, "ay": "ARALIK / OCAK", "tarih_metni": "28 Aralık 2026 - 01 Ocak 2027", "start_date": "2026-12-28", "end_date": "2027-01-01", "saat": 2, "konu_tam": "2.4.6. Kesme İşareti Tuşunun Yazımı\n2.4.7. Tırnak İşareti Tuşunun Yazımı\n2.4.8. Kısa Çizgi Tuşunun Yazımı\n2.4.9. Düzeltme İşareti Tuşunun Yazımı", "konu_maddeler": ["2.4.6. Kesme İşareti Tuşunun Yazımı", "2.4.7. Tırnak İşareti Tuşunun Yazımı", "2.4.8. Kısa Çizgi Tuşunun Yazımı", "2.4.9. Düzeltme İşareti Tuşunun Yazımı"], "konu_defter": "2.4.6. Kesme İşareti Tuşunun Yazımı, 2.4.7. Tırnak İşareti Tuşunun Yazımı, 2.4.8. Kısa Çizgi Tuşunun Yazımı, 2.4.9. Düzeltme İşareti Tuşunun Yazımı", "konu_defter_numarasiz": "Kesme İşareti Tuşunun Yazımı, Tırnak İşareti Tuşunun Yazımı, Kısa Çizgi Tuşunun Yazımı, Düzeltme İşareti Tuşunun Yazımı", "belirli_gun": "**Yılbaşı Tatili (1 Ocak 2027)**"}, {"hafta_no": 16, "is_tatil": false, "ay": "OCAK", "tarih_metni": "04-08 Ocak 2027", "start_date": "2027-01-04", "end_date": "2027-01-08", "saat": 2, "konu_tam": "2.5. RAKAM TUŞLARI\n2.5.1. “0” Rakam Tuşunun Yazımı\n2.5.2. ‘’1’’ Rakam Tuşunun Yazımı\n2.5.3. “2” Rakam Tuşunun Yazımı\n2.5.4. “3” Rakam Tuşunun Yazımı\n2.5.5. “4” Rakam Tuşunun Yazımı", "konu_maddeler": ["2.5. RAKAM TUŞLARI", "2.5.1. “0” Rakam Tuşunun Yazımı", "2.5.2. ‘’1’’ Rakam Tuşunun Yazımı", "2.5.3. “2” Rakam Tuşunun Yazımı", "2.5.4. “3” Rakam Tuşunun Yazımı", "2.5.5. “4” Rakam Tuşunun Yazımı"], "konu_defter": "2.5. RAKAM TUŞLARI, 2.5.1. “0” Rakam Tuşunun Yazımı, 2.5.2. ‘’1’’ Rakam Tuşunun Yazımı, 2.5.3. “2” Rakam Tuşunun Yazımı, 2.5.4. “3” Rakam Tuşunun Yazımı, 2.5.5. “4” Rakam Tuşunun Yazımı", "konu_defter_numarasiz": "RAKAM TUŞLARI, “0” Rakam Tuşunun Yazımı, ‘’1’’ Rakam Tuşunun Yazımı, “2” Rakam Tuşunun Yazımı, “3” Rakam Tuşunun Yazımı, “4” Rakam Tuşunun Yazımı", "belirli_gun": "**Enerji Tasarrufu Haftası (Ocak 2. haftası)**"}, {"hafta_no": 17, "is_tatil": false, "ay": "OCAK", "tarih_metni": "11-15 Ocak 2027", "start_date": "2027-01-11", "end_date": "2027-01-15", "saat": 2, "konu_tam": "2.5.6. “5” Rakam Tuşunun Yazımı\n2.5.7. “6” Rakam Tuşunun Yazımı\n2.5.8. “7” Rakam Tuşunun Yazımı\n2.5.9. “8” Rakam Tuşunun Yazımı\n2.5.10. “9” Rakam Tuşunun Yazımı", "konu_maddeler": ["2.5.6. “5” Rakam Tuşunun Yazımı", "2.5.7. “6” Rakam Tuşunun Yazımı", "2.5.8. “7” Rakam Tuşunun Yazımı", "2.5.9. “8” Rakam Tuşunun Yazımı", "2.5.10. “9” Rakam Tuşunun Yazımı"], "konu_defter": "2.5.6. “5” Rakam Tuşunun Yazımı, 2.5.7. “6” Rakam Tuşunun Yazımı, 2.5.8. “7” Rakam Tuşunun Yazımı, 2.5.9. “8” Rakam Tuşunun Yazımı, 2.5.10. “9” Rakam Tuşunun Yazımı", "konu_defter_numarasiz": "“5” Rakam Tuşunun Yazımı, “6” Rakam Tuşunun Yazımı, “7” Rakam Tuşunun Yazımı, “8” Rakam Tuşunun Yazımı, “9” Rakam Tuşunun Yazımı", "belirli_gun": ""}, {"hafta_no": 18, "is_tatil": false, "ay": "OCAK", "tarih_metni": "18-22 Ocak 2027", "start_date": "2027-01-18", "end_date": "2027-01-22", "saat": 2, "konu_tam": "1. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_maddeler": ["1. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ"], "konu_defter": "1. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_defter_numarasiz": "DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "belirli_gun": "**1. Dönem Sonu (22 Ocak 2027 Cuma)**"}, {"hafta_no": null, "is_tatil": true, "ay": "OCAK / ŞUBAT", "tarih_metni": "25 Ocak - 05 Şubat 2027", "start_date": "2027-01-25", "end_date": "2027-02-05", "tatil_adi": "YARIYIL TATİLİ (15 TATİL)", "konu_tam": "YARIYIL TATİLİ (15 TATİL)", "konu_maddeler": ["YARIYIL TATİLİ (15 TATİL)"], "konu_defter": "YARIYIL TATİLİ (15 TATİL)", "konu_defter_numarasiz": "YARIYIL TATİLİ (15 TATİL)", "belirli_gun": ""}, {"hafta_no": 19, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "08-12 Şubat 2027", "start_date": "2027-02-08", "end_date": "2027-02-12", "saat": 2, "konu_tam": "3. ÖĞRENME BİRİMİ: SÜRELİ METİN ÇALIŞMALARI\n3.1. SÖZCÜK VE CÜMLE ÇALIŞMALARI\n3.1.1. Düzensiz Sözcük Çalışmaları", "konu_maddeler": ["3. ÖĞRENME BİRİMİ: SÜRELİ METİN ÇALIŞMALARI", "3.1. SÖZCÜK VE CÜMLE ÇALIŞMALARI", "3.1.1. Düzensiz Sözcük Çalışmaları"], "konu_defter": "3.1. SÖZCÜK VE CÜMLE ÇALIŞMALARI, 3.1.1. Düzensiz Sözcük Çalışmaları", "konu_defter_numarasiz": "SÖZCÜK VE CÜMLE ÇALIŞMALARI, Düzensiz Sözcük Çalışmaları", "belirli_gun": "**2. Dönem Başlangıcı (8 Şubat 2027)**"}, {"hafta_no": 20, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "15-19 Şubat 2027", "start_date": "2027-02-15", "end_date": "2027-02-19", "saat": 2, "konu_tam": "3.1.2. Harften Sözcüğe Ulaşma Çalışmaları\n3.1.3. Heceden Sözcüğe Ulaşma Çalışmaları", "konu_maddeler": ["3.1.2. Harften Sözcüğe Ulaşma Çalışmaları", "3.1.3. Heceden Sözcüğe Ulaşma Çalışmaları"], "konu_defter": "3.1.2. Harften Sözcüğe Ulaşma Çalışmaları, 3.1.3. Heceden Sözcüğe Ulaşma Çalışmaları", "konu_defter_numarasiz": "Harften Sözcüğe Ulaşma Çalışmaları, Heceden Sözcüğe Ulaşma Çalışmaları", "belirli_gun": ""}, {"hafta_no": 21, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "22-26 Şubat 2027", "start_date": "2027-02-22", "end_date": "2027-02-26", "saat": 2, "konu_tam": "3.1.4. Kısa Metinlerle Çalışmalar\n3.1.5. F Klavye Kullanıcısı Olmanın Önemi ve İş Hayatındaki Yararları", "konu_maddeler": ["3.1.4. Kısa Metinlerle Çalışmalar", "3.1.5. F Klavye Kullanıcısı Olmanın Önemi ve İş Hayatındaki Yararları"], "konu_defter": "3.1.4. Kısa Metinlerle Çalışmalar, 3.1.5. F Klavye Kullanıcısı Olmanın Önemi ve İş Hayatındaki Yararları", "konu_defter_numarasiz": "Kısa Metinlerle Çalışmalar, F Klavye Kullanıcısı Olmanın Önemi ve İş Hayatındaki Yararları", "belirli_gun": "**Vergi Haftası (Şubatın son haftası)**"}, {"hafta_no": 22, "is_tatil": false, "ay": "MART", "tarih_metni": "01-05 Mart 2027", "start_date": "2027-03-01", "end_date": "2027-03-05", "saat": 2, "konu_tam": "3.2. SÖZCÜK (KELİME) SAYIMI\nHIZ TESTİ DEĞERLENDİRMESİ", "konu_maddeler": ["3.2. SÖZCÜK (KELİME) SAYIMI", "HIZ TESTİ DEĞERLENDİRMESİ"], "konu_defter": "3.2. SÖZCÜK (KELİME) SAYIMI, HIZ TESTİ DEĞERLENDİRMESİ", "konu_defter_numarasiz": "SÖZCÜK (KELİME) SAYIMI, HIZ TESTİ DEĞERLENDİRMESİ", "belirli_gun": "**Yeşilay Haftası (1-7 Mart) / Girişimcilik Haftası**"}, {"hafta_no": null, "is_tatil": true, "ay": "MART", "tarih_metni": "08 - 12 Mart 2027", "start_date": "2027-03-08", "end_date": "2027-03-12", "tatil_adi": "2. DÖNEM ARA TATİLİ", "konu_tam": "2. DÖNEM ARA TATİLİ", "konu_maddeler": ["2. DÖNEM ARA TATİLİ"], "konu_defter": "2. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "2. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 23, "is_tatil": false, "ay": "MART", "tarih_metni": "15-19 Mart 2027", "start_date": "2027-03-15", "end_date": "2027-03-19", "saat": 2, "konu_tam": "3.3. METİNLERLE ÇALIŞMAK\n3.3.1. Tekerleme Metinleri ile Süreli Çalışmalar", "konu_maddeler": ["3.3. METİNLERLE ÇALIŞMAK", "3.3.1. Tekerleme Metinleri ile Süreli Çalışmalar"], "konu_defter": "3.3. METİNLERLE ÇALIŞMAK, 3.3.1. Tekerleme Metinleri ile Süreli Çalışmalar", "konu_defter_numarasiz": "METİNLERLE ÇALIŞMAK, Tekerleme Metinleri ile Süreli Çalışmalar", "belirli_gun": "**12 Mart İstiklâl Marşı'nın Kabulü / 18 Mart Çanakkale Zaferi**\n**Atatürk'ün Askerî Dehası, Vatan ve Millet Sevgisi**"}, {"hafta_no": 24, "is_tatil": false, "ay": "MART", "tarih_metni": "22-26 Mart 2027", "start_date": "2027-03-22", "end_date": "2027-03-26", "saat": 2, "konu_tam": "3.3.2. Atasözleri İle Süreli Metin Çalışmaları", "konu_maddeler": ["3.3.2. Atasözleri İle Süreli Metin Çalışmaları"], "konu_defter": "3.3.2. Atasözleri İle Süreli Metin Çalışmaları", "konu_defter_numarasiz": "Atasözleri İle Süreli Metin Çalışmaları", "belirli_gun": "**Orman Haftası (21-26 Mart)**"}, {"hafta_no": 25, "is_tatil": false, "ay": "MART / NİSAN", "tarih_metni": "29 Mart - 02 Nisan 2027", "start_date": "2027-03-29", "end_date": "2027-04-02", "saat": 2, "konu_tam": "3.3.3. Süreli Şiir Çalışmaları", "konu_maddeler": ["3.3.3. Süreli Şiir Çalışmaları"], "konu_defter": "3.3.3. Süreli Şiir Çalışmaları", "konu_defter_numarasiz": "Süreli Şiir Çalışmaları", "belirli_gun": "**Kütüphaneler Haftası (Mart son haftası)**"}, {"hafta_no": 26, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "05-09 Nisan 2027", "start_date": "2027-04-05", "end_date": "2027-04-09", "saat": 2, "konu_tam": "3.3.4. Metinlerle 3 Dakikalık Çalışmalar", "konu_maddeler": ["3.3.4. Metinlerle 3 Dakikalık Çalışmalar"], "konu_defter": "3.3.4. Metinlerle 3 Dakikalık Çalışmalar", "konu_defter_numarasiz": "Metinlerle 3 Dakikalık Çalışmalar", "belirli_gun": ""}, {"hafta_no": 27, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "12-16 Nisan 2027", "start_date": "2027-04-12", "end_date": "2027-04-16", "saat": 2, "konu_tam": "3.3.4. Metinlerle 3 Dakikalık Çalışmalar", "konu_maddeler": ["3.3.4. Metinlerle 3 Dakikalık Çalışmalar"], "konu_defter": "3.3.4. Metinlerle 3 Dakikalık Çalışmalar", "konu_defter_numarasiz": "Metinlerle 3 Dakikalık Çalışmalar", "belirli_gun": "**Turizm Haftası (15-22 Nisan)**"}, {"hafta_no": 28, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "19-23 Nisan 2027", "start_date": "2027-04-19", "end_date": "2027-04-23", "saat": 2, "konu_tam": "3.3.5. Uzun Metinlerle 5 Dakikalık Çalışmalar", "konu_maddeler": ["3.3.5. Uzun Metinlerle 5 Dakikalık Çalışmalar"], "konu_defter": "3.3.5. Uzun Metinlerle 5 Dakikalık Çalışmalar", "konu_defter_numarasiz": "Uzun Metinlerle 5 Dakikalık Çalışmalar", "belirli_gun": "**23 Nisan Ulusal Egemenlik ve Çocuk Bayramı**\n**TBMM'nin Açılışı, Millî Egemenlik ve Halkçılık İlkesi**"}, {"hafta_no": 29, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "26-30 Nisan 2027", "start_date": "2027-04-26", "end_date": "2027-04-30", "saat": 2, "konu_tam": "3.3.5. Uzun Metinlerle 5 Dakikalık Çalışmalar", "konu_maddeler": ["3.3.5. Uzun Metinlerle 5 Dakikalık Çalışmalar"], "konu_defter": "3.3.5. Uzun Metinlerle 5 Dakikalık Çalışmalar", "konu_defter_numarasiz": "Uzun Metinlerle 5 Dakikalık Çalışmalar", "belirli_gun": ""}, {"hafta_no": 30, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "03-07 Mayıs 2027", "start_date": "2027-05-03", "end_date": "2027-05-07", "saat": 2, "konu_tam": "3.3.6. Uzun Metinlerle 10 Dakikalık Çalışmalar", "konu_maddeler": ["3.3.6. Uzun Metinlerle 10 Dakikalık Çalışmalar"], "konu_defter": "3.3.6. Uzun Metinlerle 10 Dakikalık Çalışmalar", "konu_defter_numarasiz": "Uzun Metinlerle 10 Dakikalık Çalışmalar", "belirli_gun": "**Bilişim Haftası (Mayıs 1. haftası) / Trafik ve İlkyardım Haftası**"}, {"hafta_no": 31, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "10-14 Mayıs 2027", "start_date": "2027-05-10", "end_date": "2027-05-14", "saat": 2, "konu_tam": "3.3.6. Uzun Metinlerle 10 Dakikalık Çalışmalar", "konu_maddeler": ["3.3.6. Uzun Metinlerle 10 Dakikalık Çalışmalar"], "konu_defter": "3.3.6. Uzun Metinlerle 10 Dakikalık Çalışmalar", "konu_defter_numarasiz": "Uzun Metinlerle 10 Dakikalık Çalışmalar", "belirli_gun": "**Engelliler Haftası (10-16 Mayıs)**"}, {"hafta_no": 32, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "17-21 Mayıs 2027", "start_date": "2027-05-17", "end_date": "2027-05-21", "saat": 2, "konu_tam": "3.3.7. Uzun Metinlerle Süresiz Çalışmalar", "konu_maddeler": ["3.3.7. Uzun Metinlerle Süresiz Çalışmalar"], "konu_defter": "3.3.7. Uzun Metinlerle Süresiz Çalışmalar", "konu_defter_numarasiz": "Uzun Metinlerle Süresiz Çalışmalar", "belirli_gun": "**19 Mayıs Atatürk'ü Anma, Gençlik ve Spor Bayramı**\n**Millî Mücadele ve Atatürk'ün Gençliğe Verdiği Önem**"}, {"hafta_no": 33, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "24-28 Mayıs 2027", "start_date": "2027-05-24", "end_date": "2027-05-28", "saat": 2, "konu_tam": "3.3.7. Uzun Metinlerle Süresiz Çalışmalar", "konu_maddeler": ["3.3.7. Uzun Metinlerle Süresiz Çalışmalar"], "konu_defter": "3.3.7. Uzun Metinlerle Süresiz Çalışmalar", "konu_defter_numarasiz": "Uzun Metinlerle Süresiz Çalışmalar", "belirli_gun": ""}, {"hafta_no": 34, "is_tatil": false, "ay": "MAYIS / HAZİRAN", "tarih_metni": "31 Mayıs - 04 Haziran 2027", "start_date": "2027-05-31", "end_date": "2027-06-04", "saat": 2, "konu_tam": "3.3.8. Hukuki ve Adli Metinlerle Çalışmalar", "konu_maddeler": ["3.3.8. Hukuki ve Adli Metinlerle Çalışmalar"], "konu_defter": "3.3.8. Hukuki ve Adli Metinlerle Çalışmalar", "konu_defter_numarasiz": "Hukuki ve Adli Metinlerle Çalışmalar", "belirli_gun": ""}, {"hafta_no": 35, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "07-11 Haziran 2027", "start_date": "2027-06-07", "end_date": "2027-06-11", "saat": 2, "konu_tam": "3.3.8. Hukuki ve Adli Metinlerle Çalışmalar", "konu_maddeler": ["3.3.8. Hukuki ve Adli Metinlerle Çalışmalar"], "konu_defter": "3.3.8. Hukuki ve Adli Metinlerle Çalışmalar", "konu_defter_numarasiz": "Hukuki ve Adli Metinlerle Çalışmalar", "belirli_gun": "**Çevre Koruma Haftası (Haziran 2. haftası)**"}, {"hafta_no": 36, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "14-18 Haziran 2027", "start_date": "2027-06-14", "end_date": "2027-06-18", "saat": 2, "konu_tam": "3.3.8. Hukuki ve Adli Metinlerle Çalışmalar", "konu_maddeler": ["3.3.8. Hukuki ve Adli Metinlerle Çalışmalar"], "konu_defter": "3.3.8. Hukuki ve Adli Metinlerle Çalışmalar", "konu_defter_numarasiz": "Hukuki ve Adli Metinlerle Çalışmalar", "belirli_gun": ""}, {"hafta_no": 37, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "21-25 Haziran 2027", "start_date": "2027-06-21", "end_date": "2027-06-25", "saat": 2, "konu_tam": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_maddeler": ["2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ"], "konu_defter": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_defter_numarasiz": "DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "belirli_gun": "**Ders Yılının Sona Ermesi (25 Haziran 2027)**"}]}, {"id": "maliyet_11", "sinif": "11. Sınıf", "ad": "Maliyet Muhasebesi", "kisa_ad": "Maliyet Muhasebesi", "saat": 2, "renk": "#dc2626", "ikon": "💰", "weeks": [{"hafta_no": 1, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "14-18 Eylül 2026", "start_date": "2026-09-14", "end_date": "2026-09-18", "saat": 2, "konu_tam": "1. ÖĞRENME BİRİMİ: ÜRÜN (MAMUL) VE HİZMET MALİYETİ\n1.1. STOK KARTI DÜZENLEMEK\n1.1.1. Maliyet Muhasebesinin Amacı\n1.1.2. Maliyet Muhasebesi ve Finansal Muhasebe Arasındaki Fark\n1.1.3. Maliyet Muhasebesinde Kullanılan Temel Kavramlar", "konu_maddeler": ["1. ÖĞRENME BİRİMİ: ÜRÜN (MAMUL) VE HİZMET MALİYETİ", "1.1. STOK KARTI DÜZENLEMEK", "1.1.1. Maliyet Muhasebesinin Amacı", "1.1.2. Maliyet Muhasebesi ve Finansal Muhasebe Arasındaki Fark", "1.1.3. Maliyet Muhasebesinde Kullanılan Temel Kavramlar"], "konu_defter": "1.1. STOK KARTI DÜZENLEMEK, 1.1.1. Maliyet Muhasebesinin Amacı, 1.1.2. Maliyet Muhasebesi ve Finansal Muhasebe Arasındaki Fark, 1.1.3. Maliyet Muhasebesinde Kullanılan Temel Kavramlar", "konu_defter_numarasiz": "STOK KARTI DÜZENLEMEK, Maliyet Muhasebesinin Amacı, Maliyet Muhasebesi ve Finansal Muhasebe Arasındaki Fark, Maliyet Muhasebesinde Kullanılan Temel Kavramlar", "belirli_gun": ""}, {"hafta_no": 2, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "21-25 Eylül 2026", "start_date": "2026-09-21", "end_date": "2026-09-25", "saat": 2, "konu_tam": "1.1.4. Harcama, Gider ve Maliyet Kavramlarının Birbirleriyle İlişkisi\n1.1.4.1. Harcama ve Gider Arasındaki İlişki\n1.1.4.2. Gider ve Maliyet Arasındaki İlişki\n1.1.4.3. Maliyet ve Harcama Arasındaki İlişki", "konu_maddeler": ["1.1.4. Harcama, Gider ve Maliyet Kavramlarının Birbirleriyle İlişkisi", "1.1.4.1. Harcama ve Gider Arasındaki İlişki", "1.1.4.2. Gider ve Maliyet Arasındaki İlişki", "1.1.4.3. Maliyet ve Harcama Arasındaki İlişki"], "konu_defter": "1.1.4. Harcama, Gider ve Maliyet Kavramlarının Birbirleriyle İlişkisi, 1.1.4.1. Harcama ve Gider Arasındaki İlişki, 1.1.4.2. Gider ve Maliyet Arasındaki İlişki, 1.1.4.3. Maliyet ve Harcama Arasındaki İlişki", "konu_defter_numarasiz": "Harcama, Gider ve Maliyet Kavramlarının Birbirleriyle İlişkisi, Harcama ve Gider Arasındaki İlişki, Gider ve Maliyet Arasındaki İlişki, Maliyet ve Harcama Arasındaki İlişki", "belirli_gun": "**Ahilik Kültürü Haftası**"}, {"hafta_no": 3, "is_tatil": false, "ay": "EYLÜL / EKİM", "tarih_metni": "28 Eylül - 02 Ekim 2026", "start_date": "2026-09-28", "end_date": "2026-10-02", "saat": 2, "konu_tam": "1.1.5. Giderlerin Sınıflandırılması\n1.1.5.1. Giderlerin Çeşitlerine Göre Sınıflandırılması", "konu_maddeler": ["1.1.5. Giderlerin Sınıflandırılması", "1.1.5.1. Giderlerin Çeşitlerine Göre Sınıflandırılması"], "konu_defter": "1.1.5. Giderlerin Sınıflandırılması, 1.1.5.1. Giderlerin Çeşitlerine Göre Sınıflandırılması", "konu_defter_numarasiz": "Giderlerin Sınıflandırılması, Giderlerin Çeşitlerine Göre Sınıflandırılması", "belirli_gun": ""}, {"hafta_no": 4, "is_tatil": false, "ay": "EKİM", "tarih_metni": "05-09 Ekim 2026", "start_date": "2026-10-05", "end_date": "2026-10-09", "saat": 2, "konu_tam": "1.1.5.2. Giderlerin İşletme Fonksiyonlarına Göre Sınıflandırılması\n1.1.5.3. Giderlerin Mamullere Yüklenmesine Göre Sınıflandırılması", "konu_maddeler": ["1.1.5.2. Giderlerin İşletme Fonksiyonlarına Göre Sınıflandırılması", "1.1.5.3. Giderlerin Mamullere Yüklenmesine Göre Sınıflandırılması"], "konu_defter": "1.1.5.2. Giderlerin İşletme Fonksiyonlarına Göre Sınıflandırılması, 1.1.5.3. Giderlerin Mamullere Yüklenmesine Göre Sınıflandırılması", "konu_defter_numarasiz": "Giderlerin İşletme Fonksiyonlarına Göre Sınıflandırılması, Giderlerin Mamullere Yüklenmesine Göre Sınıflandırılması", "belirli_gun": ""}, {"hafta_no": 5, "is_tatil": false, "ay": "EKİM", "tarih_metni": "12-16 Ekim 2026", "start_date": "2026-10-12", "end_date": "2026-10-16", "saat": 2, "konu_tam": "1.1.5.4. Giderlerin Faaliyet Hacmiyle İlişkilerine Göre Sınıflandırılması\n1.1.6. Maliyet Hesaplama Yöntemleri", "konu_maddeler": ["1.1.5.4. Giderlerin Faaliyet Hacmiyle İlişkilerine Göre Sınıflandırılması", "1.1.6. Maliyet Hesaplama Yöntemleri"], "konu_defter": "1.1.5.4. Giderlerin Faaliyet Hacmiyle İlişkilerine Göre Sınıflandırılması, 1.1.6. Maliyet Hesaplama Yöntemleri", "konu_defter_numarasiz": "Giderlerin Faaliyet Hacmiyle İlişkilerine Göre Sınıflandırılması, Maliyet Hesaplama Yöntemleri", "belirli_gun": ""}, {"hafta_no": 6, "is_tatil": false, "ay": "EKİM", "tarih_metni": "19-23 Ekim 2026", "start_date": "2026-10-19", "end_date": "2026-10-23", "saat": 2, "konu_tam": "1.1.7. Gider Çeşitlerinin İşletme Fonksiyonlarına Dağıtılması", "konu_maddeler": ["1.1.7. Gider Çeşitlerinin İşletme Fonksiyonlarına Dağıtılması"], "konu_defter": "1.1.7. Gider Çeşitlerinin İşletme Fonksiyonlarına Dağıtılması", "konu_defter_numarasiz": "Gider Çeşitlerinin İşletme Fonksiyonlarına Dağıtılması", "belirli_gun": ""}, {"hafta_no": 7, "is_tatil": false, "ay": "EKİM", "tarih_metni": "26-30 Ekim 2026", "start_date": "2026-10-26", "end_date": "2026-10-30", "saat": 2, "konu_tam": "1.1.8. Üretim Maliyeti ve Unsurları\n1.1.8.1. İlk Madde ve Malzeme Giderleri", "konu_maddeler": ["1.1.8. Üretim Maliyeti ve Unsurları", "1.1.8.1. İlk Madde ve Malzeme Giderleri"], "konu_defter": "1.1.8. Üretim Maliyeti ve Unsurları, 1.1.8.1. İlk Madde ve Malzeme Giderleri", "konu_defter_numarasiz": "Üretim Maliyeti ve Unsurları, İlk Madde ve Malzeme Giderleri", "belirli_gun": "**29 Ekim Cumhuriyet Bayramı**\n**Cumhuriyetçilik İlkesi ve Cumhuriyetin Önemi**"}, {"hafta_no": 8, "is_tatil": false, "ay": "KASIM", "tarih_metni": "02-06 Kasım 2026", "start_date": "2026-11-02", "end_date": "2026-11-06", "saat": 2, "konu_tam": "1.1.8.2. İşçi Ücret ve Giderleri", "konu_maddeler": ["1.1.8.2. İşçi Ücret ve Giderleri"], "konu_defter": "1.1.8.2. İşçi Ücret ve Giderleri", "konu_defter_numarasiz": "İşçi Ücret ve Giderleri", "belirli_gun": ""}, {"hafta_no": 9, "is_tatil": false, "ay": "KASIM", "tarih_metni": "09-13 Kasım 2026", "start_date": "2026-11-09", "end_date": "2026-11-13", "saat": 2, "konu_tam": "1.1.8.3. Genel Üretim Giderleri", "konu_maddeler": ["1.1.8.3. Genel Üretim Giderleri"], "konu_defter": "1.1.8.3. Genel Üretim Giderleri", "konu_defter_numarasiz": "Genel Üretim Giderleri", "belirli_gun": "**10 Kasım Atatürk'ü Anma Günü ve Atatürk Haftası**\n**Atatürk'ün Hayatı, Eserleri ve Atatürkçü Düşünce Sistemi**"}, {"hafta_no": null, "is_tatil": true, "ay": "KASIM", "tarih_metni": "16 - 20 Kasım 2026", "start_date": "2026-11-16", "end_date": "2026-11-20", "tatil_adi": "1. DÖNEM ARA TATİLİ", "konu_tam": "1. DÖNEM ARA TATİLİ", "konu_maddeler": ["1. DÖNEM ARA TATİLİ"], "konu_defter": "1. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "1. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 10, "is_tatil": false, "ay": "KASIM", "tarih_metni": "23-27 Kasım 2026", "start_date": "2026-11-23", "end_date": "2026-11-27", "saat": 2, "konu_tam": "1.2. GİDER DAĞITIMI YAPMAK\n1.2.1. Gider Yeri Kavramı", "konu_maddeler": ["1.2. GİDER DAĞITIMI YAPMAK", "1.2.1. Gider Yeri Kavramı"], "konu_defter": "1.2. GİDER DAĞITIMI YAPMAK, 1.2.1. Gider Yeri Kavramı", "konu_defter_numarasiz": "GİDER DAĞITIMI YAPMAK, Gider Yeri Kavramı", "belirli_gun": "**24 Kasım Öğretmenler Günü**"}, {"hafta_no": 11, "is_tatil": false, "ay": "KASIM / ARALIK", "tarih_metni": "30 Kasım - 04 Aralık 2026", "start_date": "2026-11-30", "end_date": "2026-12-04", "saat": 2, "konu_tam": "1.2.2. Gider Dağıtımı\n1.2.2.1. Giderlerin Birinci Dağıtımı", "konu_maddeler": ["1.2.2. Gider Dağıtımı", "1.2.2.1. Giderlerin Birinci Dağıtımı"], "konu_defter": "1.2.2. Gider Dağıtımı, 1.2.2.1. Giderlerin Birinci Dağıtımı", "konu_defter_numarasiz": "Gider Dağıtımı, Giderlerin Birinci Dağıtımı", "belirli_gun": ""}, {"hafta_no": 12, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "07-11 Aralık 2026", "start_date": "2026-12-07", "end_date": "2026-12-11", "saat": 2, "konu_tam": "1.2.2.2. Giderlerin İkinci Dağıtımı", "konu_maddeler": ["1.2.2.2. Giderlerin İkinci Dağıtımı"], "konu_defter": "1.2.2.2. Giderlerin İkinci Dağıtımı", "konu_defter_numarasiz": "Giderlerin İkinci Dağıtımı", "belirli_gun": ""}, {"hafta_no": 13, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "14-18 Aralık 2026", "start_date": "2026-12-14", "end_date": "2026-12-18", "saat": 2, "konu_tam": "1.2.2.2. Giderlerin İkinci Dağıtımı", "konu_maddeler": ["1.2.2.2. Giderlerin İkinci Dağıtımı"], "konu_defter": "1.2.2.2. Giderlerin İkinci Dağıtımı", "konu_defter_numarasiz": "Giderlerin İkinci Dağıtımı", "belirli_gun": "**Tutum, Yatırım ve Türk Malları Haftası (12-18 Aralık)**"}, {"hafta_no": 14, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "21-25 Aralık 2026", "start_date": "2026-12-21", "end_date": "2026-12-25", "saat": 2, "konu_tam": "1.2.2.2. Giderlerin İkinci Dağıtımı", "konu_maddeler": ["1.2.2.2. Giderlerin İkinci Dağıtımı"], "konu_defter": "1.2.2.2. Giderlerin İkinci Dağıtımı", "konu_defter_numarasiz": "Giderlerin İkinci Dağıtımı", "belirli_gun": ""}, {"hafta_no": 15, "is_tatil": false, "ay": "ARALIK / OCAK", "tarih_metni": "28 Aralık 2026 - 01 Ocak 2027", "start_date": "2026-12-28", "end_date": "2027-01-01", "saat": 2, "konu_tam": "1.3. BİRİM MALİYETİ HESAPLAMAK\n1.3.1. Giderlerin Üçüncü Dağıtımı", "konu_maddeler": ["1.3. BİRİM MALİYETİ HESAPLAMAK", "1.3.1. Giderlerin Üçüncü Dağıtımı"], "konu_defter": "1.3. BİRİM MALİYETİ HESAPLAMAK, 1.3.1. Giderlerin Üçüncü Dağıtımı", "konu_defter_numarasiz": "BİRİM MALİYETİ HESAPLAMAK, Giderlerin Üçüncü Dağıtımı", "belirli_gun": "**Yılbaşı Tatili (1 Ocak 2027)**"}, {"hafta_no": 16, "is_tatil": false, "ay": "OCAK", "tarih_metni": "04-08 Ocak 2027", "start_date": "2027-01-04", "end_date": "2027-01-08", "saat": 2, "konu_tam": "1.3.2. Üretim İşletmeleri İçin Üretim Maliyeti ve Birim Maliyet", "konu_maddeler": ["1.3.2. Üretim İşletmeleri İçin Üretim Maliyeti ve Birim Maliyet"], "konu_defter": "1.3.2. Üretim İşletmeleri İçin Üretim Maliyeti ve Birim Maliyet", "konu_defter_numarasiz": "Üretim İşletmeleri İçin Üretim Maliyeti ve Birim Maliyet", "belirli_gun": "**Enerji Tasarrufu Haftası (Ocak 2. haftası)**"}, {"hafta_no": 17, "is_tatil": false, "ay": "OCAK", "tarih_metni": "11-15 Ocak 2027", "start_date": "2027-01-11", "end_date": "2027-01-15", "saat": 2, "konu_tam": "1.3.3. Satışların Maliyeti Tablosu", "konu_maddeler": ["1.3.3. Satışların Maliyeti Tablosu"], "konu_defter": "1.3.3. Satışların Maliyeti Tablosu", "konu_defter_numarasiz": "Satışların Maliyeti Tablosu", "belirli_gun": ""}, {"hafta_no": 18, "is_tatil": false, "ay": "OCAK", "tarih_metni": "18-22 Ocak 2027", "start_date": "2027-01-18", "end_date": "2027-01-22", "saat": 2, "konu_tam": "1.3.4. Hizmet İşletmeleri İçin Üretim Maliyeti\n1. DÖNEMİN DEĞERLENDİRİLMESİ", "konu_maddeler": ["1.3.4. Hizmet İşletmeleri İçin Üretim Maliyeti", "1. DÖNEMİN DEĞERLENDİRİLMESİ"], "konu_defter": "1.3.4. Hizmet İşletmeleri İçin Üretim Maliyeti, 1. DÖNEMİN DEĞERLENDİRİLMESİ", "konu_defter_numarasiz": "Hizmet İşletmeleri İçin Üretim Maliyeti, DÖNEMİN DEĞERLENDİRİLMESİ", "belirli_gun": "**1. Dönem Sonu (22 Ocak 2027 Cuma)**"}, {"hafta_no": null, "is_tatil": true, "ay": "OCAK / ŞUBAT", "tarih_metni": "25 Ocak - 05 Şubat 2027", "start_date": "2027-01-25", "end_date": "2027-02-05", "tatil_adi": "YARIYIL TATİLİ (15 TATİL)", "konu_tam": "YARIYIL TATİLİ (15 TATİL)", "konu_maddeler": ["YARIYIL TATİLİ (15 TATİL)"], "konu_defter": "YARIYIL TATİLİ (15 TATİL)", "konu_defter_numarasiz": "YARIYIL TATİLİ (15 TATİL)", "belirli_gun": ""}, {"hafta_no": 19, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "08-12 Şubat 2027", "start_date": "2027-02-08", "end_date": "2027-02-12", "saat": 2, "konu_tam": "2. ÖĞRENME BİRİMİ: MALİYET KAYITLARI\n2.1. 7/A SEÇENEĞİNE GÖRE MALİYET KAYITLARINI YAPMAK\n2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları", "konu_maddeler": ["2. ÖĞRENME BİRİMİ: MALİYET KAYITLARI", "2.1. 7/A SEÇENEĞİNE GÖRE MALİYET KAYITLARINI YAPMAK", "2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları"], "konu_defter": "2.1. 7/A SEÇENEĞİNE GÖRE MALİYET KAYITLARINI YAPMAK, 2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları", "konu_defter_numarasiz": "7/A SEÇENEĞİNE GÖRE MALİYET KAYITLARINI YAPMAK, 7/A Seçeneği Gider ve Yansıtma Hesapları", "belirli_gun": "**2. Dönem Başlangıcı (8 Şubat 2027)**"}, {"hafta_no": 20, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "15-19 Şubat 2027", "start_date": "2027-02-15", "end_date": "2027-02-19", "saat": 2, "konu_tam": "2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları", "konu_maddeler": ["2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları"], "konu_defter": "2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları", "konu_defter_numarasiz": "7/A Seçeneği Gider ve Yansıtma Hesapları", "belirli_gun": ""}, {"hafta_no": 21, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "22-26 Şubat 2027", "start_date": "2027-02-22", "end_date": "2027-02-26", "saat": 2, "konu_tam": "2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları", "konu_maddeler": ["2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları"], "konu_defter": "2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları", "konu_defter_numarasiz": "7/A Seçeneği Gider ve Yansıtma Hesapları", "belirli_gun": "**Vergi Haftası (Şubatın son haftası)**"}, {"hafta_no": 22, "is_tatil": false, "ay": "MART", "tarih_metni": "01-05 Mart 2027", "start_date": "2027-03-01", "end_date": "2027-03-05", "saat": 2, "konu_tam": "2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları", "konu_maddeler": ["2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları"], "konu_defter": "2.1.1. 7/A Seçeneği Gider ve Yansıtma Hesapları", "konu_defter_numarasiz": "7/A Seçeneği Gider ve Yansıtma Hesapları", "belirli_gun": "**Yeşilay Haftası (1-7 Mart) / Girişimcilik Haftası**"}, {"hafta_no": null, "is_tatil": true, "ay": "MART", "tarih_metni": "08 - 12 Mart 2027", "start_date": "2027-03-08", "end_date": "2027-03-12", "tatil_adi": "2. DÖNEM ARA TATİLİ", "konu_tam": "2. DÖNEM ARA TATİLİ", "konu_maddeler": ["2. DÖNEM ARA TATİLİ"], "konu_defter": "2. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "2. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 23, "is_tatil": false, "ay": "MART", "tarih_metni": "15-19 Mart 2027", "start_date": "2027-03-15", "end_date": "2027-03-19", "saat": 2, "konu_tam": "2.1.2. 7/A Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "konu_maddeler": ["2.1.2. 7/A Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi"], "konu_defter": "2.1.2. 7/A Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "konu_defter_numarasiz": "7/A Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "belirli_gun": "**12 Mart İstiklâl Marşı'nın Kabulü / 18 Mart Çanakkale Zaferi**\n**Atatürk'ün Askerî Dehası, Vatan ve Millet Sevgisi**"}, {"hafta_no": 24, "is_tatil": false, "ay": "MART", "tarih_metni": "22-26 Mart 2027", "start_date": "2027-03-22", "end_date": "2027-03-26", "saat": 2, "konu_tam": "2.1.2. 7/A Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "konu_maddeler": ["2.1.2. 7/A Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi"], "konu_defter": "2.1.2. 7/A Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "konu_defter_numarasiz": "7/A Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "belirli_gun": "**Orman Haftası (21-26 Mart)**"}, {"hafta_no": 25, "is_tatil": false, "ay": "MART / NİSAN", "tarih_metni": "29 Mart - 02 Nisan 2027", "start_date": "2027-03-29", "end_date": "2027-04-02", "saat": 2, "konu_tam": "2.1.3. 7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi", "konu_maddeler": ["2.1.3. 7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi"], "konu_defter": "2.1.3. 7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi", "konu_defter_numarasiz": "7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi", "belirli_gun": "**Kütüphaneler Haftası (Mart son haftası)**"}, {"hafta_no": 26, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "05-09 Nisan 2027", "start_date": "2027-04-05", "end_date": "2027-04-09", "saat": 2, "konu_tam": "2.1.3. 7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi", "konu_maddeler": ["2.1.3. 7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi"], "konu_defter": "2.1.3. 7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi", "konu_defter_numarasiz": "7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi", "belirli_gun": ""}, {"hafta_no": 27, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "12-16 Nisan 2027", "start_date": "2027-04-12", "end_date": "2027-04-16", "saat": 2, "konu_tam": "2.1.3. 7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi", "konu_maddeler": ["2.1.3. 7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi"], "konu_defter": "2.1.3. 7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi", "konu_defter_numarasiz": "7/A Seçeneği Gider ve Yansıtma Hesaplarının Niteliği ve İşleyişi", "belirli_gun": "**Turizm Haftası (15-22 Nisan)**"}, {"hafta_no": 28, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "19-23 Nisan 2027", "start_date": "2027-04-19", "end_date": "2027-04-23", "saat": 2, "konu_tam": "2.2. 7/B SEÇENEĞİNE GÖRE MALİYET KAYITLARINI YAPMAK\n2.2.1. 7/B Seçeneği Gider Hesapları", "konu_maddeler": ["2.2. 7/B SEÇENEĞİNE GÖRE MALİYET KAYITLARINI YAPMAK", "2.2.1. 7/B Seçeneği Gider Hesapları"], "konu_defter": "2.2. 7/B SEÇENEĞİNE GÖRE MALİYET KAYITLARINI YAPMAK, 2.2.1. 7/B Seçeneği Gider Hesapları", "konu_defter_numarasiz": "7/B SEÇENEĞİNE GÖRE MALİYET KAYITLARINI YAPMAK, 7/B Seçeneği Gider Hesapları", "belirli_gun": "**23 Nisan Ulusal Egemenlik ve Çocuk Bayramı**\n**TBMM'nin Açılışı, Millî Egemenlik ve Halkçılık İlkesi**"}, {"hafta_no": 29, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "26-30 Nisan 2027", "start_date": "2027-04-26", "end_date": "2027-04-30", "saat": 2, "konu_tam": "2.2.1. 7/B Seçeneği Gider Hesapları", "konu_maddeler": ["2.2.1. 7/B Seçeneği Gider Hesapları"], "konu_defter": "2.2.1. 7/B Seçeneği Gider Hesapları", "konu_defter_numarasiz": "7/B Seçeneği Gider Hesapları", "belirli_gun": ""}, {"hafta_no": 30, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "03-07 Mayıs 2027", "start_date": "2027-05-03", "end_date": "2027-05-07", "saat": 2, "konu_tam": "2.2.1. 7/B Seçeneği Gider Hesapları", "konu_maddeler": ["2.2.1. 7/B Seçeneği Gider Hesapları"], "konu_defter": "2.2.1. 7/B Seçeneği Gider Hesapları", "konu_defter_numarasiz": "7/B Seçeneği Gider Hesapları", "belirli_gun": "**Bilişim Haftası (Mayıs 1. haftası) / Trafik ve İlkyardım Haftası**"}, {"hafta_no": 31, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "10-14 Mayıs 2027", "start_date": "2027-05-10", "end_date": "2027-05-14", "saat": 2, "konu_tam": "2.2.2. 7/B Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "konu_maddeler": ["2.2.2. 7/B Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi"], "konu_defter": "2.2.2. 7/B Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "konu_defter_numarasiz": "7/B Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "belirli_gun": "**Engelliler Haftası (10-16 Mayıs)**"}, {"hafta_no": 32, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "17-21 Mayıs 2027", "start_date": "2027-05-17", "end_date": "2027-05-21", "saat": 2, "konu_tam": "2.2.2. 7/B Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "konu_maddeler": ["2.2.2. 7/B Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi"], "konu_defter": "2.2.2. 7/B Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "konu_defter_numarasiz": "7/B Seçeneği Gider Hesaplarının Temel Mali Tablolarla İlişkisi", "belirli_gun": "**19 Mayıs Atatürk'ü Anma, Gençlik ve Spor Bayramı**\n**Millî Mücadele ve Atatürk'ün Gençliğe Verdiği Önem**"}, {"hafta_no": 33, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "24-28 Mayıs 2027", "start_date": "2027-05-24", "end_date": "2027-05-28", "saat": 2, "konu_tam": "2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "konu_maddeler": ["2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi"], "konu_defter": "2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "konu_defter_numarasiz": "7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "belirli_gun": ""}, {"hafta_no": 34, "is_tatil": false, "ay": "MAYIS / HAZİRAN", "tarih_metni": "31 Mayıs - 04 Haziran 2027", "start_date": "2027-05-31", "end_date": "2027-06-04", "saat": 2, "konu_tam": "2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "konu_maddeler": ["2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi"], "konu_defter": "2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "konu_defter_numarasiz": "7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "belirli_gun": ""}, {"hafta_no": 35, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "07-11 Haziran 2027", "start_date": "2027-06-07", "end_date": "2027-06-11", "saat": 2, "konu_tam": "2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "konu_maddeler": ["2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi"], "konu_defter": "2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "konu_defter_numarasiz": "7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "belirli_gun": "**Çevre Koruma Haftası (Haziran 2. haftası)**"}, {"hafta_no": 36, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "14-18 Haziran 2027", "start_date": "2027-06-14", "end_date": "2027-06-18", "saat": 2, "konu_tam": "2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "konu_maddeler": ["2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi"], "konu_defter": "2.2.3. 7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "konu_defter_numarasiz": "7/B Seçeneği Gider Hesaplarının Niteliği ve İşleyişi", "belirli_gun": ""}, {"hafta_no": 37, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "21-25 Haziran 2027", "start_date": "2027-06-21", "end_date": "2027-06-25", "saat": 2, "konu_tam": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_maddeler": ["2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ"], "konu_defter": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_defter_numarasiz": "DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "belirli_gun": "**Ders Yılının Sona Ermesi (25 Haziran 2027)**"}]}, {"id": "sirketler_11", "sinif": "11. Sınıf", "ad": "Şirketler Muhasebesi", "kisa_ad": "Şirketler Muhasebesi", "saat": 2, "renk": "#0891b2", "ikon": "🏢", "weeks": [{"hafta_no": 1, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "14-18 Eylül 2026", "start_date": "2026-09-14", "end_date": "2026-09-18", "saat": 2, "konu_tam": "1. ÖĞRENME BİRİMİ: ŞİRKETLER HAKKINDA GENEL BİLGİLER\n1.1. ŞİRKET KAVRAMI\n1.2. ŞİRKETİN UNSURLARI", "konu_maddeler": ["1. ÖĞRENME BİRİMİ: ŞİRKETLER HAKKINDA GENEL BİLGİLER", "1.1. ŞİRKET KAVRAMI", "1.2. ŞİRKETİN UNSURLARI"], "konu_defter": "1.1. ŞİRKET KAVRAMI, 1.2. ŞİRKETİN UNSURLARI", "konu_defter_numarasiz": "ŞİRKET KAVRAMI, ŞİRKETİN UNSURLARI", "belirli_gun": ""}, {"hafta_no": 2, "is_tatil": false, "ay": "EYLÜL", "tarih_metni": "21-25 Eylül 2026", "start_date": "2026-09-21", "end_date": "2026-09-25", "saat": 2, "konu_tam": "1.3. ŞİRKETLERİN SINIFLANDIRILMASI\n1.3.1. Genel Olarak Şirketlerin Sınıflandırılması\n1.3.2. Gerçek Şahıs İşletmeleri\n1.3.3. Şahıs ve Sermaye Şirketlerinin Karşılaştırılması\n1.4. ŞİRKETLER MUHASEBESİ", "konu_maddeler": ["1.3. ŞİRKETLERİN SINIFLANDIRILMASI", "1.3.1. Genel Olarak Şirketlerin Sınıflandırılması", "1.3.2. Gerçek Şahıs İşletmeleri", "1.3.3. Şahıs ve Sermaye Şirketlerinin Karşılaştırılması", "1.4. ŞİRKETLER MUHASEBESİ"], "konu_defter": "1.3. ŞİRKETLERİN SINIFLANDIRILMASI, 1.3.1. Genel Olarak Şirketlerin Sınıflandırılması, 1.3.2. Gerçek Şahıs İşletmeleri, 1.3.3. Şahıs ve Sermaye Şirketlerinin Karşılaştırılması, 1.4. ŞİRKETLER MUHASEBESİ", "konu_defter_numarasiz": "ŞİRKETLERİN SINIFLANDIRILMASI, Genel Olarak Şirketlerin Sınıflandırılması, Gerçek Şahıs İşletmeleri, Şahıs ve Sermaye Şirketlerinin Karşılaştırılması, ŞİRKETLER MUHASEBESİ", "belirli_gun": "**Ahilik Kültürü Haftası**"}, {"hafta_no": 3, "is_tatil": false, "ay": "EYLÜL / EKİM", "tarih_metni": "28 Eylül - 02 Ekim 2026", "start_date": "2026-09-28", "end_date": "2026-10-02", "saat": 2, "konu_tam": "2. ÖĞRENME BİRİMİ: KOLEKTİF ŞİRKETLER\n2.1. KOLEKTİF ŞİRKETİN TANIMI\n2.2. KOLEKTİF ŞİRKETİN ÖZELLİKLERİ\n2.3. KOLEKTİF ŞİRKETİN KURULUŞ İŞLEMLERİ", "konu_maddeler": ["2. ÖĞRENME BİRİMİ: KOLEKTİF ŞİRKETLER", "2.1. KOLEKTİF ŞİRKETİN TANIMI", "2.2. KOLEKTİF ŞİRKETİN ÖZELLİKLERİ", "2.3. KOLEKTİF ŞİRKETİN KURULUŞ İŞLEMLERİ"], "konu_defter": "2.1. KOLEKTİF ŞİRKETİN TANIMI, 2.2. KOLEKTİF ŞİRKETİN ÖZELLİKLERİ, 2.3. KOLEKTİF ŞİRKETİN KURULUŞ İŞLEMLERİ", "konu_defter_numarasiz": "KOLEKTİF ŞİRKETİN TANIMI, KOLEKTİF ŞİRKETİN ÖZELLİKLERİ, KOLEKTİF ŞİRKETİN KURULUŞ İŞLEMLERİ", "belirli_gun": ""}, {"hafta_no": 4, "is_tatil": false, "ay": "EKİM", "tarih_metni": "05-09 Ekim 2026", "start_date": "2026-10-05", "end_date": "2026-10-09", "saat": 2, "konu_tam": "2.4. KURULUŞ İŞLEMLERİNİN MUHASEBE KAYITLARI", "konu_maddeler": ["2.4. KURULUŞ İŞLEMLERİNİN MUHASEBE KAYITLARI"], "konu_defter": "2.4. KURULUŞ İŞLEMLERİNİN MUHASEBE KAYITLARI", "konu_defter_numarasiz": "KURULUŞ İŞLEMLERİNİN MUHASEBE KAYITLARI", "belirli_gun": ""}, {"hafta_no": 5, "is_tatil": false, "ay": "EKİM", "tarih_metni": "12-16 Ekim 2026", "start_date": "2026-10-12", "end_date": "2026-10-16", "saat": 2, "konu_tam": "2.5. SERMAYE DEĞİŞİKLİKLERİ VE MUHASEBE KAYITLARI\n2.5.1. Kolektif Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "konu_maddeler": ["2.5. SERMAYE DEĞİŞİKLİKLERİ VE MUHASEBE KAYITLARI", "2.5.1. Kolektif Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları"], "konu_defter": "2.5. SERMAYE DEĞİŞİKLİKLERİ VE MUHASEBE KAYITLARI, 2.5.1. Kolektif Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "SERMAYE DEĞİŞİKLİKLERİ VE MUHASEBE KAYITLARI, Kolektif Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "belirli_gun": ""}, {"hafta_no": 6, "is_tatil": false, "ay": "EKİM", "tarih_metni": "19-23 Ekim 2026", "start_date": "2026-10-19", "end_date": "2026-10-23", "saat": 2, "konu_tam": "2.5.2. Kolektif Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "konu_maddeler": ["2.5.2. Kolektif Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları"], "konu_defter": "2.5.2. Kolektif Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "Kolektif Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "belirli_gun": ""}, {"hafta_no": 7, "is_tatil": false, "ay": "EKİM", "tarih_metni": "26-30 Ekim 2026", "start_date": "2026-10-26", "end_date": "2026-10-30", "saat": 2, "konu_tam": "2.6. KOLEKTİF ŞİRKETLERDE KÂR VE ZARAR DAĞITIMI\n2.6.1. Kolektif Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "konu_maddeler": ["2.6. KOLEKTİF ŞİRKETLERDE KÂR VE ZARAR DAĞITIMI", "2.6.1. Kolektif Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları"], "konu_defter": "2.6. KOLEKTİF ŞİRKETLERDE KÂR VE ZARAR DAĞITIMI, 2.6.1. Kolektif Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "KOLEKTİF ŞİRKETLERDE KÂR VE ZARAR DAĞITIMI, Kolektif Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "belirli_gun": "**29 Ekim Cumhuriyet Bayramı**\n**Cumhuriyetçilik İlkesi ve Cumhuriyetin Önemi**"}, {"hafta_no": 8, "is_tatil": false, "ay": "KASIM", "tarih_metni": "02-06 Kasım 2026", "start_date": "2026-11-02", "end_date": "2026-11-06", "saat": 2, "konu_tam": "2.6.2. Kolektif Şirketlerde Zarar Dağıtımı ve Muhasebe Kayıtları", "konu_maddeler": ["2.6.2. Kolektif Şirketlerde Zarar Dağıtımı ve Muhasebe Kayıtları"], "konu_defter": "2.6.2. Kolektif Şirketlerde Zarar Dağıtımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "Kolektif Şirketlerde Zarar Dağıtımı ve Muhasebe Kayıtları", "belirli_gun": ""}, {"hafta_no": 9, "is_tatil": false, "ay": "KASIM", "tarih_metni": "09-13 Kasım 2026", "start_date": "2026-11-09", "end_date": "2026-11-13", "saat": 2, "konu_tam": "3. ÖĞRENME BİRİMİ: KOMANDİT ŞİRKETLER\n3.1. KOMANDİT ŞİRKETİN TANIMI\n3.2. KOMANDİT ŞİRKETİN ÖZELLİKLERİ\n3.3. KOMANDİT ŞİRKETİN KURULUŞ İŞLEMLERİ", "konu_maddeler": ["3. ÖĞRENME BİRİMİ: KOMANDİT ŞİRKETLER", "3.1. KOMANDİT ŞİRKETİN TANIMI", "3.2. KOMANDİT ŞİRKETİN ÖZELLİKLERİ", "3.3. KOMANDİT ŞİRKETİN KURULUŞ İŞLEMLERİ"], "konu_defter": "3.1. KOMANDİT ŞİRKETİN TANIMI, 3.2. KOMANDİT ŞİRKETİN ÖZELLİKLERİ, 3.3. KOMANDİT ŞİRKETİN KURULUŞ İŞLEMLERİ", "konu_defter_numarasiz": "KOMANDİT ŞİRKETİN TANIMI, KOMANDİT ŞİRKETİN ÖZELLİKLERİ, KOMANDİT ŞİRKETİN KURULUŞ İŞLEMLERİ", "belirli_gun": "**10 Kasım Atatürk'ü Anma Günü ve Atatürk Haftası**\n**Atatürk'ün Hayatı, Eserleri ve Atatürkçü Düşünce Sistemi**"}, {"hafta_no": null, "is_tatil": true, "ay": "KASIM", "tarih_metni": "16 - 20 Kasım 2026", "start_date": "2026-11-16", "end_date": "2026-11-20", "tatil_adi": "1. DÖNEM ARA TATİLİ", "konu_tam": "1. DÖNEM ARA TATİLİ", "konu_maddeler": ["1. DÖNEM ARA TATİLİ"], "konu_defter": "1. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "1. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 10, "is_tatil": false, "ay": "KASIM", "tarih_metni": "23-27 Kasım 2026", "start_date": "2026-11-23", "end_date": "2026-11-27", "saat": 2, "konu_tam": "3.4. KURULUŞ İŞLEMLERİNİN MUHASEBE KAYITLARI", "konu_maddeler": ["3.4. KURULUŞ İŞLEMLERİNİN MUHASEBE KAYITLARI"], "konu_defter": "3.4. KURULUŞ İŞLEMLERİNİN MUHASEBE KAYITLARI", "konu_defter_numarasiz": "KURULUŞ İŞLEMLERİNİN MUHASEBE KAYITLARI", "belirli_gun": "**24 Kasım Öğretmenler Günü**"}, {"hafta_no": 11, "is_tatil": false, "ay": "KASIM / ARALIK", "tarih_metni": "30 Kasım - 04 Aralık 2026", "start_date": "2026-11-30", "end_date": "2026-12-04", "saat": 2, "konu_tam": "3.5. SERMAYE DEĞİŞİKLİKLERİ VE MUHASEBE KAYITLARI\n3.5.1. Komandit Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "konu_maddeler": ["3.5. SERMAYE DEĞİŞİKLİKLERİ VE MUHASEBE KAYITLARI", "3.5.1. Komandit Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları"], "konu_defter": "3.5. SERMAYE DEĞİŞİKLİKLERİ VE MUHASEBE KAYITLARI, 3.5.1. Komandit Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "SERMAYE DEĞİŞİKLİKLERİ VE MUHASEBE KAYITLARI, Komandit Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "belirli_gun": ""}, {"hafta_no": 12, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "07-11 Aralık 2026", "start_date": "2026-12-07", "end_date": "2026-12-11", "saat": 2, "konu_tam": "3.5.2. Komandit Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "konu_maddeler": ["3.5.2. Komandit Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları"], "konu_defter": "3.5.2. Komandit Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "Komandit Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "belirli_gun": ""}, {"hafta_no": 13, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "14-18 Aralık 2026", "start_date": "2026-12-14", "end_date": "2026-12-18", "saat": 2, "konu_tam": "3.6. KOMANDİT ŞİRKETLERDE KÂR VE ZARAR DAĞITIMI\n3.6.1. Komandit Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "konu_maddeler": ["3.6. KOMANDİT ŞİRKETLERDE KÂR VE ZARAR DAĞITIMI", "3.6.1. Komandit Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları"], "konu_defter": "3.6. KOMANDİT ŞİRKETLERDE KÂR VE ZARAR DAĞITIMI, 3.6.1. Komandit Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "KOMANDİT ŞİRKETLERDE KÂR VE ZARAR DAĞITIMI, Komandit Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "belirli_gun": "**Tutum, Yatırım ve Türk Malları Haftası (12-18 Aralık)**"}, {"hafta_no": 14, "is_tatil": false, "ay": "ARALIK", "tarih_metni": "21-25 Aralık 2026", "start_date": "2026-12-21", "end_date": "2026-12-25", "saat": 2, "konu_tam": "3.6.2. Komandit Şirketlerde Zarar Dağıtımı ve Muhasebe Kayıtları", "konu_maddeler": ["3.6.2. Komandit Şirketlerde Zarar Dağıtımı ve Muhasebe Kayıtları"], "konu_defter": "3.6.2. Komandit Şirketlerde Zarar Dağıtımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "Komandit Şirketlerde Zarar Dağıtımı ve Muhasebe Kayıtları", "belirli_gun": ""}, {"hafta_no": 15, "is_tatil": false, "ay": "ARALIK / OCAK", "tarih_metni": "28 Aralık 2026 - 01 Ocak 2027", "start_date": "2026-12-28", "end_date": "2027-01-01", "saat": 2, "konu_tam": "4. ÖĞRENME BİRİMİ: SERMAYE ŞİRKETLERİ\n4.1. ANONİM ŞİRKETLER\n4.1.1. Türk Ticaret Kanunu'na Göre Anonim Şirketlerin Tanımı\n4.1.2. Anonim Şirketlerin Özellikleri\n4.1.3. Anonim Şirketlerin Sınıflandırılması\n4.1.4. Anonim Şirketlerin Kuruluş Şekilleri\n4.1.5. Anonim Şirketlerde Yönetim Organları\n4.1.6. Anonim Şirketlerde Denetim", "konu_maddeler": ["4. ÖĞRENME BİRİMİ: SERMAYE ŞİRKETLERİ", "4.1. ANONİM ŞİRKETLER", "4.1.1. Türk Ticaret Kanunu'na Göre Anonim Şirketlerin Tanımı", "4.1.2. Anonim Şirketlerin Özellikleri", "4.1.3. Anonim Şirketlerin Sınıflandırılması", "4.1.4. Anonim Şirketlerin Kuruluş Şekilleri", "4.1.5. Anonim Şirketlerde Yönetim Organları", "4.1.6. Anonim Şirketlerde Denetim"], "konu_defter": "4.1. ANONİM ŞİRKETLER, 4.1.1. Türk Ticaret Kanunu'na Göre Anonim Şirketlerin Tanımı, 4.1.2. Anonim Şirketlerin Özellikleri, 4.1.3. Anonim Şirketlerin Sınıflandırılması, 4.1.4. Anonim Şirketlerin Kuruluş Şekilleri, 4.1.5. Anonim Şirketlerde Yönetim Organları, 4.1.6. Anonim Şirketlerde Denetim", "konu_defter_numarasiz": "ANONİM ŞİRKETLER, Türk Ticaret Kanunu'na Göre Anonim Şirketlerin Tanımı, Anonim Şirketlerin Özellikleri, Anonim Şirketlerin Sınıflandırılması, Anonim Şirketlerin Kuruluş Şekilleri, Anonim Şirketlerde Yönetim Organları, Anonim Şirketlerde Denetim", "belirli_gun": "**Yılbaşı Tatili (1 Ocak 2027)**"}, {"hafta_no": 16, "is_tatil": false, "ay": "OCAK", "tarih_metni": "04-08 Ocak 2027", "start_date": "2027-01-04", "end_date": "2027-01-08", "saat": 2, "konu_tam": "4.2. LİMİTET ŞİRKETLER\n4.2.1. Türk Ticaret Kanunu'na (TTK) Göre Limitet Şirketlerin Tanımı\n4.2.2. Limitet Şirketlerin Özellikleri\n4.2.3. Limitet Şirketlerde Yönetim Organları\n4.3. SERMAYESİ PAYLARA BÖLÜNMÜŞ KOMANDİT ŞİRKETLER", "konu_maddeler": ["4.2. LİMİTET ŞİRKETLER", "4.2.1. Türk Ticaret Kanunu'na (TTK) Göre Limitet Şirketlerin Tanımı", "4.2.2. Limitet Şirketlerin Özellikleri", "4.2.3. Limitet Şirketlerde Yönetim Organları", "4.3. SERMAYESİ PAYLARA BÖLÜNMÜŞ KOMANDİT ŞİRKETLER"], "konu_defter": "4.2. LİMİTET ŞİRKETLER, 4.2.1. Türk Ticaret Kanunu'na (TTK) Göre Limitet Şirketlerin Tanımı, 4.2.2. Limitet Şirketlerin Özellikleri, 4.2.3. Limitet Şirketlerde Yönetim Organları, 4.3. SERMAYESİ PAYLARA BÖLÜNMÜŞ KOMANDİT ŞİRKETLER", "konu_defter_numarasiz": "LİMİTET ŞİRKETLER, Türk Ticaret Kanunu'na (TTK) Göre Limitet Şirketlerin Tanımı, Limitet Şirketlerin Özellikleri, Limitet Şirketlerde Yönetim Organları, SERMAYESİ PAYLARA BÖLÜNMÜŞ KOMANDİT ŞİRKETLER", "belirli_gun": "**Enerji Tasarrufu Haftası (Ocak 2. haftası)**"}, {"hafta_no": 17, "is_tatil": false, "ay": "OCAK", "tarih_metni": "11-15 Ocak 2027", "start_date": "2027-01-11", "end_date": "2027-01-15", "saat": 2, "konu_tam": "4.4. SERMAYE ŞİRKETLERİNDE SÖZLEŞME HAZIRLANMASI\n4.4.1. Anonim Şirket ile İlgili Esas Sözleşme\n4.4.2. Limitet Şirket ile İlgili Ana Sözleşme", "konu_maddeler": ["4.4. SERMAYE ŞİRKETLERİNDE SÖZLEŞME HAZIRLANMASI", "4.4.1. Anonim Şirket ile İlgili Esas Sözleşme", "4.4.2. Limitet Şirket ile İlgili Ana Sözleşme"], "konu_defter": "4.4. SERMAYE ŞİRKETLERİNDE SÖZLEŞME HAZIRLANMASI, 4.4.1. Anonim Şirket ile İlgili Esas Sözleşme, 4.4.2. Limitet Şirket ile İlgili Ana Sözleşme", "konu_defter_numarasiz": "SERMAYE ŞİRKETLERİNDE SÖZLEŞME HAZIRLANMASI, Anonim Şirket ile İlgili Esas Sözleşme, Limitet Şirket ile İlgili Ana Sözleşme", "belirli_gun": ""}, {"hafta_no": 18, "is_tatil": false, "ay": "OCAK", "tarih_metni": "18-22 Ocak 2027", "start_date": "2027-01-18", "end_date": "2027-01-22", "saat": 2, "konu_tam": "4.5. SERMAYE ŞİRKETLERİNİN KURULUŞU\n4.5.1. Anonim Şirketlerde Kuruluş İşlemleri ve Muhasebe Kayıtları\n1. DÖNEMİN DEĞERLENDİRİLMESİ", "konu_maddeler": ["4.5. SERMAYE ŞİRKETLERİNİN KURULUŞU", "4.5.1. Anonim Şirketlerde Kuruluş İşlemleri ve Muhasebe Kayıtları", "1. DÖNEMİN DEĞERLENDİRİLMESİ"], "konu_defter": "4.5. SERMAYE ŞİRKETLERİNİN KURULUŞU, 4.5.1. Anonim Şirketlerde Kuruluş İşlemleri ve Muhasebe Kayıtları, 1. DÖNEMİN DEĞERLENDİRİLMESİ", "konu_defter_numarasiz": "SERMAYE ŞİRKETLERİNİN KURULUŞU, Anonim Şirketlerde Kuruluş İşlemleri ve Muhasebe Kayıtları, DÖNEMİN DEĞERLENDİRİLMESİ", "belirli_gun": "**1. Dönem Sonu (22 Ocak 2027 Cuma)**"}, {"hafta_no": null, "is_tatil": true, "ay": "OCAK / ŞUBAT", "tarih_metni": "25 Ocak - 05 Şubat 2027", "start_date": "2027-01-25", "end_date": "2027-02-05", "tatil_adi": "YARIYIL TATİLİ (15 TATİL)", "konu_tam": "YARIYIL TATİLİ (15 TATİL)", "konu_maddeler": ["YARIYIL TATİLİ (15 TATİL)"], "konu_defter": "YARIYIL TATİLİ (15 TATİL)", "konu_defter_numarasiz": "YARIYIL TATİLİ (15 TATİL)", "belirli_gun": ""}, {"hafta_no": 19, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "08-12 Şubat 2027", "start_date": "2027-02-08", "end_date": "2027-02-12", "saat": 2, "konu_tam": "4.5.2. Limitet Şirket Kuruluş İşlemleri ve Muhasebe Kayıtları", "konu_maddeler": ["4.5.2. Limitet Şirket Kuruluş İşlemleri ve Muhasebe Kayıtları"], "konu_defter": "4.5.2. Limitet Şirket Kuruluş İşlemleri ve Muhasebe Kayıtları", "konu_defter_numarasiz": "Limitet Şirket Kuruluş İşlemleri ve Muhasebe Kayıtları", "belirli_gun": "**2. Dönem Başlangıcı (8 Şubat 2027)**"}, {"hafta_no": 20, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "15-19 Şubat 2027", "start_date": "2027-02-15", "end_date": "2027-02-19", "saat": 2, "konu_tam": "4.6. ANONİM ŞİRKETLERDE SERMAYE DEĞİŞİKLİKLERİ\n4.6.1. Anonim Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "konu_maddeler": ["4.6. ANONİM ŞİRKETLERDE SERMAYE DEĞİŞİKLİKLERİ", "4.6.1. Anonim Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları"], "konu_defter": "4.6. ANONİM ŞİRKETLERDE SERMAYE DEĞİŞİKLİKLERİ, 4.6.1. Anonim Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "ANONİM ŞİRKETLERDE SERMAYE DEĞİŞİKLİKLERİ, Anonim Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "belirli_gun": ""}, {"hafta_no": 21, "is_tatil": false, "ay": "ŞUBAT", "tarih_metni": "22-26 Şubat 2027", "start_date": "2027-02-22", "end_date": "2027-02-26", "saat": 2, "konu_tam": "4.6.2. Anonim Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "konu_maddeler": ["4.6.2. Anonim Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları"], "konu_defter": "4.6.2. Anonim Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "Anonim Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "belirli_gun": "**Vergi Haftası (Şubatın son haftası)**"}, {"hafta_no": 22, "is_tatil": false, "ay": "MART", "tarih_metni": "01-05 Mart 2027", "start_date": "2027-03-01", "end_date": "2027-03-05", "saat": 2, "konu_tam": "4.7. LİMİTET ŞİRKETLERDE SERMAYE DEĞİŞİKLİKLERİ\n4.7.1. Limitet Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları\n4.7.2. Limitet Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "konu_maddeler": ["4.7. LİMİTET ŞİRKETLERDE SERMAYE DEĞİŞİKLİKLERİ", "4.7.1. Limitet Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları", "4.7.2. Limitet Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları"], "konu_defter": "4.7. LİMİTET ŞİRKETLERDE SERMAYE DEĞİŞİKLİKLERİ, 4.7.1. Limitet Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları, 4.7.2. Limitet Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "LİMİTET ŞİRKETLERDE SERMAYE DEĞİŞİKLİKLERİ, Limitet Şirketlerde Sermaye Artırımı ve Muhasebe Kayıtları, Limitet Şirketlerde Sermaye Azaltımı ve Muhasebe Kayıtları", "belirli_gun": "**Yeşilay Haftası (1-7 Mart) / Girişimcilik Haftası**"}, {"hafta_no": null, "is_tatil": true, "ay": "MART", "tarih_metni": "08 - 12 Mart 2027", "start_date": "2027-03-08", "end_date": "2027-03-12", "tatil_adi": "2. DÖNEM ARA TATİLİ", "konu_tam": "2. DÖNEM ARA TATİLİ", "konu_maddeler": ["2. DÖNEM ARA TATİLİ"], "konu_defter": "2. DÖNEM ARA TATİLİ", "konu_defter_numarasiz": "2. DÖNEM ARA TATİLİ", "belirli_gun": ""}, {"hafta_no": 23, "is_tatil": false, "ay": "MART", "tarih_metni": "15-19 Mart 2027", "start_date": "2027-03-15", "end_date": "2027-03-19", "saat": 2, "konu_tam": "4.8. SERMAYE ŞİRKETLERİNDE KÂR/ZARAR DAĞITIMI\n4.8.1. Kâr Dağıtım Tablosu\n4.8.2. Mali Kârın Hesaplanması\n4.8.3. Gelir Vergisi ve Kurumlar Vergisinin Hesaplanması", "konu_maddeler": ["4.8. SERMAYE ŞİRKETLERİNDE KÂR/ZARAR DAĞITIMI", "4.8.1. Kâr Dağıtım Tablosu", "4.8.2. Mali Kârın Hesaplanması", "4.8.3. Gelir Vergisi ve Kurumlar Vergisinin Hesaplanması"], "konu_defter": "4.8. SERMAYE ŞİRKETLERİNDE KÂR/ZARAR DAĞITIMI, 4.8.1. Kâr Dağıtım Tablosu, 4.8.2. Mali Kârın Hesaplanması, 4.8.3. Gelir Vergisi ve Kurumlar Vergisinin Hesaplanması", "konu_defter_numarasiz": "SERMAYE ŞİRKETLERİNDE KÂR/ZARAR DAĞITIMI, Kâr Dağıtım Tablosu, Mali Kârın Hesaplanması, Gelir Vergisi ve Kurumlar Vergisinin Hesaplanması", "belirli_gun": "**12 Mart İstiklâl Marşı'nın Kabulü / 18 Mart Çanakkale Zaferi**\n**Atatürk'ün Askerî Dehası, Vatan ve Millet Sevgisi**"}, {"hafta_no": 24, "is_tatil": false, "ay": "MART", "tarih_metni": "22-26 Mart 2027", "start_date": "2027-03-22", "end_date": "2027-03-26", "saat": 2, "konu_tam": "4.8.4. Yedeklerin Hesaplanması\n4.8.5. Temettü Hesaplanması", "konu_maddeler": ["4.8.4. Yedeklerin Hesaplanması", "4.8.5. Temettü Hesaplanması"], "konu_defter": "4.8.4. Yedeklerin Hesaplanması, 4.8.5. Temettü Hesaplanması", "konu_defter_numarasiz": "Yedeklerin Hesaplanması, Temettü Hesaplanması", "belirli_gun": "**Orman Haftası (21-26 Mart)**"}, {"hafta_no": 25, "is_tatil": false, "ay": "MART / NİSAN", "tarih_metni": "29 Mart - 02 Nisan 2027", "start_date": "2027-03-29", "end_date": "2027-04-02", "saat": 2, "konu_tam": "4.8.6. Anonim Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "konu_maddeler": ["4.8.6. Anonim Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları"], "konu_defter": "4.8.6. Anonim Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "konu_defter_numarasiz": "Anonim Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "belirli_gun": "**Kütüphaneler Haftası (Mart son haftası)**"}, {"hafta_no": 26, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "05-09 Nisan 2027", "start_date": "2027-04-05", "end_date": "2027-04-09", "saat": 2, "konu_tam": "4.8.7. Limitet Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları\n4.8.8. Sermaye Şirketlerinde Zarar Mahsubu ve Muhasebe Kayıtları", "konu_maddeler": ["4.8.7. Limitet Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları", "4.8.8. Sermaye Şirketlerinde Zarar Mahsubu ve Muhasebe Kayıtları"], "konu_defter": "4.8.7. Limitet Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları, 4.8.8. Sermaye Şirketlerinde Zarar Mahsubu ve Muhasebe Kayıtları", "konu_defter_numarasiz": "Limitet Şirketlerde Kâr Dağıtımı ve Muhasebe Kayıtları, Sermaye Şirketlerinde Zarar Mahsubu ve Muhasebe Kayıtları", "belirli_gun": ""}, {"hafta_no": 27, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "12-16 Nisan 2027", "start_date": "2027-04-12", "end_date": "2027-04-16", "saat": 2, "konu_tam": "5. ÖĞRENME BİRİMİ: ŞİRKETLERDE TASFİYE\n5.1. TASFİYE KAVRAMI", "konu_maddeler": ["5. ÖĞRENME BİRİMİ: ŞİRKETLERDE TASFİYE", "5.1. TASFİYE KAVRAMI"], "konu_defter": "5.1. TASFİYE KAVRAMI", "konu_defter_numarasiz": "TASFİYE KAVRAMI", "belirli_gun": "**Turizm Haftası (15-22 Nisan)**"}, {"hafta_no": 28, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "19-23 Nisan 2027", "start_date": "2027-04-19", "end_date": "2027-04-23", "saat": 2, "konu_tam": "5.2. ŞAHIS ŞİRKETLERİNDE TASFİYE\n5.2.1. Şahıs Şirketlerinde Dağılma ve Dağıtılma Nedenleri\n5.2.2. Şahıs Şirketlerinde Tasfiye Memurunun Görevleri\n5.2.3. Şahıs Şirketlerinde Tasfiye İşlemleri ve Muhasebe Kayıtları", "konu_maddeler": ["5.2. ŞAHIS ŞİRKETLERİNDE TASFİYE", "5.2.1. Şahıs Şirketlerinde Dağılma ve Dağıtılma Nedenleri", "5.2.2. Şahıs Şirketlerinde Tasfiye Memurunun Görevleri", "5.2.3. Şahıs Şirketlerinde Tasfiye İşlemleri ve Muhasebe Kayıtları"], "konu_defter": "5.2. ŞAHIS ŞİRKETLERİNDE TASFİYE, 5.2.1. Şahıs Şirketlerinde Dağılma ve Dağıtılma Nedenleri, 5.2.2. Şahıs Şirketlerinde Tasfiye Memurunun Görevleri, 5.2.3. Şahıs Şirketlerinde Tasfiye İşlemleri ve Muhasebe Kayıtları", "konu_defter_numarasiz": "ŞAHIS ŞİRKETLERİNDE TASFİYE, Şahıs Şirketlerinde Dağılma ve Dağıtılma Nedenleri, Şahıs Şirketlerinde Tasfiye Memurunun Görevleri, Şahıs Şirketlerinde Tasfiye İşlemleri ve Muhasebe Kayıtları", "belirli_gun": "**23 Nisan Ulusal Egemenlik ve Çocuk Bayramı**\n**TBMM'nin Açılışı, Millî Egemenlik ve Halkçılık İlkesi**"}, {"hafta_no": 29, "is_tatil": false, "ay": "NİSAN", "tarih_metni": "26-30 Nisan 2027", "start_date": "2027-04-26", "end_date": "2027-04-30", "saat": 2, "konu_tam": "5.3. SERMAYE ŞİRKETLERİNDE TASFİYE\n5.3.1. Sermaye Şirketlerinde Dağılma ve Dağıtılma Nedenleri", "konu_maddeler": ["5.3. SERMAYE ŞİRKETLERİNDE TASFİYE", "5.3.1. Sermaye Şirketlerinde Dağılma ve Dağıtılma Nedenleri"], "konu_defter": "5.3. SERMAYE ŞİRKETLERİNDE TASFİYE, 5.3.1. Sermaye Şirketlerinde Dağılma ve Dağıtılma Nedenleri", "konu_defter_numarasiz": "SERMAYE ŞİRKETLERİNDE TASFİYE, Sermaye Şirketlerinde Dağılma ve Dağıtılma Nedenleri", "belirli_gun": ""}, {"hafta_no": 30, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "03-07 Mayıs 2027", "start_date": "2027-05-03", "end_date": "2027-05-07", "saat": 2, "konu_tam": "5.3.2. Sermaye Şirketlerinde Tasfiye Memurunun Görevleri\n5.3.3. Sermaye Şirketlerinde Tasfiye İşlemleri ve Muhasebe Kayıtları", "konu_maddeler": ["5.3.2. Sermaye Şirketlerinde Tasfiye Memurunun Görevleri", "5.3.3. Sermaye Şirketlerinde Tasfiye İşlemleri ve Muhasebe Kayıtları"], "konu_defter": "5.3.2. Sermaye Şirketlerinde Tasfiye Memurunun Görevleri, 5.3.3. Sermaye Şirketlerinde Tasfiye İşlemleri ve Muhasebe Kayıtları", "konu_defter_numarasiz": "Sermaye Şirketlerinde Tasfiye Memurunun Görevleri, Sermaye Şirketlerinde Tasfiye İşlemleri ve Muhasebe Kayıtları", "belirli_gun": "**Bilişim Haftası (Mayıs 1. haftası) / Trafik ve İlkyardım Haftası**"}, {"hafta_no": 31, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "10-14 Mayıs 2027", "start_date": "2027-05-10", "end_date": "2027-05-14", "saat": 2, "konu_tam": "6. ÖĞRENME BİRİMİ: ŞİRKETLERDE BİRLEŞME\n6.1. ŞİRKETLERDE BİRLEŞME KAVRAMI\n6.2. ŞİRKETLERİN BİRLEŞME SEBEPLERİ", "konu_maddeler": ["6. ÖĞRENME BİRİMİ: ŞİRKETLERDE BİRLEŞME", "6.1. ŞİRKETLERDE BİRLEŞME KAVRAMI", "6.2. ŞİRKETLERİN BİRLEŞME SEBEPLERİ"], "konu_defter": "6.1. ŞİRKETLERDE BİRLEŞME KAVRAMI, 6.2. ŞİRKETLERİN BİRLEŞME SEBEPLERİ", "konu_defter_numarasiz": "ŞİRKETLERDE BİRLEŞME KAVRAMI, ŞİRKETLERİN BİRLEŞME SEBEPLERİ", "belirli_gun": "**Engelliler Haftası (10-16 Mayıs)**"}, {"hafta_no": 32, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "17-21 Mayıs 2027", "start_date": "2027-05-17", "end_date": "2027-05-21", "saat": 2, "konu_tam": "6.3. ŞİRKETLERİN BİRLEŞME ŞEKİLLERİ\n6.4. BİRLEŞME YAPABİLECEK ŞİRKETLER", "konu_maddeler": ["6.3. ŞİRKETLERİN BİRLEŞME ŞEKİLLERİ", "6.4. BİRLEŞME YAPABİLECEK ŞİRKETLER"], "konu_defter": "6.3. ŞİRKETLERİN BİRLEŞME ŞEKİLLERİ, 6.4. BİRLEŞME YAPABİLECEK ŞİRKETLER", "konu_defter_numarasiz": "ŞİRKETLERİN BİRLEŞME ŞEKİLLERİ, BİRLEŞME YAPABİLECEK ŞİRKETLER", "belirli_gun": "**19 Mayıs Atatürk'ü Anma, Gençlik ve Spor Bayramı**\n**Millî Mücadele ve Atatürk'ün Gençliğe Verdiği Önem**"}, {"hafta_no": 33, "is_tatil": false, "ay": "MAYIS", "tarih_metni": "24-28 Mayıs 2027", "start_date": "2027-05-24", "end_date": "2027-05-28", "saat": 2, "konu_tam": "6.5. ŞİRKET BİRLEŞMELERİNİN SINIFLANDIRILMASI\n6.5.1. Ekonomik Faaliyet Alanlarına Göre Şirket Birleşmeleri\n6.5.2. Hukuki Yapılarına Göre Şirket Birleşmeleri", "konu_maddeler": ["6.5. ŞİRKET BİRLEŞMELERİNİN SINIFLANDIRILMASI", "6.5.1. Ekonomik Faaliyet Alanlarına Göre Şirket Birleşmeleri", "6.5.2. Hukuki Yapılarına Göre Şirket Birleşmeleri"], "konu_defter": "6.5. ŞİRKET BİRLEŞMELERİNİN SINIFLANDIRILMASI, 6.5.1. Ekonomik Faaliyet Alanlarına Göre Şirket Birleşmeleri, 6.5.2. Hukuki Yapılarına Göre Şirket Birleşmeleri", "konu_defter_numarasiz": "ŞİRKET BİRLEŞMELERİNİN SINIFLANDIRILMASI, Ekonomik Faaliyet Alanlarına Göre Şirket Birleşmeleri, Hukuki Yapılarına Göre Şirket Birleşmeleri", "belirli_gun": ""}, {"hafta_no": 34, "is_tatil": false, "ay": "MAYIS / HAZİRAN", "tarih_metni": "31 Mayıs - 04 Haziran 2027", "start_date": "2027-05-31", "end_date": "2027-06-04", "saat": 2, "konu_tam": "6.6. ŞİRKET BİRLEŞME SÜRECİ", "konu_maddeler": ["6.6. ŞİRKET BİRLEŞME SÜRECİ"], "konu_defter": "6.6. ŞİRKET BİRLEŞME SÜRECİ", "konu_defter_numarasiz": "ŞİRKET BİRLEŞME SÜRECİ", "belirli_gun": ""}, {"hafta_no": 35, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "07-11 Haziran 2027", "start_date": "2027-06-07", "end_date": "2027-06-11", "saat": 2, "konu_tam": "6.7. BİRLEŞME İŞLEMLERİNİN MUHASEBE KAYITLARI", "konu_maddeler": ["6.7. BİRLEŞME İŞLEMLERİNİN MUHASEBE KAYITLARI"], "konu_defter": "6.7. BİRLEŞME İŞLEMLERİNİN MUHASEBE KAYITLARI", "konu_defter_numarasiz": "BİRLEŞME İŞLEMLERİNİN MUHASEBE KAYITLARI", "belirli_gun": "**Çevre Koruma Haftası (Haziran 2. haftası)**"}, {"hafta_no": 36, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "14-18 Haziran 2027", "start_date": "2027-06-14", "end_date": "2027-06-18", "saat": 2, "konu_tam": "6.7. BİRLEŞME İŞLEMLERİNİN MUHASEBE KAYITLARI", "konu_maddeler": ["6.7. BİRLEŞME İŞLEMLERİNİN MUHASEBE KAYITLARI"], "konu_defter": "6.7. BİRLEŞME İŞLEMLERİNİN MUHASEBE KAYITLARI", "konu_defter_numarasiz": "BİRLEŞME İŞLEMLERİNİN MUHASEBE KAYITLARI", "belirli_gun": ""}, {"hafta_no": 37, "is_tatil": false, "ay": "HAZİRAN", "tarih_metni": "21-25 Haziran 2027", "start_date": "2027-06-21", "end_date": "2027-06-25", "saat": 2, "konu_tam": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_maddeler": ["2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ"], "konu_defter": "2. DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "konu_defter_numarasiz": "DÖNEMİN DEĞERLENDİRİLMESİ VE DÖNEM SONU ETKİNLİKLERİ", "belirli_gun": "**Ders Yılının Sona Ermesi (25 Haziran 2027)**"}]}];
+
+    // State
+    let currentCourseIndex = 0;
+    let currentWeekIndex = 0; // 0 to 39
+    let currentFormat = 'tek_satir'; // 'tek_satir', 'maddeler', 'numarasiz'
+    let includeSpecialDay = false;
+
+    // Elements
+    const coursesContainer = document.getElementById('coursesContainer');
+    const selectedCourseHoursBadge = document.getElementById('selectedCourseHoursBadge');
+    const weekTitleDisplay = document.getElementById('weekTitleDisplay');
+    const weekDatesDisplay = document.getElementById('weekDatesDisplay');
+    const weekSelectDropdown = document.getElementById('weekSelectDropdown');
+    const holidayBanner = document.getElementById('holidayBanner');
+    const holidayText = document.getElementById('holidayText');
+    const defterSection = document.getElementById('defterSection');
+    const defterDisplayArea = document.getElementById('defterDisplayArea');
+    const btnCopyText = document.getElementById('btnCopyText');
+    const copyIcon = document.getElementById('copyIcon');
+    const copyBtnLabel = document.getElementById('copyBtnLabel');
+    const specialDayBox = document.getElementById('specialDayBox');
+    const specialDayText = document.getElementById('specialDayText');
+    const chkIncludeSpecialDay = document.getElementById('chkIncludeSpecialDay');
+    const btnPrevWeek = document.getElementById('btnPrevWeek');
+    const btnNextWeek = document.getElementById('btnNextWeek');
+    const btnToday = document.getElementById('btnToday');
+    const btnThemeToggle = document.getElementById('btnThemeToggle');
+    const btnOpenModal = document.getElementById('btnOpenModal');
+    const btnShowPlanLink = document.getElementById('btnShowPlanLink');
+    const planModalBackdrop = document.getElementById('planModalBackdrop');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const modalCourseTitle = document.getElementById('modalCourseTitle');
+    const modalPlanTableBody = document.getElementById('modalPlanTableBody');
+
+    // Initialize Courses Buttons
+    function initCourses() {
+      coursesContainer.innerHTML = '';
+      COURSES_DATA.forEach((course, idx) => {
+        const btn = document.createElement('div');
+        btn.className = 'course-btn' + (idx === currentCourseIndex ? ' active' : '');
+        btn.innerHTML = `
+          <div class="course-emoji">${course.ikon}</div>
+          <div class="course-info">
+            <div class="course-name">${course.kisa_ad}</div>
+            <div class="course-badge">${course.sinif} • ${course.saat} Saat</div>
+          </div>
+        `;
+        btn.addEventListener('click', () => {
+          selectCourse(idx);
+        });
+        coursesContainer.appendChild(btn);
+      });
+    }
+
+    function selectCourse(idx) {
+      currentCourseIndex = idx;
+      document.querySelectorAll('.course-btn').forEach((b, i) => {
+        b.classList.toggle('active', i === idx);
+      });
+      const c = COURSES_DATA[currentCourseIndex];
+      selectedCourseHoursBadge.textContent = `${c.sinif} • ${c.saat} Saat / Hafta`;
+      selectedCourseHoursBadge.style.color = c.renk;
+      renderCurrentView();
+    }
+
+    // Populate Dropdown
+    function initDropdown() {
+      weekSelectDropdown.innerHTML = '';
+      const weeks = COURSES_DATA[0].weeks;
+      weeks.forEach((w, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        if (w.is_tatil) {
+          opt.textContent = `🏖️ ${w.tatil_adi} (${w.tarih_metni})`;
+        } else {
+          opt.textContent = `${w.hafta_no}. Hafta: ${w.tarih_metni}`;
+        }
+        weekSelectDropdown.appendChild(opt);
+      });
+      weekSelectDropdown.addEventListener('change', (e) => {
+        currentWeekIndex = parseInt(e.target.value);
+        renderCurrentView();
+      });
+    }
+
+    // Find Today's Week Index
+    function findTodayWeekIndex() {
+      const today = new Date();
+      const y = today.getFullYear();
+      const m = String(today.getMonth() + 1).padStart(2, '0');
+      const d = String(today.getDate()).padStart(2, '0');
+      const todayStr = `${y}-${m}-${d}`;
+
+      const weeks = COURSES_DATA[0].weeks;
+      for (let i = 0; i < weeks.length; i++) {
+        const w = weeks[i];
+        if (w.start_date && w.end_date) {
+          if (todayStr >= w.start_date && todayStr <= w.end_date) {
+            return i;
+          }
+        }
+      }
+      // If weekend between weeks, find the closest upcoming week
+      for (let i = 0; i < weeks.length; i++) {
+        const w = weeks[i];
+        if (w.start_date && todayStr < w.start_date) {
+          return i;
+        }
+      }
+      return 0; // Default to Week 1
+    }
+
+    // Render Current View
+    function renderCurrentView() {
+      const course = COURSES_DATA[currentCourseIndex];
+      const week = course.weeks[currentWeekIndex];
+
+      weekSelectDropdown.value = currentWeekIndex;
+
+      // Update Navigation
+      if (week.is_tatil) {
+        weekTitleDisplay.innerHTML = `🏖️ ${week.tatil_adi}`;
+        weekDatesDisplay.textContent = week.tarih_metni;
+        holidayBanner.style.display = 'flex';
+        holidayText.textContent = `${week.tatil_adi} (${week.tarih_metni})`;
+        defterSection.style.display = 'none';
+      } else {
+        weekTitleDisplay.innerHTML = `${week.hafta_no}. Hafta`;
+        weekDatesDisplay.textContent = `${week.ay} • ${week.tarih_metni} (${week.saat} Saat)`;
+        holidayBanner.style.display = 'none';
+        defterSection.style.display = 'block';
+
+        // Prepare text based on selected format
+        let textToDisplay = '';
+        if (currentFormat === 'tek_satir') {
+          textToDisplay = week.konu_defter;
+        } else if (currentFormat === 'maddeler') {
+          textToDisplay = week.konu_maddeler.map(m => '• ' + m).join('\n');
+        } else if (currentFormat === 'numarasiz') {
+          textToDisplay = week.konu_defter_numarasiz || week.konu_defter;
+        }
+
+        // Special Day Suffix if checked
+        if (includeSpecialDay && week.belirli_gun) {
+          const firstLineGun = week.belirli_gun.split('\n')[0].trim();
+          textToDisplay += ` (${firstLineGun})`;
+        }
+
+        defterDisplayArea.textContent = textToDisplay;
+
+        // Special day banner
+        if (week.belirli_gun && week.belirli_gun.trim() !== '') {
+          specialDayBox.style.display = 'block';
+          specialDayText.textContent = week.belirli_gun;
+        } else {
+          specialDayBox.style.display = 'none';
+        }
+      }
+    }
+
+    // Copy Action
+    btnCopyText.addEventListener('click', () => {
+      const text = defterDisplayArea.textContent.trim();
+      if (!text) return;
+
+      navigator.clipboard.writeText(text).then(() => {
+        btnCopyText.classList.add('copied');
+        copyIcon.textContent = '✓';
+        copyBtnLabel.textContent = 'Kopyalandı!';
+        setTimeout(() => {
+          btnCopyText.classList.remove('copied');
+          copyIcon.textContent = '📋';
+          copyBtnLabel.textContent = 'Defter Metnini Kopyala';
+        }, 1800);
+      }).catch(() => {
+        // Fallback for older webviews
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btnCopyText.classList.add('copied');
+        copyIcon.textContent = '✓';
+        copyBtnLabel.textContent = 'Kopyalandı!';
+        setTimeout(() => {
+          btnCopyText.classList.remove('copied');
+          copyIcon.textContent = '📋';
+          copyBtnLabel.textContent = 'Defter Metnini Kopyala';
+        }, 1800);
+      });
+    });
+
+    // Navigation buttons
+    btnPrevWeek.addEventListener('click', () => {
+      if (currentWeekIndex > 0) {
+        currentWeekIndex--;
+        renderCurrentView();
+      }
+    });
+
+    btnNextWeek.addEventListener('click', () => {
+      const total = COURSES_DATA[0].weeks.length;
+      if (currentWeekIndex < total - 1) {
+        currentWeekIndex++;
+        renderCurrentView();
+      }
+    });
+
+    btnToday.addEventListener('click', () => {
+      currentWeekIndex = findTodayWeekIndex();
+      renderCurrentView();
+    });
+
+    // Format segmented tabs
+    document.querySelectorAll('.format-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.format-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFormat = tab.getAttribute('data-fmt');
+        renderCurrentView();
+      });
+    });
+
+    // Special day checkbox
+    chkIncludeSpecialDay.addEventListener('change', (e) => {
+      includeSpecialDay = e.target.checked;
+      renderCurrentView();
+    });
+
+    // Theme Toggle
+    let isDark = true;
+    btnThemeToggle.addEventListener('click', () => {
+      isDark = !isDark;
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      btnThemeToggle.textContent = isDark ? '🌓' : '☀️';
+    });
+
+    // Modal Table View
+    function openPlanModal() {
+      const course = COURSES_DATA[currentCourseIndex];
+      modalCourseTitle.textContent = `${course.tam_ad || course.ad} Yıllık Planı`;
+      modalPlanTableBody.innerHTML = '';
+
+      course.weeks.forEach((w, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'plan-row' + (idx === currentWeekIndex ? ' current' : '');
+        if (w.is_tatil) {
+          tr.innerHTML = `
+            <td style="color:var(--warning); font-weight:bold;">-</td>
+            <td style="color:var(--warning); font-size:11px;">${w.tarih_metni}</td>
+            <td style="color:var(--warning); font-weight:600;">🏖️ ${w.tatil_adi}</td>
+          `;
+        } else {
+          tr.innerHTML = `
+            <td style="font-weight:700; color:var(--primary);">${w.hafta_no}</td>
+            <td style="font-size:11.5px; color:var(--text-muted);">${w.tarih_metni}</td>
+            <td style="font-weight:500;">${w.konu_defter}</td>
+          `;
+        }
+        tr.addEventListener('click', () => {
+          currentWeekIndex = idx;
+          renderCurrentView();
+          closePlanModal();
+        });
+        modalPlanTableBody.appendChild(tr);
+      });
+
+      planModalBackdrop.style.display = 'flex';
+    }
+
+    function closePlanModal() {
+      planModalBackdrop.style.display = 'none';
+    }
+
+    btnOpenModal.addEventListener('click', openPlanModal);
+    btnShowPlanLink.addEventListener('click', openPlanModal);
+    btnCloseModal.addEventListener('click', closePlanModal);
+    planModalBackdrop.addEventListener('click', (e) => {
+      if (e.target === planModalBackdrop) closePlanModal();
+    });
+
+    // Register Service Worker for Offline PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error:', err));
+      });
+    }
+
+    // Initial Launch
+    initCourses();
+    initDropdown();
+    currentWeekIndex = findTodayWeekIndex();
+    renderCurrentView();
+  </script>
+</body>
+</html>

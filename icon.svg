@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="bookGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <!-- Background with rounded corners -->
+  <rect width="512" height="512" rx="115" fill="url(#bg)"/>
+  
+  <!-- Outer glowing subtle ring -->
+  <rect x="12" y="12" width="488" height="488" rx="105" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+
+  <!-- Notebook Shape -->
+  <g transform="translate(106, 86)">
+    <!-- Notebook Base Cover -->
+    <rect x="0" y="0" width="300" height="340" rx="28" fill="url(#bookGrad)" />
+    
+    <!-- Spine binding strip -->
+    <rect x="0" y="0" width="56" height="340" rx="24" fill="#1e3a8a" />
+    <!-- Spine binding stitches -->
+    <line x1="28" y1="40" x2="28" y2="300" stroke="rgba(255,255,255,0.25)" stroke-width="4" stroke-dasharray="14 12" />
+    
+    <!-- Paper page effect -->
+    <rect x="66" y="24" width="216" height="292" rx="14" fill="#ffffff" />
+    
+    <!-- Ruled lines on paper -->
+    <line x1="86" y1="74" x2="260" y2="74" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" />
+    <line x1="86" y1="114" x2="260" y2="114" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" />
+    <line x1="86" y1="154" x2="260" y2="154" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" />
+    <line x1="86" y1="194" x2="230" y2="194" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" />
+    <line x1="86" y1="234" x2="260" y2="234" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" />
+    
+    <!-- Bookmark ribbon -->
+    <path d="M 180 0 L 180 110 L 200 92 L 220 110 L 220 0 Z" fill="url(#accentGrad)" />
+    
+    <!-- Gold Pencil / Pen floating on right -->
+    <g transform="translate(190, 160) rotate(-45)">
+      <rect x="0" y="0" width="26" height="150" rx="6" fill="url(#accentGrad)" />
+      <!-- Tip -->
+      <polygon points="0,150 26,150 13,184" fill="#fed7aa" />
+      <polygon points="9,173 17,173 13,184" fill="#1e293b" />
+      <!-- Eraser -->
+      <rect x="0" y="-18" width="26" height="18" rx="4" fill="#f43f5e" />
+      <rect x="0" y="-4" width="26" height="6" fill="#cbd5e1" />
+    </g>
+  </g>
+</svg>
